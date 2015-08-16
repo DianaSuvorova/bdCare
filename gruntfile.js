@@ -38,7 +38,7 @@ module.exports = function (grunt) {
 
     watch: {
       browserify: {
-        files: ['modules/**/*.js'],
+        files: ['modules/**/*.js', 'dispatcher/*.js', 'stores/*.js'],
         tasks: ['browserify:dev']
       },
       css: {
@@ -94,7 +94,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-replace');
- 
+
   grunt.registerTask('default', ['dev', 'watch']);
   grunt.registerTask('dev', ['browserify:dev', 'sass', 'replace', 'copy']);
   grunt.registerTask('build', ['browserify:build', 'sass', 'replace', 'copy', 'cssmin', 'uglify']);

@@ -1,3 +1,17 @@
 div#navbar {
   flex: 0 0 $unit * 2;
+  a {
+    float: left;
+    margin-right: $unit * 2;
+    padding-right: $unit;
+    color: lightgray;
+    border-bottom: $border-lightgray;
+    &.active {
+      color: black;
+      border-bottom: $border-bold;
+    }
+    &:first-of-type {
+      width: $unit * 2;
+    }
+  }
 }

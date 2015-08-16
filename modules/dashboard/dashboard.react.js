@@ -2,18 +2,14 @@ var React = require('react');
 var $ = require('jquery-browserify');
 var ClassNames = require('classnames');
 
-var content = React.createClass({
+var dashboard = module.exports = React.createClass({
 
   render: function () {
     return (
-      <div id = 'content'>
-        <div className = 'container'>
-          container
-        </div>
+      <div id = 'dashboard'>
+        dashboard
       </div>
       );
   }
 
 });
-
-module.exports =  content;

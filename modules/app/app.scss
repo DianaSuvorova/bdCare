@@ -1,6 +1,8 @@
 //variables
 $unit: 2rem;
 $line-height: $unit;
+$border-lightgray: 1px solid lightgray;
+$border-bold: 3px solid black;
 
 //globals
 html, body {
@@ -16,4 +18,15 @@ div#app {
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  a {
+    text-decoration:none;
+    color: inherit;
+    display: inline-block;
+  }
+
+  div.content {
+    flex: 1 0 $unit * 10;
+    align-items: center;
+  }
 }
