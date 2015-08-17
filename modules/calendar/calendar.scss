@@ -1,0 +1,22 @@
+div.calendar {
+  & > div {
+    height: $unit;
+    &.header {
+      border-bottom: $border-lightgray;
+    }
+    & > span {
+      text-align: center;
+      display: inline-block;
+      width: $unit;
+      height: 100%;
+      &.taken {
+        background-color: lightgray;
+      }
+      &.taken, &.available {
+        &:hover {
+            background-color: gray;
+          }
+      }
+    }
+  }
+}

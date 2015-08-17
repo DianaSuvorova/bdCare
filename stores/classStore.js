@@ -30,6 +30,15 @@ var classStore = module.exports = assign({}, EventEmitter.prototype, {
 
   getClasses: function () {
     return _classes;
+  },
+
+  getClassMap: function () {
+    var classMap = {};
+    for (var i = 0; i < _classes.length; i++) {
+      var classObj = _classes[i];
+      classMap[classObj.id] = classObj;
+    }
+    return classMap;
   }
 
 });

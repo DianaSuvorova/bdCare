@@ -3,6 +3,9 @@ div.student {
   border-bottom: $border-lightgray;
   & > div {
     text-align: left;
-    width: $unit * 4;
+    width: $unit * 5;
+    &:not(.calendar) {
+      line-height: $unit * 2;
+    }
   }
 }
