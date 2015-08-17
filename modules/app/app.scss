@@ -1,6 +1,8 @@
 //variables
 $unit: 2rem;
 $line-height: $unit;
+
+$border: 1px solid black;
 $border-lightgray: 1px solid lightgray;
 $border-bold: 3px solid black;
 
@@ -26,7 +28,9 @@ div#app {
   }
 
   div.content {
-    flex: 1 0 $unit * 10;
+    display: flex;
+    flex: 1 0 auto;
     align-items: center;
+    justify-content: center;
   }
 }

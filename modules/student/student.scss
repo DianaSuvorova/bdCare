@@ -1,0 +1,8 @@
+div.student {
+  display: flex;
+  border-bottom: $border-lightgray;
+  & > div {
+    text-align: left;
+    width: $unit * 4;
+  }
+}
