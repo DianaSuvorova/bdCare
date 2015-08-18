@@ -7,39 +7,20 @@ Parse.initialize("nV79RgGdpHJuLACeL96jDcybxA5fcLBSYmYbYH5u", "FSPoK1VgkgJF75rDHx
 
 var Api = module.exports = {
 
-  getStudentsForSchool: function (schoolId) {
-    var query = new Parse.Query(Parse.Object.extend('student'));
-    query.equalTo('schoolId', schoolId).descending('createdAt');
+  getStudents: function (schoolId) {
 
-    var onSuccess = function (students) {
+    var qStudent = new Parse.Query(Parse.Object.extend('Student')).descending('createdAt').find();
+    var qGroup = new Parse.Query(Parse.Object.extend('Group')).descending('createdAt').find();
+    var qMapping = new Parse.Query(Parse.Object.extend('Mapping')).descending('createdAt').find();
+
+    Promise.all([qStudent, qGroup, qMapping]).then(function (result) {
       Dispatcher.dispatch({
         actionType: Constants.API_GET_STUDENTS_SUCCESS,
-        students: students
-      })
-    },
-    onError = function (students, error) {
-      console.log('error loading students', students, error);
-    };
-
-    query.find().then(onSuccess, onError);
-
-  },
-
-  getClassesForSchool: function (schoolId) {
-    var query = new Parse.Query(Parse.Object.extend('class'));
-    query.equalTo('schoolId', schoolId).descending('createdAt');
-
-    var onSuccess = function (classes) {
-      Dispatcher.dispatch({
-        actionType: Constants.API_GET_CLASSES_SUCCESS,
-        classes: classes
-      })
-    },
-    onError = function (classes, error) {
-      console.log('error loading classes', classes, error);
-    };
-
-    query.find().then(onSuccess, onError);
+        students: result[0],
+        groups: result[1],
+        mappings: result[2]
+      });
+    });
 
   }
 

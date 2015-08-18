@@ -1,17 +1,27 @@
 div#students {
- & > div.header {
-   display: flex;
-   border-bottom: $border-lightgray;
-   line-height: $line-height;
-   & > div {
-     text-align: left;
-     width: $unit * 5;
-      &.calendar > span {
-       text-align: center;
-       display: inline-block;
-       width: $unit;
-       height: 100%;
-     }
-   }
- }
+  & > div.toolbar {
+    display: flex;
+    justify-content: flex-end;
+    &.span {
+      display: inline-block;
+      width: $unit;
+    }
+  }
+  & > div.table {
+    & > div.header {
+     display: flex;
+     border-bottom: $border-lightgray;
+     line-height: $line-height;
+     & > div {
+       text-align: left;
+       width: $unit * 5;
+        &.calendar > span {
+         text-align: center;
+         display: inline-block;
+         width: $unit;
+         height: 100%;
+        }
+      }
+    }
+  }
 }

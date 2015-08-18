@@ -6,24 +6,57 @@ var EventEmitter = require('events').EventEmitter;
 
 var CHANGE_EVENT = 'change';
 
-var _students = [];
+var _students = {};
+var _groups = {};
+var _mappings = [];
+var isEmpty = true;
 
-function set(students) {
-  _students = students.map(function (student) {
+function setData(students, groups, mappings) {
+  students.forEach(function (student) {
+    _students[student.id] = student.attributes
+  });
+
+  groups.forEach(function (group) {
+    _groups[group.id] = group.attributes
+  });
+
+  _mappings = mappings.map(function (mapping) {
+    return mapping.attributes;
+  });
+
+  isEmpty = false;
+}
+
+function getMappings(date) {
+  var mappings = [];
+  for (var i = 0; i < _mappings.length; i++) {
+    var mapping = _mappings[i];
+    if (date > mapping.start_date && date < mapping.end_date) {
+      mappings.push(mapping);
+    }
+  }
+  return mappings;
+}
+
+function getStudents(date) {
+
+  return getMappings(date).map(function (mapping) {
     return assign(
-        {},
-        {id: student.id, name: student.attributes.name, dateOfBirth: student.attributes.dateOfBirth, classId: student.attributes.classId  },
-        {schedule: {
-          mon_am: student.attributes.mon_am || false,
-          mon_pm: student.attributes.mon_am || false,
-          tue_am: student.attributes.tue_am || false,
-          tue_pm: student.attributes.tue_pm || false,
-          wed_am: student.attributes.wed_am || false,
-          wed_pm: student.attributes.wed_pm || false,
-          thu_am: student.attributes.thu_am || false,
-          thu_pm: student.attributes.thu_pm || false,
-          fri_am: student.attributes.fri_am || false,
-          fri_pm: student.attributes.fri_pm || false
+      {},
+      _students[mapping.studentId],
+      {group: _groups[mapping.groupId].name},
+      {schedule:
+        {
+          mon_am: mapping.mon_am,
+          mon_pm: mapping.mon_pm,
+          tue_am: mapping.tue_am,
+          tue_pm: mapping.tue_pm,
+          wed_am: mapping.wed_am,
+          wed_pm: mapping.wed_pm,
+          thu_am: mapping.thu_am,
+          thu_pm: mapping.thu_pm,
+          fri_am: mapping.fri_am,
+          fri_pm: mapping.fri_pm
         }
       }
     )
@@ -45,22 +78,19 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
   },
 
   getStudents: function () {
-    return _students;
+    return getStudents(new Date);
+  },
+
+  isEmpty: function () {
+    return isEmpty;
   }
 
 });
 
-
-Dispatcher.register( function (action) {
+studentStore.dispatchToken = Dispatcher.register( function (action) {
   switch(action.actionType) {
     case Constants.API_GET_STUDENTS_SUCCESS:
-      if(action.students) {
-        set(action.students);
-      }
-      studentStore.emitChange();
-      break;
-
-    case Constants.GET_STUDENTS:
+      setData(action.students, action.groups, action.mappings);
       studentStore.emitChange();
       break;
 

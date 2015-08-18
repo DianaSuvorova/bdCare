@@ -11,8 +11,8 @@ var student = module.exports = React.createClass({
     return(
       <div className = 'student'>
         <div>{student.name}</div>
-        <div>{student.dateOfBirth}</div>
-        <div>{(student.class) ? student.class.name : ''}</div>
+        <div>{student.birthdate}</div>
+        <div>{student.group}</div>
         <Calendar schedule = {student.schedule} header = {false} />
       </div>
     )
