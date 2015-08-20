@@ -22,6 +22,23 @@ var Api = module.exports = {
       });
     });
 
+  },
+
+  saveStudent: function(studentEntry) {
+    var pStudent = Parse.Object.extend('Student');
+    var student = new pStudent();
+
+    var onSuccess = function (student) {
+      console.log(student)
+    };
+
+    var onError = function (student, error) {
+      console.log(error)
+    };
+
+    student.save({name: studentEntry.name}).then(onSuccess, onError);
   }
+
+
 
 };

@@ -6,5 +6,9 @@ var studentAction = module.exports = {
 
   loadStudents: function (schoolId) {
     Api.getStudents(schoolId);
+  },
+
+  saveStudent: function (studentEntry) {
+    Api.saveStudent(studentEntry)
   }
 }

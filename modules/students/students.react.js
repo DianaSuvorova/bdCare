@@ -41,6 +41,10 @@ var students = module.exports = React.createClass({
       return <Student key = {student.id} student = {student} />
     }.bind(this));
 
+    var studentEntry = <Student key = {'studentEntry'} />;
+    students.unshift(studentEntry)
+
+
     var header = (
       <div className = 'header'>
         <div>Name</div>
