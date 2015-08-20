@@ -36,9 +36,6 @@ var Api = module.exports = {
       console.log(error)
     };
 
-    student.save({name: studentEntry.name}).then(onSuccess, onError);
+    student.save({name: studentEntry.name, birthdate: studentEntry.birthdate}).then(onSuccess, onError);
   }
-
-
-
 };
