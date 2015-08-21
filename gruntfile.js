@@ -64,11 +64,9 @@ module.exports = function (grunt) {
     },
 
     copy: {
-      fa: {
-        expand: true,
-        cwd: './node_modules/font-awesome/fonts/',
-        src: '**',
-        dest: 'build/fonts/'
+      html: {
+        src: 'index.html',
+        dest: 'build/'
       }
     },
 
@@ -96,8 +94,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-replace');
 
   grunt.registerTask('default', ['dev', 'watch']);
-  grunt.registerTask('dev', ['browserify:dev', 'sass', 'replace', 'copy']);
-  grunt.registerTask('build', ['browserify:build', 'sass', 'replace', 'copy', 'cssmin', 'uglify']);
+  grunt.registerTask('dev', ['browserify:dev', 'sass', 'copy', 'replace']);
+  grunt.registerTask('build', ['browserify:build', 'sass', 'copy', 'replace', 'cssmin', 'uglify']);
 
 
 };
