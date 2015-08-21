@@ -13,6 +13,8 @@ var Student = require('../student/student.react')
 function getState() {
   return {
     students: StudentStore.getStudents(),
+    editMode: false,
+    addMode: false
   };
 }
 
@@ -37,13 +39,23 @@ var students = module.exports = React.createClass({
   },
 
   render: function () {
+    var classes = {
+      editActionItem: ClassNames({
+        'actionItem': true,
+        'active': this.state.editMode
+      }),
+      addActionItem: ClassNames({
+        'actionItem': true,
+        'active': this.state.addMode
+      })
+    }
+
+
     var students = this.state.students.map(function (student) {
-      return <Student key = {student.id} student = {student} />
+      return <Student key = {student.id} student = {student} editMode = {this.state.editMode}/>
     }.bind(this));
 
-    var studentEntry = <Student key = {'studentEntry'} />;
-    students.unshift(studentEntry)
-
+    var studentEntry = <Student key = {'studentEntry'} addMode = {this.state.addMode}/>;
 
     var header = (
       <div className = 'header'>
@@ -62,8 +74,8 @@ var students = module.exports = React.createClass({
 
     var toolbar = (
       <div className = 'toolbar'>
-        <span>add</span>
-        <span>edit</span>
+        <span className = {classes.addActionItem} onClick = {this._onToggleAddMode}><i className = 'fa fa-plus'></i></span>
+        <span className = {classes.editActionItem} onClick = {this._onToggleEditMode}><i className = 'fa fa-pencil'></i></span>
       </div>
     );
 
@@ -72,14 +84,23 @@ var students = module.exports = React.createClass({
         {toolbar}
         <div className ='table'>
           {header}
+          {studentEntry}
           {students}
         </div>
       </div>
       );
   },
 
-  _onChange: function() {
+  _onChange: function () {
     this.setState(getState());
+  },
+
+  _onToggleAddMode: function () {
+    this.setState({addMode: !this.state.addMode});
+  },
+
+  _onToggleEditMode: function () {
+    this.setState({editMode: !this.state.editMode});
   }
 
 });

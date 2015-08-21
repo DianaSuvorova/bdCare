@@ -1,11 +1,17 @@
 div.student {
   display: flex;
   border-bottom: $border-lightgray;
-  & > div {
+  & > input {
     text-align: left;
     width: $unit * 5;
     &:not(.calendar) {
       line-height: $unit * 2;
     }
+  }
+  transition: height $transition-duration ease-in;
+  &.hidden {
+    height: 0;
+    overflow: hidden;
+    border-bottom: none;
   }
 }

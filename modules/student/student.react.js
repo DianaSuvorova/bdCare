@@ -8,12 +8,30 @@ var Calendar = require('../calendar/calendar.react');
 
 var student = module.exports = React.createClass({
 
-  isDate:  function(date) {
-      return (new Date(date) !== "Invalid Date" &&
-              !isNaN(new Date(date)) )  ? true : false;
+  render: function () {
+    var studentEntry = { name: null, birthdate: null, schedule: {} };
+    var student = this.props.student || studentEntry;
+
+    var classes = {
+      student : ClassNames({
+        student: true,
+        entry: (this.props.student) ? false : true,
+        hidden: (!this.props.student && !this.props.addMode) ? true : false,
+        editable : this.props.editMode
+      })
+    };
+
+    return (
+      <div className = {classes.student}>
+        <input className = 'name' defaultValue = {student.name} placeholder = {'name'} readOnly = {!this.props.editMode}></input>
+        <input className = 'birthdate' defaultValue = {this._formatDate(student.birthdate)} placeholder = {'birthdate'} readOnly = {!this.props.editMode}></input>
+        <input className = 'group' defaultValue = {student.group} readOnly = {!this.props.editMode}></input>
+        <Calendar schedule = {student.schedule} header = {false} />
+      </div>
+    )
   },
 
-  onAddNewStudent: function (e) {
+  _onAddNewStudent: function (e) {
     var $studentEntry = $(e.target).closest('div.student')
 
     var entry = {
@@ -23,24 +41,19 @@ var student = module.exports = React.createClass({
     };
 
     birthdateString = birthdate = $studentEntry.find('input.birthdate').val()
-    if (this.isDate(birthdateString)) {
+    if (this._isDate(birthdateString)) {
       entry.birthdate = new Date(birthdateString)
     }
 
     StudentAction.saveStudent(entry);
   },
 
-  render: function () {
-    var studentEntry = { name: null, birthdate: null, schedule: {} };
-    var student = this.props.student || studentEntry;
-    return (
-      <div className = 'student'>
-        <input className = 'name' defaultValue = {student.name} placeholder = {'name'} ></input>
-        <input className = 'birthdate' defaultValue = {student.birthdate} placeholder = {'birthdate'}></input>
-        <input className = 'group' defaultValue = {student.group}></input>
-        <Calendar schedule = {student.schedule} header = {false} />
-        <div className='save' onClick = {this.onAddNewStudent}></div>
-      </div>
-    )
+  _isDate: function (date) {
+    return (new Date(date) !== "Invalid Date" && !isNaN(new Date(date)) )  ? true : false;
+  },
+
+  _formatDate: function (date) {
+    if (date) return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear();
   }
+
 });
