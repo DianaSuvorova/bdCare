@@ -6,37 +6,42 @@ var calendar = module.exports = React.createClass({
 
   render: function () {
 
-    var slotClass = function(slot) {
-      return (this.props.schedule[slot]) ? 'taken' : 'available'
-    }.bind(this)
+    var getSlotLabel = function (slot) {
+      return (this.props.schedule[slot] > 0 && this.props.labels) ? this.props.schedule[slot] : '';
+    }.bind(this);
 
-    var headerDiv = (this.props.header) ?
-      (<div className = 'header'>
-        <span>Mon</span>
-        <span>Tue</span>
-        <span>Wed</span>
-        <span>Thu</span>
-        <span>Fri</span>
-      </div>) :
-      null;
+    var classes = {
+      slot:  function(slot) {
+        return slot.replace('_', ' ') + ((this.props.schedule[slot] > 0) ? ' available' : ' taken')
+      }.bind(this),
+       calendar : ClassNames({
+         calendar: true,
+         editable: (this.props.editMode) ? true : false
+       })
+     }
 
     return (
-      <div className = 'calendar'>
-        {headerDiv}
-        <div className = 'am'>
-          <span className = {slotClass('mon_am')}></span>
-          <span className = {slotClass('tue_am')}></span>
-          <span className = {slotClass('wed_am')}></span>
-          <span className = {slotClass('thu_am')}></span>
-          <span className = {slotClass('fri_am')}></span>
-         </div>
-        <div className = 'pm'>
-          <span className = {slotClass('mon_pm')}></span>
-          <span className = {slotClass('tue_pm')}></span>
-          <span className = {slotClass('wed_pm')}></span>
-          <span className = {slotClass('thu_pm')}></span>
-          <span className = {slotClass('fri_pm')}></span>
-         </div>
+      <div className = {classes.calendar}>
+        <span className = 'day'>
+          <span className = {classes.slot('mon_am')}>{getSlotLabel('mon_am')}</span>
+          <span className = {classes.slot('mon_pm')}>{getSlotLabel('mon_pm')}</span>
+        </span>
+        <span className = 'day'>
+          <span className = {classes.slot('tue_am')}>{getSlotLabel('tue_am')}</span>
+          <span className = {classes.slot('tue_pm')}>{getSlotLabel('tue_pm')}</span>
+        </span>
+        <span className = 'day'>
+          <span className = {classes.slot('wed_am')}>{getSlotLabel('wed_am')}</span>
+          <span className = {classes.slot('wed_pm')}>{getSlotLabel('wed_pm')}</span>
+        </span>
+        <span className = 'day'>
+          <span className = {classes.slot('thu_am')}>{getSlotLabel('thu_am')}</span>
+          <span className = {classes.slot('thu_pm')}>{getSlotLabel('thu_pm')}</span>
+        </span>
+        <span className = 'day'>
+          <span className = {classes.slot('fri_am')}>{getSlotLabel('fri_am')}</span>
+          <span className = {classes.slot('fri_pm')}>{getSlotLabel('fri_pm')}</span>
+        </span>
       </div>
     )
   }

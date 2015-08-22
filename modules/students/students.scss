@@ -11,14 +11,18 @@ div#students {
     & > div.header {
      display: flex;
      border-bottom: $border-lightgray;
-     line-height: $line-height;
+     line-height: $unit;
      & > div {
-       text-align: left;
        width: $unit * 5;
-        &.calendar > span {
+       text-align: left;
+     }
+     & > div.calendar {
+      $day-width: calc(#{$unit * 2} + 3px);
+      width: auto;
+      span {
          text-align: center;
          display: inline-block;
-         width: $unit;
+         width: $day-width;
          height: 100%;
         }
       }

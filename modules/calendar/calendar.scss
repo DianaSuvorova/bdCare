@@ -1,21 +1,34 @@
 div.calendar {
-  & > div {
+  $border-radius: $unit/5;
+  & > span.day {
+    display: inline-block;
     height: $unit;
-    &.header {
-      border-bottom: $border-lightgray;
-    }
     & > span {
-      text-align: center;
       display: inline-block;
       width: $unit;
       height: 100%;
-      &.taken {
-        background-color: lightgray;
+      text-align: center;
+      &.am {
+        border-left : $border-lightgray;
+        border-radius: $border-radius 0 0 $border-radius;
+        border-right: 1px dashed $color-gray;
       }
-      &.taken, &.available {
-        &:hover {
-            background-color: gray;
-          }
+      &.pm {
+        border-right : $border-lightgray;
+        border-radius: 0 $border-radius $border-radius 0;
+      }
+      &.taken { background-color: $disabled-gray; }
+    }
+  }
+  &.editable {
+    span.day > span {
+      &.available:hover {
+          cursor: pointer;
+          background-color: $color-active;
+      }
+      &.taken:hover {
+          cursor: pointer;
+          background-color: white;
       }
     }
   }

@@ -13,8 +13,7 @@ var Student = require('../student/student.react')
 function getState() {
   return {
     students: StudentStore.getStudents(),
-    editMode: false,
-    addMode: false
+    editMode: false
   };
 }
 
@@ -44,18 +43,21 @@ var students = module.exports = React.createClass({
         'actionItem': true,
         'active': this.state.editMode
       }),
-      addActionItem: ClassNames({
+      saveActionItem: ClassNames({
         'actionItem': true,
-        'active': this.state.addMode
+        'disabled': true
+      }),
+      cancelActionItem: ClassNames({
+        'actionItem': true,
+        'disabled': true
       })
-    }
-
+    };
 
     var students = this.state.students.map(function (student) {
       return <Student key = {student.id} student = {student} editMode = {this.state.editMode}/>
     }.bind(this));
 
-    var studentEntry = <Student key = {'studentEntry'} addMode = {this.state.addMode}/>;
+    var studentEntry = <Student key = {'studentEntry'} editMode = {this.state.editMode} schedule = {this._getAvailableSchedule()} />;
 
     var header = (
       <div className = 'header'>
@@ -74,8 +76,9 @@ var students = module.exports = React.createClass({
 
     var toolbar = (
       <div className = 'toolbar'>
-        <span className = {classes.addActionItem} onClick = {this._onToggleAddMode}><i className = 'fa fa-plus'></i></span>
         <span className = {classes.editActionItem} onClick = {this._onToggleEditMode}><i className = 'fa fa-pencil'></i></span>
+        <span className = {classes.saveActionItem} onClick = {this._onSaveEdit}><i className = 'fa fa-check'></i></span>
+        <span className = {classes.cancelActionItem} onClick = {this._onCancelEdit}><i className = 'fa fa-times'></i></span>
       </div>
     );
 
@@ -95,12 +98,22 @@ var students = module.exports = React.createClass({
     this.setState(getState());
   },
 
-  _onToggleAddMode: function () {
-    this.setState({addMode: !this.state.addMode});
-  },
-
   _onToggleEditMode: function () {
     this.setState({editMode: !this.state.editMode});
+  },
+
+  _onSaveEdit: function () {
+
+  },
+
+  _onCancelEdit: function () {
+
+  },
+
+  _getAvailableSchedule: function () {
+    var group = null;
+    var dateRange = null;
+    return StudentStore.getAvailableSchedule(group, dateRange);
   }
 
 });

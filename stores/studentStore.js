@@ -9,7 +9,8 @@ var CHANGE_EVENT = 'change';
 var _students = {};
 var _groups = {};
 var _mappings = [];
-var isEmpty = true;
+var _isEmpty = true;
+var _slotsDict = ['mon_am', 'mon_pm', 'tue_am', 'tue_pm', 'wed_am', 'wed_pm', 'thu_am', 'thu_pm', 'fri_am', 'fri_pm'];
 
 function setData(students, groups, mappings) {
   students.forEach(function (student) {
@@ -24,7 +25,7 @@ function setData(students, groups, mappings) {
     return mapping.attributes;
   });
 
-  isEmpty = false;
+  _isEmpty = false;
 }
 
 function getMappings(date) {
@@ -39,26 +40,18 @@ function getMappings(date) {
 }
 
 function getStudents(date) {
+  var schedule = {};
 
   return getMappings(date).map(function (mapping) {
+    _slotsDict.forEach(function (slot) {
+      schedule[slot] = mapping[slot]
+    });
+
     return assign(
       {},
       _students[mapping.studentId],
       {group: _groups[mapping.groupId].name},
-      {schedule:
-        {
-          mon_am: mapping.mon_am,
-          mon_pm: mapping.mon_pm,
-          tue_am: mapping.tue_am,
-          tue_pm: mapping.tue_pm,
-          wed_am: mapping.wed_am,
-          wed_pm: mapping.wed_pm,
-          thu_am: mapping.thu_am,
-          thu_pm: mapping.thu_pm,
-          fri_am: mapping.fri_am,
-          fri_pm: mapping.fri_pm
-        }
-      }
+      {schedule: schedule}
     )
   });
 }
@@ -82,7 +75,21 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
   },
 
   isEmpty: function () {
-    return isEmpty;
+    return _isEmpty;
+  },
+
+  getAvailableSchedule: function (group, dateRange) {
+    var schedule = {};
+
+    var getAvailableForDay = function (group, dateRange, slot) {
+      return Math.round(Math.random() * 10);
+    }
+
+    _slotsDict.forEach( function (slot) {
+      schedule[slot] = getAvailableForDay(group, dateRange, slot);
+    });
+
+    return schedule;
   }
 
 });

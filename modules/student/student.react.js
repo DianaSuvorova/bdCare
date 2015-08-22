@@ -9,15 +9,13 @@ var Calendar = require('../calendar/calendar.react');
 var student = module.exports = React.createClass({
 
   render: function () {
-    var studentEntry = { name: null, birthdate: null, schedule: {} };
+    var studentEntry = { name: null, birthdate: null, schedule: this.props.schedule };
     var student = this.props.student || studentEntry;
 
     var classes = {
       student : ClassNames({
         student: true,
-        entry: (this.props.student) ? false : true,
-        hidden: (!this.props.student && !this.props.addMode) ? true : false,
-        editable : this.props.editMode
+        hidden: (!this.props.student && !this.props.editMode) ? true : false
       })
     };
 
@@ -26,7 +24,7 @@ var student = module.exports = React.createClass({
         <input className = 'name' defaultValue = {student.name} placeholder = {'name'} readOnly = {!this.props.editMode}></input>
         <input className = 'birthdate' defaultValue = {this._formatDate(student.birthdate)} placeholder = {'birthdate'} readOnly = {!this.props.editMode}></input>
         <input className = 'group' defaultValue = {student.group} readOnly = {!this.props.editMode}></input>
-        <Calendar schedule = {student.schedule} header = {false} />
+        <Calendar schedule = {student.schedule} editMode = {this.props.editMode} labels = {(this.props.student) ?  false : true} />
       </div>
     )
   },
@@ -49,11 +47,11 @@ var student = module.exports = React.createClass({
   },
 
   _isDate: function (date) {
-    return (new Date(date) !== "Invalid Date" && !isNaN(new Date(date)) )  ? true : false;
+    return (new Date(date) !== 'Invalid Date' && !isNaN(new Date(date)) )  ? true : false;
   },
 
   _formatDate: function (date) {
-    if (date) return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear();
+    if (date) return date.getMonth()+1 + '/' + date.getDate() + '/' + date.getFullYear();
   }
 
 });
