@@ -40,9 +40,10 @@ function getMappings(date) {
 }
 
 function getStudents(date) {
-  var schedule = {};
+  
+    return getMappings(date).map(function (mapping) {
+    var schedule = {};
 
-  return getMappings(date).map(function (mapping) {
     _slotsDict.forEach(function (slot) {
       schedule[slot] = mapping[slot]
     });
@@ -114,7 +115,7 @@ function minimumSlotsLoadForGroupForDateRange(group, dateRange) {
     }
   }
 
-  console.log(_slotsBreakdown);
+  console.log(group, _slotsBreakdown);
   return _slotsBreakdown;
 }
 
