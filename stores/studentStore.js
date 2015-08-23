@@ -56,17 +56,91 @@ function getStudents(date) {
   });
 }
 
-function getAvailableScheduleForSlot (group, dateRange, slot) {
-  //getAvailableScheduleForSlot("abc", [d1, d2], "mon_am") -> 3
-  return Math.round(Math.random() * 3);
+function createListOfDatesForDateRange(dateRange) {
+  localStartDate = new Date(startDate);
+  var listOfDates = []
+  for (var d = localStartDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+    dayOfWeek = d.getDay()
+    if (dayOfWeek != 0 && dayOfWeek != 6) {
+      listOfDates.push(new Date(d));
+    }
+  }
+  return listOfDates;
+}
+
+
+function slotKeysDictForDate(d) {
+  date = new Date(d);
+  keyIndex = date.getDay() - 1;
+  amKey = _slotsDict[keyIndex * 2];
+  pmKey = _slotsDict[keyIndex * 2 + 1];
+  return {'am' : amKey, 'pm' : pmKey};
+}
+
+function dailyStudentCountFoGroupForDate(group, date) {
+  group_mappings = _mappings.filter(function (mapping) {
+    return mapping.groupId == group
+  });
+
+  amCount = 0;
+  pmCount = 0;
+
+  slotKeys = slotKeysDictForDate(date)
+  amKey = slotKeys['am'];
+  pmKey = slotKeys['pm'];
+  group_mappings.forEach( function(mapping) {
+    amCount += mapping[amKey];
+    pmCount += mapping[pmKey];
+  });
+
+  return {'am' : amCount, 'pm': pmCount};
+}
+
+function minimumSlotsLoadForGroupForDateRange(group, dateRange) {
+  _slotsBreakdown = {};
+  studentLoadPerDate = studentLoadForGroupForDateRange(group, dateRange)
+
+  for (var date in studentLoadPerDate) {
+    slotKeyDict = slotKeysDictForDate(date)
+    for (var timeOfDay in slotKeyDict) {
+      if (!slotKeyDict.hasOwnProperty(timeOfDay)) continue;
+
+      slotKey = slotKeyDict[timeOfDay];
+      timeOfDayLoad = studentLoadPerDate[date][timeOfDay];
+      if  (!(slotKey in _slotsBreakdown) ||
+            (timeOfDayLoad < _slotsBreakdown[timeOfDay])) {
+        _slotsBreakdown[slotKey] = timeOfDayLoad;
+      }
+    }
+  }
+
+  console.log(_slotsBreakdown);
+  return _slotsBreakdown;
+}
+
+function studentLoadForGroupForDateRange(group, dateRange) {
+    var _studentsCountPerDay = {};
+
+    var listOfDates = createListOfDatesForDateRange(dateRange)
+    listOfDates.forEach( function(date) {
+      dailyCount = dailyStudentCountFoGroupForDate(group, date)
+      _studentsCountPerDay[date] = {'am': dailyCount['am'], 'pm': dailyCount['pm']};
+    });
+
+    return _studentsCountPerDay;
 }
 
 function getAvailableScheduleForGroup (group, dateRange) {
-  var schedule = {};
-  _slotsDict.forEach( function (slot) {
-    schedule[slot] = getAvailableScheduleForSlot(group, dateRange, slot);
-  });
-  return schedule;
+  startDate = dateRange[0];
+  endDate = dateRange[1];
+  if (startDate > endDate) {
+    console.log('Error: requested start date is later than end date')
+    console.log('StartDate:', startDate)
+    console.log('EndDate:', endDate)
+    return null;
+  }
+
+  return minimumSlotsLoadForGroupForDateRange(group, dateRange);
 }
 
 var studentStore = module.exports = assign({}, EventEmitter.prototype, {
@@ -92,7 +166,6 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
   },
 
   getAvailableSchedule: function (dateRange, group) {
-
     if (!dateRange) {
       var date = new Date(), y = date.getFullYear(), m = date.getMonth();
       var dateRange = [new Date(y, m, 1), new Date(y, m + 1, 0)];
