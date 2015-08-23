@@ -13,6 +13,7 @@ function getDateRangeOptions(currentDate) {
 }
 
 function getState(dateRange) {
+  console.log(StudentStore.getAvailableSchedule(dateRange));
   return {groups: StudentStore.getAvailableSchedule(dateRange)};
 }
 

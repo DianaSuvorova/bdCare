@@ -28,20 +28,19 @@ function setData(students, groups, mappings) {
   _isEmpty = false;
 }
 
-function getMappings(date) {
+function getMappings(groupId, date) {
   var mappings = [];
   for (var i = 0; i < _mappings.length; i++) {
     var mapping = _mappings[i];
-    if (date > mapping.start_date && (mapping.end_date) ? date < mapping.start_date : true ) {
+    if (groupId === mapping.groupId && date > mapping.start_date && ((mapping.end_date) ? date < mapping.start_date : true )) {
       mappings.push(mapping);
     }
   }
   return mappings;
 }
 
-function getStudents(date) {
-  
-    return getMappings(date).map(function (mapping) {
+function getStudents(groupId, date) {
+    return getMappings(groupId, date).map(function (mapping) {
     var schedule = {};
 
     _slotsDict.forEach(function (slot) {
@@ -115,7 +114,7 @@ function minimumSlotsLoadForGroupForDateRange(group, dateRange) {
     }
   }
 
-  console.log(group, _slotsBreakdown);
+//  console.log(group, _slotsBreakdown);
   return _slotsBreakdown;
 }
 
@@ -140,8 +139,14 @@ function getAvailableScheduleForGroup (group, dateRange) {
     console.log('EndDate:', endDate)
     return null;
   }
+  var slotsTaken = minimumSlotsLoadForGroupForDateRange(group, dateRange);
+  var slotsAvailable = {};
 
-  return minimumSlotsLoadForGroupForDateRange(group, dateRange);
+  for (slot in slotsTaken) {
+    slotsAvailable[slot] = _groups[group].capacity - slotsTaken[slot];
+  }
+
+  return slotsAvailable;
 }
 
 var studentStore = module.exports = assign({}, EventEmitter.prototype, {
@@ -158,8 +163,8 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getStudents: function () {
-    return getStudents(new Date);
+  getStudents: function (groupId, date) {
+    return getStudents(groupId || Object.keys(_groups)[0], date || new Date);
   },
 
   isEmpty: function () {

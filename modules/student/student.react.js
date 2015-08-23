@@ -51,7 +51,8 @@ var student = module.exports = React.createClass({
   },
 
   _formatDate: function (date) {
-    if (date) return date.getMonth()+1 + '/' + date.getDate() + '/' + date.getFullYear();
+    var format2Digit = function (number) { return ("0" + number).slice(-2); };
+    if (date) return format2Digit(date.getMonth() + 1) + '/' + format2Digit(date.getDate()) + '/' + date.getFullYear();
   }
 
 });
