@@ -28,39 +28,39 @@ function setData(students, groups, mappings) {
   _isEmpty = false;
 }
 
-function getMappings(groupId, date) {
-  var mappings = [];
-  for (var i = 0; i < _mappings.length; i++) {
-    var mapping = _mappings[i];
-    if (groupId === mapping.groupId && date > mapping.start_date && ((mapping.end_date) ? date < mapping.start_date : true )) {
-      mappings.push(mapping);
-    }
-  }
-  return mappings;
+function getMappingsByGroupdIdAndDate(groupId, date) {
+  return _mappings.filter(function (mapping) {
+    return (mapping.groupId === groupId)
+    && (date > mapping.start_date)
+    && (!mapping.end_date || date < mapping.start_date)
+  });
 }
 
 function getStudents(groupId, date) {
-    return getMappings(groupId, date).map(function (mapping) {
-    var schedule = {};
+    return
+    getMappingsByGroupdIdAndDate(groupId, date).map(function (mapping) {
+      var schedule = {};
 
-    _slotsDict.forEach(function (slot) {
-      schedule[slot] = mapping[slot]
-    });
+      _slotsDict.forEach(function (slot) {
+        schedule[slot] = mapping[slot]
+      });
 
-    return assign(
-      {},
-      _students[mapping.studentId],
-      {group: _groups[mapping.groupId].name},
-      {schedule: schedule}
-    )
+      return assign(
+        {},
+        _students[mapping.studentId],
+        {group: _groups[mapping.groupId].name},
+        {schedule: schedule}
+      )
   });
 }
 
 function createListOfDatesForDateRange(dateRange) {
-  localStartDate = new Date(startDate);
+  var startDate = dateRange[0];
+  var endDate = dateRange[1];
+  var localStartDate = new Date(startDate);
   var listOfDates = []
   for (var d = localStartDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-    dayOfWeek = d.getDay()
+    var dayOfWeek = d.getDay()
     if (dayOfWeek != 0 && dayOfWeek != 6) {
       listOfDates.push(new Date(d));
     }
@@ -68,26 +68,22 @@ function createListOfDatesForDateRange(dateRange) {
   return listOfDates;
 }
 
-
 function slotKeysDictForDate(d) {
-  date = new Date(d);
-  keyIndex = date.getDay() - 1;
-  amKey = _slotsDict[keyIndex * 2];
-  pmKey = _slotsDict[keyIndex * 2 + 1];
-  return {'am' : amKey, 'pm' : pmKey};
+  var date = new Date(d);
+  var keyIndex = date.getDay() - 1;
+  return {'am' : _slotsDict[keyIndex * 2], 'pm' : _slotsDict[keyIndex * 2 + 1]};
 }
 
-function dailyStudentCountFoGroupForDate(group, date) {
-  group_mappings = _mappings.filter(function (mapping) {
-    return mapping.groupId == group
-  });
 
-  amCount = 0;
-  pmCount = 0;
+function dailyStudentCountForGroupIdForDate(groupId, date) {
+  var group_mappings = getMappingsByGroupdIdAndDate(groupId, date)
 
-  slotKeys = slotKeysDictForDate(date)
-  amKey = slotKeys['am'];
-  pmKey = slotKeys['pm'];
+  var amCount = 0;
+  var pmCount = 0;
+
+  var slotKeys = slotKeysDictForDate(date)
+  var amKey = slotKeys['am'];
+  var pmKey = slotKeys['pm'];
   group_mappings.forEach( function(mapping) {
     amCount += mapping[amKey];
     pmCount += mapping[pmKey];
@@ -96,54 +92,49 @@ function dailyStudentCountFoGroupForDate(group, date) {
   return {'am' : amCount, 'pm': pmCount};
 }
 
-function minimumSlotsLoadForGroupForDateRange(group, dateRange) {
-  _slotsBreakdown = {};
-  studentLoadPerDate = studentLoadForGroupForDateRange(group, dateRange)
+function minimumSlotsLoadForGroupIdForDateRange(groupId, dateRange) {
+  var slotsBreakdown = {};
+  var studentLoadPerDate = studentLoadForGroupIdForDateRange(groupId, dateRange)
 
   for (var date in studentLoadPerDate) {
-    slotKeyDict = slotKeysDictForDate(date)
+    var slotKeyDict = slotKeysDictForDate(date)
     for (var timeOfDay in slotKeyDict) {
-      if (!slotKeyDict.hasOwnProperty(timeOfDay)) continue;
-
-      slotKey = slotKeyDict[timeOfDay];
-      timeOfDayLoad = studentLoadPerDate[date][timeOfDay];
-      if  (!(slotKey in _slotsBreakdown) ||
-            (timeOfDayLoad < _slotsBreakdown[timeOfDay])) {
-        _slotsBreakdown[slotKey] = timeOfDayLoad;
+      var slotKey = slotKeyDict[timeOfDay];
+      var timeOfDayLoad = studentLoadPerDate[date][timeOfDay];
+      if  (!(slotKey in slotsBreakdown) ||
+            (timeOfDayLoad < slotsBreakdown[timeOfDay])) {
+        slotsBreakdown[slotKey] = timeOfDayLoad;
       }
     }
   }
 
-//  console.log(group, _slotsBreakdown);
-  return _slotsBreakdown;
+  return slotsBreakdown;
 }
 
-function studentLoadForGroupForDateRange(group, dateRange) {
-    var _studentsCountPerDay = {};
+function studentLoadForGroupIdForDateRange(groupId, dateRange) {
+    var studentsCountPerDay = {};
 
     var listOfDates = createListOfDatesForDateRange(dateRange)
     listOfDates.forEach( function(date) {
-      dailyCount = dailyStudentCountFoGroupForDate(group, date)
-      _studentsCountPerDay[date] = {'am': dailyCount['am'], 'pm': dailyCount['pm']};
+      var dailyCount = dailyStudentCountForGroupIdForDate(groupId, date)
+      studentsCountPerDay[date] = {'am': dailyCount['am'], 'pm': dailyCount['pm']};
     });
 
-    return _studentsCountPerDay;
+    return studentsCountPerDay;
 }
 
-function getAvailableScheduleForGroup (group, dateRange) {
-  startDate = dateRange[0];
-  endDate = dateRange[1];
+function getAvailableScheduleForGroupId(groupId, dateRange) {
+  var startDate = dateRange[0];
+  var endDate = dateRange[1];
   if (startDate > endDate) {
-    console.log('Error: requested start date is later than end date')
-    console.log('StartDate:', startDate)
-    console.log('EndDate:', endDate)
+    console.error('Requested start date=', startDate, ' is later than end date=', endDate);
     return null;
   }
-  var slotsTaken = minimumSlotsLoadForGroupForDateRange(group, dateRange);
+  var slotsTaken = minimumSlotsLoadForGroupIdForDateRange(groupId, dateRange);
   var slotsAvailable = {};
 
   for (slot in slotsTaken) {
-    slotsAvailable[slot] = _groups[group].capacity - slotsTaken[slot];
+    slotsAvailable[slot] = _groups[groupId].capacity - slotsTaken[slot];
   }
 
   return slotsAvailable;
@@ -171,12 +162,12 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     return _isEmpty;
   },
 
-  getAvailableSchedule: function (dateRange, group) {
+  getAvailableSchedule: function (dateRange, groupId) {
     if (!dateRange) {
       var date = new Date(), y = date.getFullYear(), m = date.getMonth();
       var dateRange = [new Date(y, m, 1), new Date(y, m + 1, 0)];
     }
-    var groups = group || Object.keys(_groups);
+    var groups = groupId || Object.keys(_groups);
     var groupsSchedule = [];
 
     groups.forEach( function (id) {
@@ -184,7 +175,7 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
         {},
         {id: id},
         _groups[id],
-        {schedule: getAvailableScheduleForGroup(id, dateRange)})
+        {schedule: getAvailableScheduleForGroupId(id, dateRange)})
       );
     })
     return groupsSchedule;
