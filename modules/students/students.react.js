@@ -57,7 +57,8 @@ var students = module.exports = React.createClass({
       return <Student key = {student.id} student = {student} editMode = {this.state.editMode}/>
     }.bind(this));
 
-    var studentEntry = <Student key = {'studentEntry'} editMode = {this.state.editMode} schedule = {this._getAvailableSchedule()} />;
+    var availableSchedule = (this._getAvailableSchedule()[0]) ? this._getAvailableSchedule()[0].schedule : {};
+    var studentEntry = <Student key = {'studentEntry'} editMode = {this.state.editMode} schedule = {availableSchedule}/>;
 
     var header = (
       <div className = 'header'>
@@ -113,7 +114,7 @@ var students = module.exports = React.createClass({
   _getAvailableSchedule: function () {
     var group = null;
     var dateRange = null;
-    return StudentStore.getAvailableSchedule(group, dateRange);
+    return StudentStore.getAvailableSchedule(dateRange, group);
   }
 
 });

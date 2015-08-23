@@ -9,7 +9,7 @@ var Calendar = require('../calendar/calendar.react');
 var student = module.exports = React.createClass({
 
   render: function () {
-    var studentEntry = { name: null, birthdate: null, schedule: this.props.schedule };
+    var studentEntry = { name: null, birthdate: null, schedule: this.props.schedule, entry: true };
     var student = this.props.student || studentEntry;
 
     var classes = {
@@ -24,7 +24,7 @@ var student = module.exports = React.createClass({
         <input className = 'name' defaultValue = {student.name} placeholder = {'name'} readOnly = {!this.props.editMode}></input>
         <input className = 'birthdate' defaultValue = {this._formatDate(student.birthdate)} placeholder = {'birthdate'} readOnly = {!this.props.editMode}></input>
         <input className = 'group' defaultValue = {student.group} readOnly = {!this.props.editMode}></input>
-        <Calendar schedule = {student.schedule} editMode = {this.props.editMode} labels = {(this.props.student) ?  false : true} />
+        <Calendar schedule = {student.schedule} editMode = {this.props.editMode} entry = {student.entry || false} />
       </div>
     )
   },

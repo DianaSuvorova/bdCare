@@ -1,5 +1,9 @@
 div.calendar {
+
   $border-radius: $unit/5;
+
+  height: $unit;
+  line-height: $unit;
   & > span.day {
     display: inline-block;
     height: $unit;
@@ -21,12 +25,12 @@ div.calendar {
     }
   }
   &.editable {
-    span.day > span {
-      &.available:hover {
-          cursor: pointer;
-          background-color: $color-active;
-      }
-      &.taken:hover {
+    span.day > span.available:hover {
+      cursor: pointer;
+      background-color: $color-active;
+    }
+    &:not(.entry) {
+      span.day > span.taken:hover {
           cursor: pointer;
           background-color: white;
       }

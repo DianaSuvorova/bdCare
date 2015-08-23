@@ -32,7 +32,7 @@ function getMappings(date) {
   var mappings = [];
   for (var i = 0; i < _mappings.length; i++) {
     var mapping = _mappings[i];
-    if (date > mapping.start_date && date < mapping.end_date) {
+    if (date > mapping.start_date && (mapping.end_date) ? date < mapping.start_date : true ) {
       mappings.push(mapping);
     }
   }
@@ -54,6 +54,19 @@ function getStudents(date) {
       {schedule: schedule}
     )
   });
+}
+
+function getAvailableScheduleForSlot (group, dateRange, slot) {
+  //getAvailableScheduleForSlot("abc", [d1, d2], "mon_am") -> 3
+  return Math.round(Math.random() * 3);
+}
+
+function getAvailableScheduleForGroup (group, dateRange) {
+  var schedule = {};
+  _slotsDict.forEach( function (slot) {
+    schedule[slot] = getAvailableScheduleForSlot(group, dateRange, slot);
+  });
+  return schedule;
 }
 
 var studentStore = module.exports = assign({}, EventEmitter.prototype, {
@@ -78,18 +91,24 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     return _isEmpty;
   },
 
-  getAvailableSchedule: function (group, dateRange) {
-    var schedule = {};
+  getAvailableSchedule: function (dateRange, group) {
 
-    var getAvailableForDay = function (group, dateRange, slot) {
-      return Math.round(Math.random() * 10);
+    if (!dateRange) {
+      var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+      var dateRange = [new Date(y, m, 1), new Date(y, m + 1, 0)];
     }
+    var groups = group || Object.keys(_groups);
+    var groupsSchedule = [];
 
-    _slotsDict.forEach( function (slot) {
-      schedule[slot] = getAvailableForDay(group, dateRange, slot);
-    });
-
-    return schedule;
+    groups.forEach( function (id) {
+      groupsSchedule.push(assign(
+        {},
+        {id: id},
+        _groups[id],
+        {schedule: getAvailableScheduleForGroup(id, dateRange)})
+      );
+    })
+    return groupsSchedule;
   }
 
 });
