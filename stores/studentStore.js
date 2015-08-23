@@ -37,8 +37,7 @@ function getMappingsByGroupdIdAndDate(groupId, date) {
 }
 
 function getStudents(groupId, date) {
-    return
-    getMappingsByGroupdIdAndDate(groupId, date).map(function (mapping) {
+    return getMappingsByGroupdIdAndDate(groupId, date).map(function (mapping) {
       var schedule = {};
 
       _slotsDict.forEach(function (slot) {
