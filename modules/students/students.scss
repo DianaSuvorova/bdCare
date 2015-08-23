@@ -17,7 +17,7 @@ div#students {
        text-align: left;
      }
      & > div.calendar {
-      $day-width: calc(#{$unit * 2} + 3px);
+      $day-width: calc(#{$unit * 2} + 5px);
       width: auto;
       span {
          text-align: center;

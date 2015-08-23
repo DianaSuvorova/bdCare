@@ -7,6 +7,7 @@ div.calendar {
   & > span.day {
     display: inline-block;
     height: $unit;
+    margin: 1px;
     & > span {
       display: inline-block;
       width: $unit;
