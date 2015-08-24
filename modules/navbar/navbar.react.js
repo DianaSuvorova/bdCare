@@ -10,6 +10,7 @@ var navbar = module.exports = React.createClass({
       <div id = 'navbar' className = {this.props.className} >
         <Link to='dashboard'>Dashboard</Link>
         <Link to='students'>Students</Link>
+        <Link to='update'>Trasfers</Link>
       </div>
       );
   }

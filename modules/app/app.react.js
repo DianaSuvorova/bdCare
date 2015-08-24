@@ -6,6 +6,7 @@ var Router = require('react-router');
 var Navbar = require('./../navbar/navbar.react');
 var Dashboard = require('./../dashboard/dashboard.react');
 var Students = require('./../students/students.react');
+var BulkUpdate = require('./../bulkUpdate/bulkUpdate.react');
 var Footer = require('./../footer/footer.react');
 
 var schoolId = 0; //this should come from user store.
@@ -32,6 +33,7 @@ var routes =(
   <Route name = 'app' path = '/' handler = {app}>
     <Route name = 'dashboard' path = '/dashboard' handler = {Dashboard}/>
     <Route name = 'students' path = '/students' handler = {Students}/>
+    <Route name = 'update' path = '/update' handler = {BulkUpdate}/>
     <DefaultRoute handler = {Dashboard}/>
     <Redirect from = '/'  to = '/dashboard' />
   </Route>
