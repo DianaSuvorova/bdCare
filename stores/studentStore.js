@@ -32,7 +32,7 @@ function getMappingsByGroupdIdAndDate(groupId, date) {
   return _mappings.filter(function (mapping) {
     return (mapping.groupId === groupId)
     && (date > mapping.start_date)
-    && (!mapping.end_date || date < mapping.start_date)
+    && (!mapping.end_date || date < mapping.end_date)
   });
 }
 
@@ -101,12 +101,11 @@ function minimumSlotsLoadForGroupIdForDateRange(groupId, dateRange) {
       var slotKey = slotKeyDict[timeOfDay];
       var timeOfDayLoad = studentLoadPerDate[date][timeOfDay];
       if  (!(slotKey in slotsBreakdown) ||
-            (timeOfDayLoad < slotsBreakdown[timeOfDay])) {
+            (timeOfDayLoad < slotsBreakdown[slotKey])) {
         slotsBreakdown[slotKey] = timeOfDayLoad;
       }
     }
   }
-
   return slotsBreakdown;
 }
 
@@ -153,8 +152,6 @@ function getStudentsIdsEligibleForUpgrade(groupId, dateRange) {
       studentIds.push(mapping.studentId)
   });
 
-  console.log(studentIds)
-  
   return studentIds;
 }
 
