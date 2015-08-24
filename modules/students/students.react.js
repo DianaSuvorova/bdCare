@@ -114,7 +114,7 @@ var students = module.exports = React.createClass({
   _getAvailableSchedule: function () {
     var group = null;
     var dateRange = null;
-    return StudentStore.getAvailableSchedule(dateRange, group);
+    return StudentStore.getDashboardSummaryForDateRange(dateRange, group);
   }
 
 });

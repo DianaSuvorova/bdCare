@@ -9,11 +9,11 @@ var Group = require('../group/group.react');
 
 
 function getDateRangeOptions (currentDate) {
-  return ['September 2015', 'October 201', 'November 2015', 'December 2015'];
+  return ['September 2015', 'October 2015', 'November 2015', 'December 2015'];
 }
 
 function getState (dateRange) {
-  return {groups: StudentStore.getAvailableSchedule(dateRange)};
+  return {groups: StudentStore.getDashboardSummaryForDateRange(dateRange)};
 }
 
 var dashboard = module.exports = React.createClass({
