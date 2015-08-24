@@ -123,12 +123,6 @@ function studentLoadForGroupIdForDateRange(groupId, dateRange) {
 }
 
 function getAvailableScheduleForGroupId(groupId, dateRange) {
-  var startDate = dateRange[0];
-  var endDate = dateRange[1];
-  if (startDate > endDate) {
-    console.error('Requested start date=', startDate, ' is later than end date=', endDate);
-    return null;
-  }
   var slotsTaken = minimumSlotsLoadForGroupIdForDateRange(groupId, dateRange);
   var slotsAvailable = {};
 
@@ -137,6 +131,31 @@ function getAvailableScheduleForGroupId(groupId, dateRange) {
   }
 
   return slotsAvailable;
+}
+
+function getMappingsByGroupdIdWithProjectedDateInRange(groupId, dateRange) {
+  var startDate = dateRange[0];
+  var endDate = dateRange[1];
+
+  return _mappings.filter(function (mapping) {
+    return (mapping.groupId === groupId)
+    && (startDate < mapping.projected_end_date)
+    && (endDate > mapping.projected_end_date)
+  });
+}
+
+function getStudentsIdsEligibleForUpgrade(groupId, dateRange) {
+  var startDate = dateRange[0];
+  var endDate = dateRange[1];
+  eligible_mappings = getMappingsByGroupdIdWithProjectedDateInRange(groupId, dateRange)
+  var studentIds = [];
+  eligible_mappings.forEach(function (mapping){
+      studentIds.push(mapping.studentId)
+  });
+
+  console.log(studentIds)
+  
+  return studentIds;
 }
 
 var studentStore = module.exports = assign({}, EventEmitter.prototype, {
@@ -161,25 +180,35 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     return _isEmpty;
   },
 
-  getAvailableSchedule: function (dateRange, groupId) {
+  getGroupSummaryForGroupIdAndDateRange: function (groupId, dateRange) {
     if (!dateRange) {
       var date = new Date(), y = date.getFullYear(), m = date.getMonth();
       var dateRange = [new Date(y, m, 1), new Date(y, m + 1, 0)];
     }
-    var groups = groupId || Object.keys(_groups);
-    var groupsSchedule = [];
 
-    groups.forEach( function (id) {
-      groupsSchedule.push(assign(
-        {},
-        {id: id},
-        _groups[id],
-        {schedule: getAvailableScheduleForGroupId(id, dateRange)})
-      );
-    })
+    var startDate = dateRange[0];
+    var endDate = dateRange[1];
+    if (startDate > endDate) {
+      console.error('Requested start date=', startDate, ' is later than end date=', endDate);
+      return null;
+    }
+
+    return assign(
+      {},
+      {id: groupId},
+      _groups[groupId],
+      {schedule: getAvailableScheduleForGroupId(groupId, dateRange)},
+      {studentIdsEligibleForUpgrade: getStudentsIdsEligibleForUpgrade(groupId, dateRange)}
+    )
+  },
+
+  getDashboardSummaryForDateRange: function(dateRange) {
+    var groupsSchedule = [];
+    Object.keys(_groups).forEach( function (groupId) {
+      groupsSchedule.push(this.getGroupSummaryForGroupIdAndDateRange(groupId, dateRange));
+    }.bind(this))
     return groupsSchedule;
   }
-
 });
 
 studentStore.dispatchToken = Dispatcher.register( function (action) {
@@ -188,6 +217,5 @@ studentStore.dispatchToken = Dispatcher.register( function (action) {
       setData(action.students, action.groups, action.mappings);
       studentStore.emitChange();
       break;
-
   }
 });
