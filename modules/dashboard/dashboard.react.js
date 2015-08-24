@@ -41,7 +41,7 @@ var dashboard = module.exports = React.createClass({
     return (
       <div id = 'dashboard'>
         <div className = 'toolbar'>
-          <MonthPicker/>
+          <MonthPicker updateForDateRange = {this._onUpdateForDateRange}/>
         </div>
         <div className = 'groups'>{groups}</div>
       </div>
@@ -50,5 +50,11 @@ var dashboard = module.exports = React.createClass({
 
   _onChange: function () {
     this.setState(getState());
-  }
+  },
+
+  _onUpdateForDateRange: function (dateRange) {
+    console.log(dateRange);
+    this.setState(getState(dateRange));
+  },
+
 });
