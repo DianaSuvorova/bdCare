@@ -8,12 +8,11 @@ var StudentAction = require('../../stores/studentAction');
 var Group = require('../group/group.react');
 
 
-function getDateRangeOptions(currentDate) {
-  return ['September 2015', 'October 2015', 'November 2015', 'December 2015'];
+function getDateRangeOptions (currentDate) {
+  return ['September 2015', 'October 201', 'November 2015', 'December 2015'];
 }
 
-function getState(dateRange) {
-  console.log(StudentStore.getAvailableSchedule(dateRange));
+function getState (dateRange) {
   return {groups: StudentStore.getAvailableSchedule(dateRange)};
 }
 
@@ -60,7 +59,7 @@ var dashboard = module.exports = React.createClass({
       );
   },
 
-  _onChange: function() {
+  _onChange: function () {
     this.setState(getState());
   },
 

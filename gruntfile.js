@@ -37,6 +37,10 @@ module.exports = function (grunt) {
     },
 
     watch: {
+      livereload: {
+          options: { livereload: true },
+          files: ['build/*'],
+        },
       browserify: {
         files: ['modules/**/*.js', 'dispatcher/*.js', 'stores/*.js'],
         tasks: ['browserify:dev']
