@@ -13,18 +13,23 @@ var StudentEntry = require('../student/studentEntry.react')
 
 var students = module.exports = React.createClass({
 
+  contextTypes: {
+    router: React.PropTypes.func
+  },
+
   getInitialState: function () {
+    var groupId = this.context.router.getCurrentParams().groupId;
     if (StudentStore.isEmpty()) {
       StudentAction.loadStudents(this.props.schoolId);
       return {
         students: {},
         groups: {},
         availableSchedule: {},
-        groupId: null
+        groupId: groupId
       };
     }
     else {
-      return this._getState();
+      return this._getState(groupId);
     }
   },
 
@@ -68,7 +73,6 @@ var students = module.exports = React.createClass({
       <div className = 'header'>
         <div>Name</div>
         <div>Date of Birth</div>
-        <div>Group</div>
         <div className = 'calendar'>
           <span>Mon</span>
           <span>Tue</span>
@@ -79,7 +83,7 @@ var students = module.exports = React.createClass({
       </div>
     )
 
-    var selectGroups = <select onChange={this._onSelectGroup}>
+    var selectGroups = <select onChange = {this._onSelectGroup} defaultValue = {this.state.groupId}>
             {
               Object.keys(this.state.groups).map(function(groupId) {
                 return <option key = {groupId} value = {groupId}>{this.state.groups[groupId].name}</option>;
@@ -132,7 +136,7 @@ var students = module.exports = React.createClass({
   _getState: function (groupId, dateRange) {
 
     var groups = StudentStore.getGroupsMap();
-    var groupId = groupId || this.state && this.state.groupId || this.props && this.props.groupId || Object.keys(groups)[0];
+    var groupId = groupId || this.state && this.state.groupId || Object.keys(groups)[0];
     var dateRange = dateRange || this.props && this.props.dateRange;
     var groupSummary = StudentStore.getGroupSummaryForGroupIdAndDateRange(groupId, dateRange);
 

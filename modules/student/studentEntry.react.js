@@ -25,7 +25,6 @@ var student = module.exports = React.createClass({
       <div className = {classes.student}>
         <input className = 'name' placeholder = {'name'}></input>
         <input className = 'birthdate' placeholder = {'birthdate'}></input>
-        <input className = 'group' placeholder = {'group'}></input>
         <Calendar schedule = {schedule} entry = {this.props.entry} />
       </div>
     )
@@ -51,5 +50,5 @@ var student = module.exports = React.createClass({
   _isDate: function (date) {
     return (new Date(date) !== 'Invalid Date' && !isNaN(new Date(date)) )  ? true : false;
   }
-  
+
 });

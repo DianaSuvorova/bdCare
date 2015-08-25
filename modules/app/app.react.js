@@ -60,7 +60,9 @@ var Redirect = Router.Redirect;
 var routes =(
   <Route name = 'app' path = '/' handler = {app}>
     <Route name = 'dashboard' path = '/dashboard' handler = {Dashboard}/>
-    <Route name = 'students' path = '/students' handler = {Students}/>
+    <Route name = 'students' path = '/students' handler = {Students}>
+      <Route name = 'studentsGroup' path=':groupId' handler={Students}/>
+    </Route>
     <Route name = 'update' path = '/update' handler = {BulkUpdate}/>
     <DefaultRoute handler = {Dashboard}/>
     <Redirect from = '/'  to = '/dashboard' />

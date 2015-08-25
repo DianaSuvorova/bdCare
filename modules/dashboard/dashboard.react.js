@@ -34,7 +34,7 @@ var dashboard = module.exports = React.createClass({
   render: function () {
 
     var groups = this.state.groups.map(function (group) {
-      return <Group key = {group.id} group = {group}/>
+      return <Group key = {group.id} groupId = {group.id} group = {group}/>
     });
 
     return (
