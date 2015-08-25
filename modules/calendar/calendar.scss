@@ -23,12 +23,16 @@ div.calendar {
         border-radius: 0 $border-radius $border-radius 0;
       }
       &.taken { background-color: $disabled-gray; }
+      pointer-events: none;
     }
   }
   &.entry {
-    span.day > span.available:hover {
-      cursor: pointer;
-      background-color: $color-active;
+    span.day > span {
+      pointer-events: all;
+      &:hover, &.selected  {
+        cursor: pointer;
+        background-color: $color-active;
+      }
     }
   }
 }
