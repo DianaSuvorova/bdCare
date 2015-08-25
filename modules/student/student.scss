@@ -1,16 +1,19 @@
 div.student {
   height: $unit;
   display: flex;
-  border-bottom: $border-lightgray;
   & > input, & > span{
     display: inline-block;
     text-align: left;
     width: $unit * 5;
+    border-bottom: $border-lightgray;
   }
   transition: height $transition-duration ease-in;
   &.hidden {
     height: 0;
     overflow: hidden;
     border-bottom: none;
+  }
+  &.draggable {
+    cursor: move;
   }
 }

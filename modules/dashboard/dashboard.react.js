@@ -1,6 +1,8 @@
 var React = require('react');
 var $ = require('jquery-browserify');
 var ClassNames = require('classnames');
+var Link = require('react-router').Link;
+
 
 var StudentStore = require('../../stores/studentStore');
 var StudentAction = require('../../stores/studentAction');
@@ -28,13 +30,17 @@ var dashboard = module.exports = React.createClass({
   },
 
   componentWillReceiveProps: function(nexProps) {
-    this.setState(this._getState(nexProps));
+    this.setState(this._getState(nexProps.dateRange));
   },
 
   render: function () {
 
     var groups = this.state.groups.map(function (group) {
-      return <Group key = {group.id} groupId = {group.id} group = {group}/>
+      return (
+        <Link to = 'studentsGroup' params={{groupId: group.id}}>
+          <Group key = {group.id} groupId = {group.id} group = {group}/>
+        </Link>
+      )
     });
 
     return (
@@ -49,9 +55,11 @@ var dashboard = module.exports = React.createClass({
     this.setState(this._getState());
   },
 
-  _getState: function (props) {
-    var dateRange = (props) ? props.dateRange: this.props.dateRange;
-    return { groups: StudentStore.getDashboardSummaryForDateRange(dateRange)};
+  _getState: function (dateRange) {
+    var dateRange = dateRange || this.props.dateRange;
+    return {
+      groups: StudentStore.getDashboardSummaryForDateRange(dateRange)
+    };
   }
 
 

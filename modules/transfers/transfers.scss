@@ -1,0 +1,15 @@
+div#transfers {
+  display: flex;
+  flex-flow: row wrap;
+  & > div.students {
+    flex: 1 0 20%;
+    justify-content: space-around;
+  }
+  & > div.groups {
+    flex: 2 0 40%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+  }
+
+}

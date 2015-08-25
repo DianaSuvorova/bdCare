@@ -1,3 +1,10 @@
-a.group {
+div.group {
   flex: 0 0 auto;
+  &.validTarget {
+    background-color: green;
+  }
+  &.invalidTarget {
+    background-color: red;
+  }
+
 }

@@ -36,6 +36,14 @@ function getMappingsByGroupdIdAndDate(groupId, date) {
   });
 }
 
+function getMappingsByStudentIdAndDate(studentId, date) {
+  return _mappings.filter(function (mapping) {
+    return (mapping.studentId === studentId)
+    && (date > mapping.start_date)
+    && (!mapping.end_date || date < mapping.end_date)
+  });
+}
+
 function createListOfDatesForDateRange(dateRange) {
   var startDate = dateRange[0];
   var endDate = dateRange[1];
@@ -188,6 +196,39 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     });
 
     return studentsMap;
+  },
+
+  getStudentByStudentIdAndDateRange: function (studentId, dateRange) {
+    var startDate = dateRange[0];
+    var endDate = dateRange[1];
+    if (startDate > endDate) {
+      console.error('Requested start date=', startDate, ' is later than end date=', endDate);
+      return null;
+    }
+    //if multiple mappings this returns the lattest
+    var student;
+    var listOfDates = createListOfDatesForDateRange(dateRange);
+
+    listOfDates.forEach(function(date) {
+      var groupMappings = getMappingsByStudentIdAndDate(studentId, date);
+      groupMappings.forEach(function (mapping) {
+        var schedule = {};
+
+        _slotsDict.forEach(function (slot) {
+          schedule[slot] = mapping[slot]
+        });
+
+        student = assign(
+          {},
+          _students[mapping.studentId],
+          {group: _groups[mapping.groupId].name},
+          {schedule: schedule}
+        )
+
+      })
+    });
+
+    return student;
   },
 
   getGroupsMap: function () {

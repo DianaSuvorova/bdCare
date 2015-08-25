@@ -64,7 +64,7 @@ var students = module.exports = React.createClass({
 
     var students = Object.keys(this.state.students).map(function (studentId) {
       var student = this.state.students[studentId];
-      return <Student key = {studentId} student = {student}/>
+      return <Student key = {studentId} student = {student} calendar = {true} draggable = {false}/>
     }.bind(this));
 
     var studentEntry = <StudentEntry key = {'studentEntry'} availableSchedule = {this.state.availableSchedule} addMode = {this.state.addMode} entry = {true}/>;
@@ -134,7 +134,6 @@ var students = module.exports = React.createClass({
   },
 
   _getState: function (groupId, dateRange) {
-
     var groups = StudentStore.getGroupsMap();
     var groupId = groupId || this.state && this.state.groupId || Object.keys(groups)[0];
     var dateRange = dateRange || this.props && this.props.dateRange;
