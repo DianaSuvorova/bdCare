@@ -9,23 +9,22 @@ var StudentAction = require('../../stores/studentAction');
 var Api = require('../../stores/api');
 
 var Student = require('../student/student.react')
-
-function getState() {
-  return {
-    students: StudentStore.getStudents(),
-    editMode: false
-  };
-}
+var StudentEntry = require('../student/studentEntry.react')
 
 var students = module.exports = React.createClass({
 
   getInitialState: function () {
     if (StudentStore.isEmpty()) {
       StudentAction.loadStudents(this.props.schoolId);
-      return {students: []};
+      return {
+        students: {},
+        groups: {},
+        availableSchedule: {},
+        groupId: null
+      };
     }
     else {
-      return getState();
+      return this._getState();
     }
   },
 
@@ -37,11 +36,16 @@ var students = module.exports = React.createClass({
     StudentStore.removeChangeListener(this._onChange);
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    this.setState(this._getState(null, nextProps.dateRange));
+  },
+
   render: function () {
+
     var classes = {
-      editActionItem: ClassNames({
+      addActionItem: ClassNames({
         'actionItem': true,
-        'active': this.state.editMode
+        'active': this.state.addMode
       }),
       saveActionItem: ClassNames({
         'actionItem': true,
@@ -53,12 +57,12 @@ var students = module.exports = React.createClass({
       })
     };
 
-    var students = this.state.students.map(function (student) {
-      return <Student key = {student.id} student = {student} editMode = {this.state.editMode}/>
+    var students = Object.keys(this.state.students).map(function (studentId) {
+      var student = this.state.students[studentId];
+      return <Student key = {studentId} student = {student}/>
     }.bind(this));
 
-    var availableSchedule = (this._getAvailableSchedule()[0]) ? this._getAvailableSchedule()[0].schedule : {};
-    var studentEntry = <Student key = {'studentEntry'} editMode = {this.state.editMode} schedule = {availableSchedule}/>;
+    var studentEntry = <StudentEntry key = {'studentEntry'} availableSchedule = {this.state.availableSchedule} addMode = {this.state.addMode} entry = {true}/>;
 
     var header = (
       <div className = 'header'>
@@ -75,11 +79,21 @@ var students = module.exports = React.createClass({
       </div>
     )
 
+    var selectGroups = <select onChange={this._onSelectGroup}>
+            {
+              Object.keys(this.state.groups).map(function(groupId) {
+                return <option key = {groupId} value = {groupId}>{this.state.groups[groupId].name}</option>;
+              }.bind(this))
+            }
+          </select>
+
+
     var toolbar = (
       <div className = 'toolbar'>
-        <span className = {classes.editActionItem} onClick = {this._onToggleEditMode}><i className = 'fa fa-pencil'></i></span>
-        <span className = {classes.saveActionItem} onClick = {this._onSaveEdit}><i className = 'fa fa-check'></i></span>
-        <span className = {classes.cancelActionItem} onClick = {this._onCancelEdit}><i className = 'fa fa-times'></i></span>
+        {selectGroups}
+        <span className = {classes.addActionItem} onClick = {this._onToggleAddMode}><i className = 'fa fa-plus'></i></span>
+        <span className = {classes.saveActionItem} onClick = {this._onSaveAdd}><i className = 'fa fa-check'></i></span>
+        <span className = {classes.cancelActionItem} onClick = {this._onCancelAdd}><i className = 'fa fa-times'></i></span>
       </div>
     );
 
@@ -96,25 +110,38 @@ var students = module.exports = React.createClass({
   },
 
   _onChange: function () {
-    this.setState(getState());
+    this.setState(this._getState());
   },
 
-  _onToggleEditMode: function () {
-    this.setState({editMode: !this.state.editMode});
+  _onToggleAddMode: function () {
+    this.setState({addMode: !this.state.addMode});
   },
 
-  _onSaveEdit: function () {
-
-  },
-
-  _onCancelEdit: function () {
+  _onSaveAdd: function () {
 
   },
 
-  _getAvailableSchedule: function () {
-    var group = null;
-    var dateRange = null;
-    return StudentStore.getDashboardSummaryForDateRange(dateRange, group);
+  _onCancelAdd: function () {
+
+  },
+
+  _onSelectGroup: function (event) {
+    this.setState(this._getState(event.target.value));
+  },
+
+  _getState: function (groupId, dateRange) {
+
+    var groups = StudentStore.getGroupsMap();
+    var groupId = groupId || this.state && this.state.groupId || this.props && this.props.groupId || Object.keys(groups)[0];
+    var dateRange = dateRange || this.props && this.props.dateRange;
+    var groupSummary = StudentStore.getGroupSummaryForGroupIdAndDateRange(groupId, dateRange);
+
+    return {
+      groups: StudentStore.getGroupsMap(),
+      groupId: groupId,
+      availableSchedule: groupSummary.schedule,
+      students: StudentStore.getStudentsMapForGroupIdAndDateRange(groupId, dateRange)
+    };
   }
 
 });

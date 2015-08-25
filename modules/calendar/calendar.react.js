@@ -8,15 +8,10 @@ var calendar = module.exports = React.createClass({
 
     var classes = {
       slot:  function(slot) {
-        return slot.replace('_', ' ') + (
-          (this.props.entry) ?
-          ((this.props.schedule[slot] > 0) ? ' available' : ' taken')
-          : ((this.props.schedule[slot] === 0) ? ' available' : ' taken')
-        );
+        return slot.replace('_', ' ') + ((this.props.schedule[slot] === 0) ? ' available' : ' taken')
       }.bind(this),
        calendar : ClassNames({
          calendar: true,
-         editable: (this.props.editMode) ? true : false,
          entry: this.props.entry
        })
      }

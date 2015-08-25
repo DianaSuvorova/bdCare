@@ -11,17 +11,45 @@ var Footer = require('./../footer/footer.react');
 
 var schoolId = 0; //this should come from user store.
 
+
+function getDateRangeMap() {
+  var currentDate = new Date(), currentYear = currentDate.getFullYear(), currentMonth = currentDate.getMonth();
+  var locale = "en-us";
+  var dateRangeMap = {};
+  for (var month = currentMonth; month < currentMonth + 3; month++) {
+    var startDate = new Date(currentYear, month, 1);
+    var monthWord = startDate.toLocaleString(locale, { month: "long" });
+    dateRangeMap[monthWord + ' ' + startDate.getFullYear()] = [startDate, new Date(currentYear, month + 1, 1)]
+  }
+  return dateRangeMap;
+}
+
 var app = module.exports = React.createClass({
+
+  _dateRangeMap : getDateRangeMap(),
+
+  getInitialState: function () {
+    var dateRangeKey = Object.keys(this._dateRangeMap)[0]
+    return {
+      dateRangeKey: dateRangeKey,
+      dateRange: this._dateRangeMap[dateRangeKey]
+    }
+  },
 
   render: function () {
     return (
       <div id = 'app'>
-        <Navbar/>
-        <div className = 'content'><RouteHandler schoolId= {schoolId}/></div>
+        <Navbar onUpdateDateRange = {this._onUpdateDateRange}  dateRangeList = {Object.keys(this._dateRangeMap)} dateRangeKey = {this.state.dateRangeKey}/>
+        <div className = 'content'><RouteHandler schoolId = {schoolId} dateRange = {this.state.dateRange}/></div>
         <Footer/>
       </div>
     );
-  }
+  },
+
+  _onUpdateDateRange: function (dateRangeKey) {
+    this.setState({dateRangeKey: dateRangeKey, dateRange: this._dateRangeMap[dateRangeKey]});
+  },
+
 });
 
 var DefaultRoute = Router.DefaultRoute;

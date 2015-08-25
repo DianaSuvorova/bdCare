@@ -36,23 +36,6 @@ function getMappingsByGroupdIdAndDate(groupId, date) {
   });
 }
 
-function getStudents(groupId, date) {
-    return getMappingsByGroupdIdAndDate(groupId, date).map(function (mapping) {
-      var schedule = {};
-
-      _slotsDict.forEach(function (slot) {
-        schedule[slot] = mapping[slot]
-      });
-
-      return assign(
-        {},
-        _students[mapping.studentId],
-        {group: _groups[mapping.groupId].name},
-        {schedule: schedule}
-      )
-  });
-}
-
 function createListOfDatesForDateRange(dateRange) {
   var startDate = dateRange[0];
   var endDate = dateRange[1];
@@ -75,7 +58,7 @@ function slotKeysDictForDate(d) {
 
 
 function dailyStudentCountForGroupIdForDate(groupId, date) {
-  var group_mappings = getMappingsByGroupdIdAndDate(groupId, date)
+  var groupMappings = getMappingsByGroupdIdAndDate(groupId, date)
 
   var amCount = 0;
   var pmCount = 0;
@@ -83,7 +66,7 @@ function dailyStudentCountForGroupIdForDate(groupId, date) {
   var slotKeys = slotKeysDictForDate(date)
   var amKey = slotKeys['am'];
   var pmKey = slotKeys['pm'];
-  group_mappings.forEach( function(mapping) {
+  groupMappings.forEach( function(mapping) {
     amCount += mapping[amKey];
     pmCount += mapping[pmKey];
   });
@@ -169,19 +152,49 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getStudents: function (groupId, date) {
-    return getStudents(groupId || Object.keys(_groups)[0], date || new Date);
-  },
-
   isEmpty: function () {
     return _isEmpty;
   },
 
-  getGroupSummaryForGroupIdAndDateRange: function (groupId, dateRange) {
-    if (!dateRange) {
-      var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-      var dateRange = [new Date(y, m, 1), new Date(y, m + 1, 0)];
+  getStudentsMapForGroupIdAndDateRange: function (groupId, dateRange) {
+    var startDate = dateRange[0];
+    var endDate = dateRange[1];
+    if (startDate > endDate) {
+      console.error('Requested start date=', startDate, ' is later than end date=', endDate);
+      return null;
     }
+
+    var studentsMap = [];
+    var listOfDates = createListOfDatesForDateRange(dateRange);
+
+    listOfDates.forEach( function(date) {
+      var groupMappings = getMappingsByGroupdIdAndDate(groupId, date);
+      groupMappings.forEach(function (mapping) {
+        var schedule = {};
+
+        _slotsDict.forEach(function (slot) {
+          schedule[slot] = mapping[slot]
+        });
+
+        var student = assign(
+          {},
+          _students[mapping.studentId],
+          {group: _groups[mapping.groupId].name},
+          {schedule: schedule}
+        )
+
+        studentsMap[mapping.studentId] = student;
+      })
+    });
+
+    return studentsMap;
+  },
+
+  getGroupsMap: function () {
+    return _groups;
+  },
+
+  getGroupSummaryForGroupIdAndDateRange: function (groupId, dateRange) {
 
     var startDate = dateRange[0];
     var endDate = dateRange[1];

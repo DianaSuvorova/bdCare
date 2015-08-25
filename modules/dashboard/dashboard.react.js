@@ -6,11 +6,6 @@ var StudentStore = require('../../stores/studentStore');
 var StudentAction = require('../../stores/studentAction');
 
 var Group = require('../group/group.react');
-var MonthPicker = require('../monthPicker/monthPicker.react');
-
-function getState (dateRange) {
-  return {groups: StudentStore.getDashboardSummaryForDateRange(dateRange)};
-}
 
 var dashboard = module.exports = React.createClass({
 
@@ -20,7 +15,7 @@ var dashboard = module.exports = React.createClass({
       return {groups: []};
     }
     else {
-      return getState();
+      return this._getState();
     }
   },
 
@@ -32,6 +27,10 @@ var dashboard = module.exports = React.createClass({
     StudentStore.removeChangeListener(this._onChange);
   },
 
+  componentWillReceiveProps: function(nexProps) {
+    this.setState(this._getState(nexProps));
+  },
+
   render: function () {
 
     var groups = this.state.groups.map(function (group) {
@@ -40,21 +39,20 @@ var dashboard = module.exports = React.createClass({
 
     return (
       <div id = 'dashboard'>
-        <div className = 'toolbar'>
-          <MonthPicker updateForDateRange = {this._onUpdateForDateRange}/>
-        </div>
+        <div className = 'toolbar'></div>
         <div className = 'groups'>{groups}</div>
       </div>
       );
   },
 
   _onChange: function () {
-    this.setState(getState());
+    this.setState(this._getState());
   },
 
-  _onUpdateForDateRange: function (dateRange) {
-    console.log(dateRange);
-    this.setState(getState(dateRange));
-  },
+  _getState: function (props) {
+    var dateRange = (props) ? props.dateRange: this.props.dateRange;
+    return { groups: StudentStore.getDashboardSummaryForDateRange(dateRange)};
+  }
+
 
 });

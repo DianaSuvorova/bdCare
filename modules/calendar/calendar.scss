@@ -25,16 +25,10 @@ div.calendar {
       &.taken { background-color: $disabled-gray; }
     }
   }
-  &.editable {
+  &.entry {
     span.day > span.available:hover {
       cursor: pointer;
       background-color: $color-active;
-    }
-    &:not(.entry) {
-      span.day > span.taken:hover {
-          cursor: pointer;
-          background-color: white;
-      }
     }
   }
 }

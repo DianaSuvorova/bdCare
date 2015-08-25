@@ -2,7 +2,8 @@ div.student {
   height: $unit;
   display: flex;
   border-bottom: $border-lightgray;
-  & > input {
+  & > input, & > span{
+    display: inline-block;
     text-align: left;
     width: $unit * 5;
   }
