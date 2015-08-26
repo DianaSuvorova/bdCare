@@ -26,12 +26,11 @@ div.calendar {
       pointer-events: none;
     }
   }
-  &.entry {
+  &.editable {
     span.day > span {
       pointer-events: all;
       &:hover, &.selected  {
         cursor: pointer;
-        background-color: $color-active;
       }
     }
   }
