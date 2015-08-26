@@ -124,13 +124,15 @@ function getAvailableScheduleForGroupId(groupId, dateRange) {
 }
 
 function getMappingsByGroupdIdWithProjectedDateInRange(groupId, dateRange) {
-  var startDate = dateRange[0];
-  var endDate = dateRange[1];
+  var rangeStartDate = dateRange[0];
+  var rangeEndDate = dateRange[1];
 
   return _mappings.filter(function (mapping) {
+
     return (mapping.groupId === groupId)
-    && (startDate < mapping.projected_end_date)
-    && (endDate > mapping.projected_end_date)
+    && (rangeStartDate < mapping.projected_end_date)
+    && (rangeEndDate > mapping.projected_end_date)
+    && (!mapping.end_date || mapping.projected_end_date <= mapping.end_date)
   });
 }
 
