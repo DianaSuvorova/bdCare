@@ -1,0 +1,32 @@
+div#studentEdit {
+  $studentEdit-width: calc(#{$unit * 11} + 25px);
+  $table-width-minus-studentEdit: $unit * 9;
+
+  position: absolute;
+  left: 100%; top:0;
+  transition: left $transition-duration ease-in;
+  width: $studentEdit-width;
+  height: 100%;
+  overflow: hidden;
+  background-color: white;
+  padding: $unit / 2;
+  border: $border-lightgray;
+  border-radius: $unit / 10;
+  text-align: center;
+  & > div.details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    & > div {
+      margin: $unit / 2 0;
+      & > input {
+        margin: 0  $unit / 2 ;
+        border: $border-lightgray;
+        border-radius: $unit / 10;
+      }
+    }
+  }
+  &.active {
+    left: $table-width-minus-studentEdit;
+  }
+}

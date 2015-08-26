@@ -23,7 +23,7 @@ var group = module.exports = React.createClass({
     ) : null;
 
     return (
-      <div className = 'group' onDragEnter = {this._onDragEnter} onDragLeave = {this._onDragLeave} onDragOver = {this._onDragOver} onDrop = {this._onDrop}>
+      <div className = 'group'>
         <div>{this.props.group.name}</div>
         <div>
           <span className= 'label'>total capcity: </span>
@@ -33,31 +33,6 @@ var group = module.exports = React.createClass({
         {transfer}
       </div>
     );
-  },
-
-  _onDragLeave: function (e) {
-    $(this._el).removeClass('validTarget').removeClass('invalidTarget');
-  },
-
-  _onDragOver: function (e) {
-    e.preventDefault();
-
-    this._el = this._el || React.findDOMNode(this);
-
-    var student = JSON.parse(e.dataTransfer.getData("text/plain"));
-    $(this._el).addClass((student.group === this.props.group.name) ? 'invalidTarget' : 'validTarget' );
-
-  },
-
-  _onDrop: function (e) {
-    var student = JSON.parse(e.dataTransfer.getData("text/plain"));
-    $(this._el).removeClass('validTarget').removeClass('invalidTarget');
-    this.setState({transferStudent : student});
-  },
-
-  _formatDate: function (date) {
-    var format2Digit = function (number) { return ("0" + number).slice(-2); };
-    if (date) return format2Digit(date.getMonth() + 1) + '/' + format2Digit(date.getDate()) + '/' + date.getFullYear();
   }
 
 });

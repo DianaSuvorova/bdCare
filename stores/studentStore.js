@@ -14,11 +14,11 @@ var _slotsDict = ['mon_am', 'mon_pm', 'tue_am', 'tue_pm', 'wed_am', 'wed_pm', 't
 
 function setData(students, groups, mappings) {
   students.forEach(function (student) {
-    _students[student.id] = student.attributes
+    _students[student.id] = assign({}, {id: student.id}, student.attributes)
   });
 
   groups.forEach(function (group) {
-    _groups[group.id] = group.attributes
+    _groups[group.id] = assign({}, {id: group.id}, group.attributes)
   });
 
   _mappings = mappings.map(function (mapping) {
@@ -190,6 +190,7 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
           {},
           _students[mapping.studentId],
           {group: _groups[mapping.groupId].name},
+          {groupId: _groups[mapping.groupId].id},
           {schedule: schedule}
         )
 
@@ -248,7 +249,6 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
 
     return assign(
       {},
-      {id: groupId},
       _groups[groupId],
       {schedule: getAvailableScheduleForGroupId(groupId, dateRange)},
       {studentIdsEligibleForUpgrade: getStudentsIdsEligibleForUpgrade(groupId, dateRange)}

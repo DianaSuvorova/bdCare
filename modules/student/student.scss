@@ -1,7 +1,8 @@
 div.student {
   height: $unit;
   display: flex;
-  & > input, & > span{
+  cursor: pointer;
+  & > input, & > span {
     display: inline-block;
     text-align: left;
     width: $unit * 5;
@@ -16,4 +17,7 @@ div.student {
   &.draggable {
     cursor: move;
   }
+  &:hover > span, &.active > span {
+     background-color: transparentize($color-active, 0.5);
+   }
 }
