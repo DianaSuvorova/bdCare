@@ -51,7 +51,6 @@ var calendar = module.exports = React.createClass({
 
   _onClickSlot : function (e) {
     var slot = $(e.target).attr('data-id');
-    console.log(this.props.schedule[slot]);
     var schedule = this.props.schedule;
     if ($(e.target).hasClass('taken')) {
       schedule[slot] = 0;

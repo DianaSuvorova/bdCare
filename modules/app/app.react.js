@@ -6,7 +6,6 @@ var Router = require('react-router');
 var Navbar = require('./../navbar/navbar.react');
 var Dashboard = require('./../dashboard/dashboard.react');
 var Students = require('./../students/students.react');
-var Transfers = require('./../transfers/transfers.react');
 var Footer = require('./../footer/footer.react');
 
 var schoolId = 0; //this should come from user store.
@@ -63,7 +62,6 @@ var routes =(
     <Route name = 'students' path = '/students' handler = {Students}>
       <Route name = 'studentsGroup' path=':groupId' handler={Students}/>
     </Route>
-    <Route name = 'transfers' path = '/transfers' handler = {Transfers}/>
     <DefaultRoute handler = {Dashboard}/>
     <Redirect from = '/'  to = '/dashboard' />
   </Route>

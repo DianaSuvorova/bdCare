@@ -49,15 +49,7 @@ var studentList = module.exports = React.createClass({
     var classes = {
       addActionItem: ClassNames({
         'actionItem': true,
-        'active': this.state.addMode
-      }),
-      saveActionItem: ClassNames({
-        'actionItem': true,
-        'disabled': true
-      }),
-      cancelActionItem: ClassNames({
-        'actionItem': true,
-        'disabled': true
+        'active': (this.props.activeStudent && this.props.activeStudent.id === this._getNewStudent().id)
       })
     };
 
@@ -65,8 +57,6 @@ var studentList = module.exports = React.createClass({
       var student = this.state.students[studentId];
       return <Student key = {studentId} student = {student} editStudent = {this.props.editStudent} activeStudent = {this.props.activeStudent} calendar = {true}/>
     }.bind(this));
-
-    var studentEntry = <StudentEntry key = {'studentEntry'} availableSchedule = {this.state.availableSchedule} addMode = {this.state.addMode} entry = {true}/>;
 
     var header = (
       <div className = 'header'>
@@ -95,9 +85,7 @@ var studentList = module.exports = React.createClass({
     var toolbar = (
       <div className = 'toolbar'>
         {selectGroups}
-        <span className = {classes.addActionItem} onClick = {this._onToggleAddMode}><i className = 'fa fa-plus'></i></span>
-        <span className = {classes.saveActionItem} onClick = {this._onSaveAdd}><i className = 'fa fa-check'></i></span>
-        <span className = {classes.cancelActionItem} onClick = {this._onCancelAdd}><i className = 'fa fa-times'></i></span>
+        <span className = {classes.addActionItem} onClick = {this._onAddNewStudent}><i className = 'fa fa-plus'></i></span>
       </div>
     );
 
@@ -106,7 +94,6 @@ var studentList = module.exports = React.createClass({
         {toolbar}
         <div className ='table'>
           {header}
-          {studentEntry}
           {students}
         </div>
       </div>
@@ -117,16 +104,8 @@ var studentList = module.exports = React.createClass({
     this.setState(this._getState());
   },
 
-  _onToggleAddMode: function () {
-    this.setState({addMode: !this.state.addMode});
-  },
-
-  _onSaveAdd: function () {
-
-  },
-
-  _onCancelAdd: function () {
-
+  _onAddNewStudent: function () {
+    (this.props.activeStudent && this.props.activeStudent.id === this._getNewStudent().id) ? this.props.editStudent(null) : this.props.editStudent(this._getNewStudent());
   },
 
   _onSelectGroup: function (event) {
@@ -145,6 +124,16 @@ var studentList = module.exports = React.createClass({
       availableSchedule: groupSummary.schedule,
       students: StudentStore.getStudentsMapForGroupIdAndDateRange(groupId, dateRange)
     };
+  },
+
+  _getNewStudent : function () {
+    return {
+      id: 'new',
+      name: null,
+      birthbirthdate: null,
+      groupId: this.state.groupId,
+      schedule: StudentStore.getEmptySchedule()
+    }
   }
 
 });

@@ -261,7 +261,16 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
       groupsSchedule.push(this.getGroupSummaryForGroupIdAndDateRange(groupId, dateRange));
     }.bind(this))
     return groupsSchedule;
+  },
+
+  getEmptySchedule: function() {
+    var schedule = {};
+    _slotsDict.forEach(function (slot){
+        schedule[slot] = 0;
+    })
+    return schedule;
   }
+
 });
 
 studentStore.dispatchToken = Dispatcher.register( function (action) {

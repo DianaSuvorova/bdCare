@@ -36,18 +36,22 @@ var studentEdit = module.exports = React.createClass({
             }
           </select>;
 
+      var currentSchedule = (this.props.student.name) ?
+      <div>
+        <span>{'Current schedule in ' + this.props.groups[this.props.student.groupId].name}</span>
+        <Calendar schedule = {this.props.student.schedule} edit = {false} group = {false} />
+      </div> : null;
+
+
     return (
       <div id = 'studentEdit' className = {classes.studentEdit}>
-        <div className = 'header'> {this.props.student.name}</div>
+        <div className = 'header'> {this.props.student.name || 'New Student'}</div>
         <div className = 'details'>
           <div>
-            <input className = 'name' defaultValue = {this.props.student.name}></input>
-            <input className = 'birthdate' defaultValue = {this._formatDate(this.props.student.birthdate)}></input>
+            <input className = 'name' defaultValue = {this.props.student.name} placeholder = {'name'}></input>
+            <input className = 'birthdate' defaultValue = {this._formatDate(this.props.student.birthdate)} placeholder = {'birthdate'}></input>
           </div>
-          <div>
-            <span>{'Current schedule in ' + this.props.groups[this.props.student.groupId].name}</span>
-            <Calendar schedule = {this.props.student.schedule} edit = {false} group = {false} />
-          </div>
+          {currentSchedule}
           <div>
             <span>{'New schedule for the student'}</span>
             <Calendar schedule = {this.props.student.schedule} edit = {true}  group = {false}  updateSchedule = {this._updateSchedule}/>
