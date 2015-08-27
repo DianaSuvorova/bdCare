@@ -12,7 +12,6 @@ var navbar = module.exports = React.createClass({
       <div id = 'navbar' className = {this.props.className} >
         <Link to='dashboard'>Dashboard</Link>
         <Link to='students'>Students</Link>
-        <Link to='transfers'>Transfers</Link>
         <MonthPicker updateDateRange = {this.props.onUpdateDateRange}  dateRangeList = {this.props.dateRangeList} dateRange = {this.props.dateRange}/>
       </div>
       );

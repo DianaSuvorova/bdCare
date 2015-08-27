@@ -37,8 +37,8 @@ var dashboard = module.exports = React.createClass({
 
     var groups = this.state.groups.map(function (group) {
       return (
-        <Link to = 'studentsGroup' params={{groupId: group.id}}>
-          <Group key = {group.id} groupId = {group.id} group = {group}/>
+        <Link to = 'studentsGroup' params={{groupId: group.id}} key = {group.id}>
+          <Group group = {group}/>
         </Link>
       )
     });
