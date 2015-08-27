@@ -263,12 +263,19 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     return groupsSchedule;
   },
 
-  getEmptySchedule: function() {
-    var schedule = {};
+
+  getNewStudent : function () {
+    var emptySchedule = {};
     _slotsDict.forEach(function (slot){
-        schedule[slot] = 0;
+        emptySchedule[slot] = 0;
     })
-    return schedule;
+
+    return {
+      id: 'new',
+      name: null,
+      birthbirthdate: null,
+      schedule: schedule
+    }
   }
 
 });

@@ -2,8 +2,6 @@ var React = require('react');
 var $ = require('jquery-browserify');
 var ClassNames = require('classnames');
 var Link = require('react-router').Link;
-var MonthPicker = require('../monthPicker/monthPicker.react');
-
 
 var navbar = module.exports = React.createClass({
 
@@ -12,7 +10,6 @@ var navbar = module.exports = React.createClass({
       <div id = 'navbar' className = {this.props.className} >
         <Link to='dashboard'>Dashboard</Link>
         <Link to='students'>Students</Link>
-        <MonthPicker updateDateRange = {this.props.onUpdateDateRange}  dateRangeList = {this.props.dateRangeList} dateRange = {this.props.dateRange}/>
       </div>
       );
   }

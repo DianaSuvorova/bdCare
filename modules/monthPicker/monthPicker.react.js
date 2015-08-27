@@ -1,14 +1,17 @@
 var React = require('react');
 var $ = require('jquery-browserify');
 var ClassNames = require('classnames');
+var DateRangeStore = require('../../stores/dateRangeStore');
 
 var monthPicker = module.exports = React.createClass({
 
+  _dateRangeMap: DateRangeStore.getDateRangeMap(),
+
   render: function () {
     return (
-      <select onChange={this._onSelectDateRange} defaultValue = {this.props.dateRangeKey}>
+      <select onChange={this._onSelectDateRange} defaultValue = {this.props.defaultDateRange}>
         {
-          this.props.dateRangeList.map(function(dateRange){
+          Object.keys(this._dateRangeMap).map(function(dateRange){
             return <option key = {dateRange} value = {dateRange}>{dateRange}</option>;
           }.bind(this))
         }
@@ -17,7 +20,7 @@ var monthPicker = module.exports = React.createClass({
   },
 
   _onSelectDateRange: function (event) {
-    this.props.updateDateRange(event.target.value);
+    this.props.updateDateRange(this._dateRangeMap[event.target.value]);
   }
 
 });

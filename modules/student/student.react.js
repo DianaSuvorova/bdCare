@@ -13,8 +13,7 @@ var student = module.exports = React.createClass({
 
     var classes = {
       student : ClassNames({
-        'student': true,
-        'active' : (this.props.activeStudent && this.props.activeStudent.id === this.props.student.id)
+        'student': true
       })
     }
 
@@ -30,7 +29,7 @@ var student = module.exports = React.createClass({
   },
 
   _onClickStudent: function () {
-    (this.props.activeStudent && this.props.activeStudent.id === this.props.student.id) ? this.props.editStudent(null) : this.props.editStudent(this.props.student);
+    this.props.openStudent(this.props.student);
   },
 
   _formatDate: function (date) {

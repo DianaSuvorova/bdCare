@@ -2,10 +2,12 @@ var React = require('react');
 var $ = require('jquery-browserify');
 var ClassNames = require('classnames');
 var Link = require('react-router').Link;
-
+var MonthPicker = require('../monthPicker/monthPicker.react');
 
 var StudentStore = require('../../stores/studentStore');
 var StudentAction = require('../../stores/studentAction');
+
+var DateRangeStore = require('../../stores/dateRangeStore');
 
 var Group = require('../group/group.react');
 
@@ -14,7 +16,7 @@ var dashboard = module.exports = React.createClass({
   getInitialState: function () {
     if (StudentStore.isEmpty()) {
       StudentAction.loadStudents(this.props.schoolId);
-      return {groups: []};
+      return { groups: [], dateRangeObject: null};
     }
     else {
       return this._getState();
@@ -29,23 +31,21 @@ var dashboard = module.exports = React.createClass({
     StudentStore.removeChangeListener(this._onChange);
   },
 
-  componentWillReceiveProps: function(nexProps) {
-    this.setState(this._getState(nexProps.dateRange));
-  },
-
   render: function () {
 
     var groups = this.state.groups.map(function (group) {
       return (
-        <Link to = 'studentsGroup' params={{groupId: group.id}} key = {group.id}>
+        <Link to = 'studentsGroup' key = {group.id} params={{groupId: group.id, dateRange: this.state.dateRangeObject.key}}>
           <Group group = {group}/>
         </Link>
       )
-    });
+    }.bind(this));
 
     return (
       <div id = 'dashboard'>
-        <div className = 'toolbar'></div>
+        <div className = 'toolbar'>
+          <MonthPicker updateDateRange = {this._onUpdateDateRange} />
+        </div>
         <div className = 'groups'>{groups}</div>
       </div>
       );
@@ -55,10 +55,15 @@ var dashboard = module.exports = React.createClass({
     this.setState(this._getState());
   },
 
-  _getState: function (dateRange) {
-    var dateRange = dateRange || this.props.dateRange;
+  _onUpdateDateRange: function (dateRangeObject) {
+    this.setState(this._getState(dateRangeObject));
+  },
+
+  _getState: function (dateRangeObject) {
+    var dateRangeObject = dateRangeObject || this.state.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
     return {
-      groups: StudentStore.getDashboardSummaryForDateRange(dateRange)
+      dateRangeObject: dateRangeObject,
+      groups: StudentStore.getDashboardSummaryForDateRange(dateRangeObject.dateRange)
     };
   }
 

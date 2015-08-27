@@ -4,20 +4,28 @@ var ClassNames = require('classnames');
 var assign = require('object-assign');
 
 var StudentList = require('./studentList.react');
-var StudentEdit = require('../student/studentEdit.react');
+var StudentDetails = require('../student/studentDetails.react');
 
 var Api = require('../../stores/api');
 
 var StudentStore = require('../../stores/studentStore');
 var StudentAction = require('../../stores/studentAction');
+var DateRangeStore = require('../../stores/dateRangeStore');
 
 var students = module.exports = React.createClass({
+
+  contextTypes: {
+    router: React.PropTypes.func
+  },
 
   getInitialState: function () {
     if (StudentStore.isEmpty()) {
       StudentAction.loadStudents(this.props.schoolId);
       return {
+        groupId: null,
+        dateRangeObject: null,
         groups: {},
+        groupSchedule: {},
         activeStudent: null
       };
     }
@@ -35,30 +43,40 @@ var students = module.exports = React.createClass({
   },
 
   render: function () {
-    var studentList = (Object.keys(this.state.groups).length) ? <StudentList schoolId = {this.props.schoolId} dateRange = {this.props.dateRange} editStudent = {this._editStudent} activeStudent = {this.state.activeStudent} groups = {this.state.groups}/> : null;
-    return (
-      <div id = 'students'>
-        {studentList}
-        <StudentEdit student = {this.state.activeStudent} groups = {this.state.groups} dateRange = {this.props.dateRange}/>
-      </div>
-    );
+    var students = (StudentStore.isEmpty()) ?
+      <div id = 'students'></div> :
+      (<div id = 'students'>
+        <StudentList groupId = {this.state.groupId} dateRangeObject = {this.state.dateRangeObject} openStudent = {this._openStudent} activeStudent = {this.state.activeStudent} groups = {this.state.groups}/>
+        <StudentDetails student = {this.state.activeStudent} groups = {this.state.groups} dateRangeObject = {this.state.dateRangeObject}/>
+      </div>)
+
+    return students;
+
   },
 
   _onChange: function () {
     this.setState(this._getState());
   },
 
-  _editStudent : function (student) {
-    this.setState({activeStudent: student});
+  _openStudent : function (student) {
+    this.setState(this._getState(student));
   },
 
-  _getState: function () {
+  _getState: function (activeStudent) {
+    var dateRangeKey = this.context.router.getCurrentParams().dateRange;
+
+    var groups = StudentStore.getGroupsMap()
+    var dateRangeObject = DateRangeStore.getDateRangeMap[dateRangeKey] || DateRangeStore.getCurrentDateRangeObject();
+    var groupId = this.context.router.getCurrentParams().groupId || Object.keys(groups)[0];
+
+    var activeStudent = activeStudent || this.state && this.state.activeStudent;
+
     return {
-      groups: StudentStore.getGroupsMap(),
-      activeStudent: null
+      groupId: groupId,
+      dateRangeObject: dateRangeObject,
+      groups: groups,
+      activeStudent: activeStudent
     };
   }
-
-
 
 });
