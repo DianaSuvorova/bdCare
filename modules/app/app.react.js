@@ -12,33 +12,35 @@ var schoolId = 0; //this should come from user store.
 
 var app = module.exports = React.createClass({
 
+  getInitialState : function () {
+    return {
+      students: false,
+      dateRangeObject: null,
+      groupId: null
+    }
+  },
+
   render: function () {
+    var content = (this.state.students) ?
+      <Students navigateTo = {this._navigateTo} dateRangeObject = {this.state.dateRangeObject} groupId = {this.state.groupId}/> :
+      <Dashboard navigateTo = {this._navigateTo} dateRangeObject = {this.state.dateRangeObject} groupId = {this.state.groupId}/>;
+
     return (
       <div id = 'app'>
-        <Navbar/>
-        <div className = 'content'><RouteHandler schoolId = {schoolId}/></div>
+        <Navbar navigateTo = {this._navigateTo} studentsActive = {this.state.students}/>
+        <div className = 'content'>{content}</div>
         <Footer/>
       </div>
     );
+  },
+
+  _navigateTo: function (link, dateRangeObject, groupId) {
+    this.setState({
+      students: (link === 'Students'),
+      dateRangeObject: dateRangeObject,
+      groupId: groupId
+    })
   }
 });
 
-var DefaultRoute = Router.DefaultRoute;
-var Route = Router.Route;
-var RouteHandler = Router.RouteHandler;
-var Redirect = Router.Redirect;
-
-var routes =(
-  <Route name = 'app' path = '/' handler = {app}>
-    <Route name = 'dashboard' path = '/dashboard' handler = {Dashboard}/>
-    <Route name = 'students' path = '/students' handler = {Students}>
-      <Route name = 'studentsGroup' path=':groupId/:dateRange' handler={Students}/>
-    </Route>
-    <DefaultRoute handler = {Dashboard}/>
-    <Redirect from = '/'  to = '/dashboard' />
-  </Route>
-);
-
-Router.run(routes, function (Handler, state) {
-  React.render(<Handler path =  {state.path}/>, document.body);
-});
+React.render(React.createElement(app), document.body);

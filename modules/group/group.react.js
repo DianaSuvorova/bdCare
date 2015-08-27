@@ -9,7 +9,7 @@ var group = module.exports = React.createClass({
   render: function () {
 
     return (
-      <div className = 'group'>
+      <div className = 'group' onClick = {this._onClick}>
         <div>{this.props.group.name}</div>
         <div>
           <span className= 'label'>total capcity: </span>
@@ -18,6 +18,11 @@ var group = module.exports = React.createClass({
         <Capacity schedule = {this.props.group.schedule} capacity = {this.props.group.capacity} />
       </div>
     );
+
+  },
+
+  _onClick: function (e) {
+    this.props.onNavigateToGroup(this.props.group.id);
   }
 
 });

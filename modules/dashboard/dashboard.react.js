@@ -1,7 +1,6 @@
 var React = require('react');
 var $ = require('jquery-browserify');
 var ClassNames = require('classnames');
-var Link = require('react-router').Link;
 var MonthPicker = require('../monthPicker/monthPicker.react');
 
 var StudentStore = require('../../stores/studentStore');
@@ -32,13 +31,11 @@ var dashboard = module.exports = React.createClass({
   },
 
   render: function () {
+    //params are ignored for now
+    //<Link to = 'students' key = {group.id} params={{groupId: group.id, dateRange: this.state.dateRangeObject.key}}>
 
     var groups = this.state.groups.map(function (group) {
-      return (
-        <Link to = 'studentsGroup' key = {group.id} params={{groupId: group.id, dateRange: this.state.dateRangeObject.key}}>
-          <Group group = {group}/>
-        </Link>
-      )
+      return <Group key = {group.id} group = {group} onNavigateToGroup = {this._navigateToGroup}/>
     }.bind(this));
 
     return (
@@ -55,12 +52,16 @@ var dashboard = module.exports = React.createClass({
     this.setState(this._getState());
   },
 
+  _navigateToGroup: function (groupId) {
+    this.props.navigateTo('Students', this.state.dateRangeObject, groupId)
+  },
+
   _onUpdateDateRange: function (dateRangeObject) {
     this.setState(this._getState(dateRangeObject));
   },
 
   _getState: function (dateRangeObject) {
-    var dateRangeObject = dateRangeObject || this.state.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
+    var dateRangeObject = dateRangeObject || this.state && this.state.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
     return {
       dateRangeObject: dateRangeObject,
       groups: StudentStore.getDashboardSummaryForDateRange(dateRangeObject.dateRange)

@@ -14,9 +14,7 @@ var DateRangeStore = require('../../stores/dateRangeStore');
 
 var students = module.exports = React.createClass({
 
-  contextTypes: {
-    router: React.PropTypes.func
-  },
+//  contextTypes: { router: React.PropTypes.func },
 
   getInitialState: function () {
     if (StudentStore.isEmpty()) {
@@ -43,15 +41,16 @@ var students = module.exports = React.createClass({
   },
 
   render: function () {
+    var studentDetails = (this.state.activeStudent) ? <StudentDetails student = {this.state.activeStudent} groups = {this.state.groups} dateRangeObject = {this.state.dateRangeObject}/> : null;
+
     var students = (StudentStore.isEmpty()) ?
-      <div id = 'students'></div> :
+      null :
       (<div id = 'students'>
         <StudentList groupId = {this.state.groupId} dateRangeObject = {this.state.dateRangeObject} openStudent = {this._openStudent} activeStudent = {this.state.activeStudent} groups = {this.state.groups}/>
-        <StudentDetails student = {this.state.activeStudent} groups = {this.state.groups} dateRangeObject = {this.state.dateRangeObject}/>
+        {studentDetails}
       </div>)
 
     return students;
-
   },
 
   _onChange: function () {
@@ -63,11 +62,11 @@ var students = module.exports = React.createClass({
   },
 
   _getState: function (activeStudent) {
-    var dateRangeKey = this.context.router.getCurrentParams().dateRange;
+//    var dateRangeKey = this.context.router.getCurrentParams().dateRange;
 
-    var groups = StudentStore.getGroupsMap()
-    var dateRangeObject = DateRangeStore.getDateRangeMap[dateRangeKey] || DateRangeStore.getCurrentDateRangeObject();
-    var groupId = this.context.router.getCurrentParams().groupId || Object.keys(groups)[0];
+    var groups = StudentStore.getGroupsMap();
+    var dateRangeObject = this.props.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
+    var groupId = this.props.groupId || Object.keys(groups)[0];
 
     var activeStudent = activeStudent || this.state && this.state.activeStudent;
 

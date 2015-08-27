@@ -1,6 +1,7 @@
 div#navbar {
   flex: 0 0 $unit * 2;
-  a {
+  span {
+    cursor: pointer;
     float: left;
     margin-right: $unit * 2;
     padding-right: $unit;

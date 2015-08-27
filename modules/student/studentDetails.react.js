@@ -19,7 +19,6 @@ var studentEdit = module.exports = React.createClass({
   },
 
   render: function () {
-    if (!this.props.student) return (<div id = 'studentEdit'> </div>); //need for transition
 
     var classes = {
       studentEdit : ClassNames({
