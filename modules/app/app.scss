@@ -2,6 +2,7 @@
 
 //colors:
 $color-active: #7fcdbb;
+$color-warning: #fbb4ae;
 $color-gray: lightgray;
 $disabled-gray: #D3D3D3;
 
@@ -63,6 +64,17 @@ span.actionItem {
       background-color: $color-active;
       cursor: pointer;
     }
+  }
+  &.warning {
+    &:hover {
+      &:not(.disabled) {
+        background-color: $color-warning;
+        cursor: pointer;
+      }
+    }
+  }
+  &.active {
+    background-color: $color-warning;
   }
 }
 
