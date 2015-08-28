@@ -7,6 +7,10 @@ div.student {
     text-align: left;
     width: $unit * 5;
     border-bottom: $border-lightgray;
+    &.index {
+      text-align: center;
+      width: $unit * 2;
+    }
   }
   transition: height $transition-duration ease-in;
   &.hidden {

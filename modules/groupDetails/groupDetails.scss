@@ -1,10 +1,20 @@
 div#groupDetails {
-  & > div.toolbar {
+  display: flex;
+  flex-direction: column;
+  & > div.summary {
     display: flex;
-    justify-content: flex-start;
-    &.span {
-      display: inline-block;
-      width: $unit;
+    justify-content: space-between;
+    align-items: center;
+    & > div.toolbar {
+      & > span {
+        padding: 0 $unit / 2;
+      }
+      display: flex;
+      justify-content: space-between;
+      &.span {
+        display: inline-block;
+        width: $unit;
+      }
     }
   }
 }

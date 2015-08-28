@@ -27,15 +27,18 @@ var capacityCubes = module.exports = React.createClass({
       return cubes;
     }.bind(this);
 
+    var header = (this.props.header) ?
+      (<div className = 'header'>
+        <span>Mon</span>
+        <span>Tue</span>
+        <span>Wed</span>
+        <span>Thu</span>
+        <span>Fri</span>
+      </div>) : null;
+
     return (
       <div className = 'capacityCubes'>
-        <div className = 'header'>
-          <span>Mon</span>
-          <span>Tue</span>
-          <span>Wed</span>
-          <span>Thu</span>
-          <span>Fri</span>
-        </div>
+        {header}
         <div className = 'vis'>
           <span className = 'day'>
             <span className = {classes.slot('mon_am')}>{cubes('mon_am')}</span>

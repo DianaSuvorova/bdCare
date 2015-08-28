@@ -21,6 +21,7 @@ var student = module.exports = React.createClass({
 
     return (
       <div className = {classes.student} onClick = {this._onClickStudent}>
+        <span className = {'index'} >{this.props.index}</span>
         <span>{this.props.student.name}</span>
         <span>{this._formatDate(this.props.student.birthdate)}</span>
         {calendar}

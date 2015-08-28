@@ -8,6 +8,8 @@ var StudentStore = require('../../stores/studentStore');
 var StudentList = require('../studentList/studentList.react')
 var MonthPicker = require('../monthPicker/monthPicker.react');
 var GroupPicker = require('../groupPicker/groupPicker.react');
+var Capacity = require('../capacityCubes/capacityCubes.react');
+
 
 var groupDetails = module.exports = React.createClass({
 
@@ -16,30 +18,22 @@ var groupDetails = module.exports = React.createClass({
   },
 
   render: function () {
-    var classes = {
-      addActionItem: ClassNames({
-        'actionItem': true
-      })
-    };
-
     var toolbar = (
       <div className = 'toolbar'>
         <MonthPicker updateDateRange = {this._onUpdateDateRange} defaultDateRange = {this.state.dateRangeObject.key}/>
         <GroupPicker updateGroup = {this._onUpdateGroup} group = {this.props.groups[this.state.groupId]} groups = {this.props.groups}/>
-        <span className = {classes.addActionItem} onClick = {this._onAddNewStudent}><i className = 'fa fa-plus'></i></span>
       </div>
     );
 
     return (
       <div id = 'groupDetails'>
-        {toolbar}
+        <div className = 'summary'>
+          {toolbar}
+          <Capacity schedule = {this.state.groupSummary.schedule} capacity = {this.state.groupSummary.capacity}  header = {false}/>
+        </div>
         <StudentList students = {this.state.students} openStudent = {this.props.openStudent}/>
       </div>
       );
-  },
-
-  _onAddNewStudent: function () {
-    (this.props.activeStudent && this.props.activeStudent.id === this._getNewStudent().id) ? this.props.editStudent(null) : this.props.editStudent(this._getNewStudent());
   },
 
   _onUpdateGroup: function (group) {
@@ -60,7 +54,7 @@ var groupDetails = module.exports = React.createClass({
     return {
       groupId: groupId,
       dateRangeObject: dateRangeObject,
-      groupSchedule: groupSummary.schedule,
+      groupSummary: groupSummary,
       students: students
     };
   },

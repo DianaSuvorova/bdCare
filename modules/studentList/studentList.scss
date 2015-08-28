@@ -6,6 +6,7 @@ div#studentList {
    & > div {
      width: $unit * 5;
      text-align: left;
+     &.index { width: $unit * 2; }
    }
    & > div.calendar {
     $day-width: calc(#{$unit * 2} + 5px);

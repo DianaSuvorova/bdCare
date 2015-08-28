@@ -15,7 +15,7 @@ var group = module.exports = React.createClass({
           <span className= 'label'>total capcity: </span>
           <span className= 'value'>{this.props.group.capacity} </span>
         </div>
-        <Capacity schedule = {this.props.group.schedule} capacity = {this.props.group.capacity} />
+        <Capacity schedule = {this.props.group.schedule} capacity = {this.props.group.capacity} header = {true}/>
       </div>
     );
 
