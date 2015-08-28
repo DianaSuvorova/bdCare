@@ -31,9 +31,13 @@ var groupDetails = module.exports = React.createClass({
           {toolbar}
           <Capacity schedule = {this.state.groupSummary.schedule} capacity = {this.state.groupSummary.capacity}  header = {false}/>
         </div>
-        <StudentList students = {this.state.students} openStudent = {this.props.openStudent}/>
+        <StudentList students = {this.state.students} openStudent = {this._openStudent}/>
       </div>
       );
+  },
+
+  _openStudent: function (student) {
+    this.props.openStudent (this.state.dateRangeObject, this.state.groupId, student)
   },
 
   _onUpdateGroup: function (group) {

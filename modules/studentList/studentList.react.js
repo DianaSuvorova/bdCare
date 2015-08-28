@@ -8,6 +8,7 @@ var StudentStore = require('../../stores/studentStore');
 var Student = require('../student/student.react')
 var MonthPicker = require('../monthPicker/monthPicker.react');
 var GroupPicker = require('../groupPicker/groupPicker.react');
+var CalendarHeader = require('../calendar/CalendarHeader.react');
 
 var studentList = module.exports = React.createClass({
 
@@ -16,7 +17,7 @@ var studentList = module.exports = React.createClass({
     var students = Object.keys(this.props.students).map(function (studentId) {
       i++;
       var student = this.props.students[studentId];
-      return <Student key = {studentId} student = {student} index = {i} openStudent = {this.props.openStudent} calendar = {true}/>
+      return <Student key = {studentId} student = {student} index = {i} openStudent = {this.props.openStudent}/>
     }.bind(this));
 
     var header = (
@@ -26,13 +27,7 @@ var studentList = module.exports = React.createClass({
         </div>
         <div>Name</div>
         <div>Date of Birth</div>
-        <div className = 'calendar'>
-          <span>Mon</span>
-          <span>Tue</span>
-          <span>Wed</span>
-          <span>Thu</span>
-          <span>Fri</span>
-        </div>
+        <CalendarHeader/>
       </div>
     )
 
@@ -45,7 +40,7 @@ var studentList = module.exports = React.createClass({
   },
 
   _onAddNewStudent: function () {
-    (this.props.activeStudent && this.props.activeStudent.id === this._getNewStudent().id) ? this.props.editStudent(null) : this.props.editStudent(this._getNewStudent());
+    this.props.openStudent(StudentStore.getNewStudent());
   },
 
 });

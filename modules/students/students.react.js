@@ -39,7 +39,7 @@ var students = module.exports = React.createClass({
   },
 
   render: function () {
-    var studentDetails = (this.state.activeStudent) ? <StudentDetails student = {this.state.activeStudent} groups = {this.state.groups} dateRangeObject = {this.state.dateRangeObject} closeStudentDetails = {this._closeStudentDetails}/> : null;
+    var studentDetails = (this.state.activeStudent) ? <StudentDetails student = {this.state.activeStudent} groups = {this.state.groups} dateRangeObject = {this.state.dateRangeObject} closeStudentDetails = {this._closeStudentDetails} groupId = {this.state.groupId}/> : null;
 
     var students = (StudentStore.isEmpty()) ?
       null :
@@ -55,19 +55,19 @@ var students = module.exports = React.createClass({
     this.setState(this._getState());
   },
 
-  _openStudentDetails : function (student) {
-    this.setState(this._getState(student));
+  _openStudentDetails : function (dateRangeObject, groupId, student) {
+    this.setState(this._getState(dateRangeObject, groupId, student));
   },
 
   _closeStudentDetails : function () {
     this.setState({activeStudent: null});
   },
 
-  _getState: function (activeStudent) {
+  _getState: function (dateRangeObject, groupId, activeStudent) {
 
     var groups = StudentStore.getGroupsMap();
-    var dateRangeObject = this.props.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
-    var groupId = this.props.groupId || Object.keys(groups)[0];
+    var dateRangeObject = dateRangeObject || this.props.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
+    var groupId = groupId || this.props.groupId || Object.keys(groups)[0];
 
     var activeStudent = activeStudent || this.state && this.state.activeStudent;
 

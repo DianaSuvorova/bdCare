@@ -284,7 +284,7 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
       id: 'new',
       name: null,
       birthbirthdate: null,
-      schedule: schedule
+      schedule: emptySchedule
     }
   }
 

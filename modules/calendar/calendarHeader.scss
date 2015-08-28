@@ -1,0 +1,7 @@
+div.calendarHeader {
+  & > span {
+    display: inline-block;
+    width: calc(#{$unit * 2} + 6px);
+    text-align: center;
+  }
+}

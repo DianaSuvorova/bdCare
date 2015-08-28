@@ -8,7 +8,7 @@ div#studentList {
      text-align: left;
      &.index { width: $unit * 2; }
    }
-   & > div.calendar {
+   & > div.calendarHeader {
     $day-width: calc(#{$unit * 2} + 5px);
     width: auto;
     span {

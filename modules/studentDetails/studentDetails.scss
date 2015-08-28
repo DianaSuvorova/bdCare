@@ -1,4 +1,6 @@
 div#studentDetails {
+  $border-radius: $unit/5;
+
   width: 100%;
   height: 100%;
   position: absolute;
@@ -6,15 +8,20 @@ div#studentDetails {
   overflow: hidden;
   background-color: white;
   text-align: center;
-  & > span.close {
-    float: right;
-  }
-  & > div.details {
+
+  & > div.container {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    & > div {
-      margin: $unit / 2 0;
+    flex-direction: column;
+    & > div.toolbox.top {
+      & > span.close { float: right; }
+    }
+    & > div.details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      & > div {margin: $unit/2 0;}
+      & > div.calendar, div.calendarHeader { flex: 1 0 100%; }
     }
   }
 }

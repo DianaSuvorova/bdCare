@@ -1,14 +1,7 @@
 div.capacityCubes {
 
   $border-radius: $unit/5;
-
-  div.header {
-    & > span {
-      display: inline-block;
-      width: calc(#{$unit * 2} + 6px);
-      text-align: center;
-    }
-  }
+  
   div.vis{
     height: $unit * 3;
     display: flex;

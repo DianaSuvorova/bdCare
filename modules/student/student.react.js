@@ -2,8 +2,6 @@ var React = require('react');
 var $ = require('jquery-browserify');
 var ClassNames = require('classnames');
 
-
-var StudentAction = require('../../stores/StudentAction');
 var Calendar = require('../calendar/calendar.react');
 
 var student = module.exports = React.createClass({
@@ -17,14 +15,12 @@ var student = module.exports = React.createClass({
       })
     }
 
-    var calendar = (this.props.calendar) ? <Calendar schedule = {this.props.student.schedule} entry = {false} /> : null;
-
     return (
       <div className = {classes.student} onClick = {this._onClickStudent}>
         <span className = {'index'} >{this.props.index}</span>
         <span>{this.props.student.name}</span>
         <span>{this._formatDate(this.props.student.birthdate)}</span>
-        {calendar}
+        <Calendar schedule = {this.props.student.schedule} entry = {false} />
       </div>
     )
   },
