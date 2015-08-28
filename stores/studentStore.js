@@ -4,13 +4,23 @@ var Dispatcher = require('../dispatcher/dispatcher');
 var Constants = require('../dispatcher/constants');
 var EventEmitter = require('events').EventEmitter;
 
+var OffLineData = require('./offlineData');
+
 var CHANGE_EVENT = 'change';
+var isOffline = true;
 
 var _students = {};
 var _groups = {};
 var _mappings = [];
 var _isEmpty = true;
 var _slotsDict = ['mon_am', 'mon_pm', 'tue_am', 'tue_pm', 'wed_am', 'wed_pm', 'thu_am', 'thu_pm', 'fri_am', 'fri_pm'];
+
+if (isOffline) {
+    _students = OffLineData.students;
+    _groups = OffLineData.groups;
+    _mappings= OffLineData.mappings;
+    _isEmpty = false;
+}
 
 function setData(students, groups, mappings) {
   students.forEach(function (student) {
