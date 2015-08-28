@@ -31,8 +31,6 @@ var dashboard = module.exports = React.createClass({
   },
 
   render: function () {
-    //params are ignored for now
-    //<Link to = 'students' key = {group.id} params={{groupId: group.id, dateRange: this.state.dateRangeObject.key}}>
 
     var groups = this.state.groups.map(function (group) {
       return <Group key = {group.id} group = {group} onNavigateToGroup = {this._navigateToGroup}/>

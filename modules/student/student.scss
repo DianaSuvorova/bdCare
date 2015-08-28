@@ -17,7 +17,7 @@ div.student {
   &.draggable {
     cursor: move;
   }
-  &:hover > span, &.active > span {
-     background-color: transparentize($color-active, 0.5);
+  &:hover {
+     & > span { background-color: transparentize($color-active, 0.5); }
    }
 }

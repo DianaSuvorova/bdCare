@@ -1,7 +1,7 @@
 var React = require('react');
 var $ = require('jquery-browserify');
 var ClassNames = require('classnames');
-var Capacity = require('../capacity/capacity.react');
+var Capacity = require('../capacityCubes/capacityCubes.react');
 var Calendar = require('../calendar/calendar.react');
 
 var group = module.exports = React.createClass({

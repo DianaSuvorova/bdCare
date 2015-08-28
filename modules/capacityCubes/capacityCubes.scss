@@ -1,0 +1,46 @@
+div.capacityCubes {
+
+  $border-radius: $unit/5;
+
+  div.header {
+    & > span {
+      display: inline-block;
+      width: calc(#{$unit * 2} + 6px);
+      text-align: center;
+    }
+  }
+  div.vis{
+    height: $unit * 3;
+    display: flex;
+    flex-direction: row;
+    & > span.day {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      margin: 1px;
+      border : $border-lightgray;
+      border-radius: $border-radius;
+      & > span.slot {
+        height: 100%;
+        width: $unit;
+        display: flex;
+        flex-direction: column-reverse;
+        flex-wrap: wrap;
+        & > span.cube {
+          flex: 1 0 auto;
+          width: $unit;
+          &.taken { background-color: $color-active; }
+          &:not(:first-child) {border-bottom: $border-lightgray;}
+        }
+        &.am {
+          border-radius:  $border-radius 0 0 $border-radius;
+          border-right: $border-lightgray
+        }
+        &.pm {
+          border-radius: 0 $border-radius $border-radius 0;
+        }
+      }
+    }
+  }
+}
