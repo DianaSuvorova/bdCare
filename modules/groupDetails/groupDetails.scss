@@ -1,0 +1,10 @@
+div#groupDetails {
+  & > div.toolbar {
+    display: flex;
+    justify-content: flex-start;
+    &.span {
+      display: inline-block;
+      width: $unit;
+    }
+  }
+}

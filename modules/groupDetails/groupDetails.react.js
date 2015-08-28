@@ -5,11 +5,11 @@ var assign = require('object-assign');
 
 var StudentStore = require('../../stores/studentStore');
 
-var Student = require('../student/student.react')
+var StudentList = require('../studentList/studentList.react')
 var MonthPicker = require('../monthPicker/monthPicker.react');
 var GroupPicker = require('../groupPicker/groupPicker.react');
 
-var studentList = module.exports = React.createClass({
+var groupDetails = module.exports = React.createClass({
 
   getInitialState: function () {
     return this._getState(this.props.groupId, this.props.dateRangeObject);
@@ -22,25 +22,6 @@ var studentList = module.exports = React.createClass({
       })
     };
 
-    var students = Object.keys(this.state.students).map(function (studentId) {
-      var student = this.state.students[studentId];
-      return <Student key = {studentId} student = {student} openStudent = {this.props.openStudent} calendar = {true}/>
-    }.bind(this));
-
-    var header = (
-      <div className = 'header'>
-        <div>Name</div>
-        <div>Date of Birth</div>
-        <div className = 'calendar'>
-          <span>Mon</span>
-          <span>Tue</span>
-          <span>Wed</span>
-          <span>Thu</span>
-          <span>Fri</span>
-        </div>
-      </div>
-    )
-
     var toolbar = (
       <div className = 'toolbar'>
         <MonthPicker updateDateRange = {this._onUpdateDateRange} defaultDateRange = {this.state.dateRangeObject.key}/>
@@ -50,12 +31,9 @@ var studentList = module.exports = React.createClass({
     );
 
     return (
-      <div id = 'studentList'>
+      <div id = 'groupDetails'>
         {toolbar}
-        <div className ='table'>
-          {header}
-          {students}
-        </div>
+        <StudentList students = {this.state.students} openStudent = {this.props.openStudent}/>
       </div>
       );
   },

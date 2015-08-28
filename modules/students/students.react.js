@@ -3,8 +3,8 @@ var $ = require('jquery-browserify');
 var ClassNames = require('classnames');
 var assign = require('object-assign');
 
-var StudentList = require('./studentList.react');
-var StudentDetails = require('../student/studentDetails.react');
+var GroupDetails = require('../groupDetails/groupDetails.react');
+var StudentDetails = require('../studentDetails/studentDetails.react');
 
 var Api = require('../../stores/api');
 
@@ -44,7 +44,7 @@ var students = module.exports = React.createClass({
     var students = (StudentStore.isEmpty()) ?
       null :
       (<div id = 'students'>
-        <StudentList groupId = {this.state.groupId} dateRangeObject = {this.state.dateRangeObject} openStudent = {this._openStudentDetails} activeStudent = {this.state.activeStudent} groups = {this.state.groups}/>
+        <GroupDetails groupId = {this.state.groupId} dateRangeObject = {this.state.dateRangeObject} openStudent = {this._openStudentDetails} activeStudent = {this.state.activeStudent} groups = {this.state.groups}/>
         {studentDetails}
       </div>)
 
