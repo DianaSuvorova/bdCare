@@ -46,7 +46,7 @@ var studentDetails = module.exports = React.createClass({
             </div>
             <div className = 'row'>
               <div className = {classes.editableInlineCalendar}>
-                <Calendar schedule = {this.props.student.schedule} editable = {this.state.calendarState === 'edit'} updateSchedule = {this._onUpdateSchedule}/>
+                <Calendar schedule = {this.state.studentSchedule} editable = {this.state.calendarState === 'edit'} updateSchedule = {this._onUpdateSchedule}/>
                 <ActionEditable edit = {this._calendarActions().edit} confirm = {this._calendarActions().confirm} cancel = {this._calendarActions().cancel} active = {this.state.calendarState === 'edit'}/>
               </div>
             </div>
@@ -54,8 +54,10 @@ var studentDetails = module.exports = React.createClass({
               <div className = 'group'>
                 <MonthPicker updateDateRange = {this._onUpdateDateRange} defaultDateRange = {this.props.dateRangeObject.key}/>
                 <GroupPicker updateGroup = {this._onUpdateGroup} group = {this.props.groups[this.props.groupId]} groups = {this.props.groups}/>
-                <Capacity schedule = {this.state.groupSummary.schedule} capacity = {this.state.groupSummary.capacity}/>
               </div>
+            </div>
+            <div className = 'row'>
+              <Calendar schedule = {this.state.groupSchedule} group = {true} editable = {false}/>
             </div>
           </div>
           <div className = 'toolbox bottom'>
@@ -77,13 +79,18 @@ var studentDetails = module.exports = React.createClass({
         this.setState(this._getState(null, null, 'view'));
       }.bind(this),
       cancel : function () {
-        this.setState(this._getState(null, null, 'view'));
+        this.setState(this._getState(null, null, 'view', this.props.student.schedule, this.state.groupSummary.schedule));
       }.bind(this)
     };
   },
 
-  _onUpdateSchedule: function (schedule) {
-    console.log('updated schedule: ', schedule);
+  _onUpdateSchedule: function (diff) {
+    var groupSchedule = this.state.groupSchedule;
+    var studentSchedule = this.state.studentSchedule;
+    groupSchedule[diff.slot] += diff.value;
+    studentSchedule[diff.slot] += diff.value;
+
+    this.setState(this._getState(null, null, null, studentSchedule, groupSchedule));
   },
 
   _formatDate: function (date) {
@@ -97,24 +104,30 @@ var studentDetails = module.exports = React.createClass({
 
   _onUpdateGroup: function (group) {
     this.setState(this._getState(group.id, null, null));
+    this._calendarActions().cancel();
   },
 
   _onUpdateDateRange: function (dateRangeObject) {
     this.setState(this._getState(null, dateRangeObject, null));
+    this._calendarActions().cancel();
   },
 
-  _getState: function (groupId, dateRangeObject, calendarState) {
+  _getState: function (groupId, dateRangeObject, calendarState, studentSchedule, groupSchedule) {
     var groupId = groupId || this.state && this.state.groupId || this.props.groupId;
     var dateRangeObject = dateRangeObject || this.state && this.state.dateRangeObject || this.props.dateRangeObject;
     var calendarState = calendarState || this.state && this.state.calendarState || 'view';
 
     var groupSummary = StudentStore.getGroupSummaryForGroupIdAndDateRange(groupId, dateRangeObject.dateRange);
+    var groupSchedule = assign({}, groupSchedule || this.state && this.state.groupSchedule || groupSummary.schedule);
+    var studentSchedule = assign({}, studentSchedule || this.state && this.state.studentSchedule || this.props.student.schedule);
 
     return {
       groupId: groupId,
       dateRangeObject: dateRangeObject,
       groupSummary: groupSummary,
-      calendarState: calendarState
+      calendarState: calendarState,
+      groupSchedule: groupSchedule,
+      studentSchedule: studentSchedule
     };
   }
 

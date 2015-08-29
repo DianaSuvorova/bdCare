@@ -29,7 +29,7 @@ div#studentDetails {
         display: flex;
         justify-content: center;
         &.section { margin-top : $unit / 2; }
-        & > div.group { margin-right: $unit * 2; }
+        & > div.group, & > div.calendarHeader { margin-right: $unit * 2; }
       }
     }
   }

@@ -13,13 +13,16 @@ var calendar = module.exports = React.createClass({
     var classes = {
       slot:  function(slot) {
         return slot.replace('_', ' ') +
-              ((this.props.group) ?
+               ((this.props.group) ? ' group ' : '') +
+               ((this.props.group) ?
                 ((this.props.schedule[slot] > 0)  ? ' available' : ' taken') :
-                ((this.props.schedule[slot] === 0) ? ' available' : ' taken')) ;
+                ((this.props.schedule[slot] === 0) ? ' available' : ' taken')
+                );
       }.bind(this),
        calendar : ClassNames({
-         calendar: true,
-         editable: this.props.editable
+         'calendar': true,
+         'group': this.props.group,
+         'editable': this.props.editable
        })
      }
 
@@ -51,16 +54,9 @@ var calendar = module.exports = React.createClass({
 
   _onClickSlot : function (e) {
     var slot = $(e.target).attr('data-id');
-    var schedule = this.props.schedule;
-    if ($(e.target).hasClass('taken')) {
-      schedule[slot] = 0;
-      $(e.target).removeClass('taken').addClass('available');
-     }
-     else {
-       schedule[slot] = 1;
-       $(e.target).removeClass('available').addClass('taken');
-     }
-    this.props.updateSchedule(schedule);
+    var diff = {slot: slot};
+    diff.value = (this.props.schedule[slot] === 0) ? 1 : -1;
+    this.props.updateSchedule(diff);
   }
 
 });
