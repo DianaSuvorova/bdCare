@@ -8,20 +8,29 @@ div#studentDetails {
   overflow: hidden;
   background-color: white;
   text-align: center;
-
+  margin: auto;
   & > div.container {
+    border: $border-lightgray;
+    border-radius: $border-radius;
+    margin: $unit / 2;
+    padding: $unit / 2;
     position: relative;
     display: flex;
     flex-direction: column;
-    & > div.toolbox.top {
-      & > span.close { float: right; }
+    & > div.toolbox {
+       margin-top : $unit / 2;
+      & > span { float: right; }
     }
     & > div.details {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      & > div {margin: $unit/2 0;}
-      & > div.calendar, div.calendarHeader { flex: 1 0 100%; }
+      & > div.row {
+        flex: 1 0 100%;
+        display: flex;
+        justify-content: center;
+        &.section { margin-top : $unit / 2; }
+        & > div.group { margin-right: $unit * 2; }
+      }
     }
   }
 }

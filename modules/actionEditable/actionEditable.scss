@@ -1,0 +1,14 @@
+span.actionEditable {
+  position: absolute;
+  display: inline-block;
+  height: $unit;
+  line-height: $unit;
+  & > span.actionEditableItem {
+    display: inline-block;
+    width: $unit;
+    height: $unit;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+  }
+}

@@ -20,7 +20,7 @@ var student = module.exports = React.createClass({
         <span className = {'index'} >{this.props.index}</span>
         <span>{this.props.student.name}</span>
         <span>{this._formatDate(this.props.student.birthdate)}</span>
-        <Calendar schedule = {this.props.student.schedule} entry = {false} />
+        <Calendar schedule = {this.props.student.schedule} editable = {false} />
       </div>
     )
   },

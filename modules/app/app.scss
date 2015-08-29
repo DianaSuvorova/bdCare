@@ -78,8 +78,35 @@ span.actionItem {
   }
 }
 
+.editableInline {
+  padding-right: $unit;
+  margin-right: $unit;
+  height: $unit;
+  line-height: $unit;
+  border: 1px solid white;
+  border-radius: $unit / 10;
+  &:hover, &.active {
+    border: 1px solid $color-active;
+    & > span.actionEditable > span.actionEditableItem {
+      color: $color-active;
+      &.warning { color: $color-warning; }
+    }
+  }
+  &.active {
+    padding-right: $unit * 2;
+    margin-right: 0;
+  }
+}
+
 input {
+  font-size: 16px;
   border: none;
   line-height: $unit;
   padding: 0;
+  &:hover {
+    cursor: default;
+  }
+  &:focus {
+    outline: none;
+  }
 }

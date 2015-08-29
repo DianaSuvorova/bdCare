@@ -19,7 +19,7 @@ var calendar = module.exports = React.createClass({
       }.bind(this),
        calendar : ClassNames({
          calendar: true,
-         editable: this.props.edit
+         editable: this.props.editable
        })
      }
 

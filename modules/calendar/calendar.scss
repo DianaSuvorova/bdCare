@@ -1,13 +1,12 @@
 div.calendar {
 
   $border-radius: $unit/5;
-
   height: $unit;
-  line-height: $unit;
+  display: inline-block;
   & > span.day {
+    height: 100%;
     display: inline-block;
-    height: $unit;
-    margin: 1px;
+    margin: 0 1px;
     & > span {
       display: inline-block;
       width: $unit;
