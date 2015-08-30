@@ -184,7 +184,7 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
       return null;
     }
 
-    var studentsMap = [];
+    var studentsMap = {};
     var listOfDates = createListOfDatesForDateRange(dateRange);
 
     listOfDates.forEach( function(date) {
@@ -199,7 +199,6 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
         var student = assign(
           {},
           _students[mapping.studentId],
-          {group: _groups[mapping.groupId]},
           {schedule: schedule}
         )
 
