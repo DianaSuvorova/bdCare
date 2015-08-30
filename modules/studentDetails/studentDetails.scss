@@ -29,7 +29,16 @@ div#studentDetails {
         display: flex;
         justify-content: center;
         &.section { margin-top : $unit / 2; }
-        & > div.group, & > div.calendarHeader { margin-right: $unit * 2; }
+        div.calendar.group { margin-right: $unit * 2; }
+        &.calendarHeader > div.calendarHeader { margin-right: $unit * 2; }
+        &.mappingUpdate {
+          transition: height $transition-duration ease-in;
+          height: 0;
+          overflow: hidden;
+          &.active {
+            height: $unit;
+          }
+        }
       }
     }
   }
