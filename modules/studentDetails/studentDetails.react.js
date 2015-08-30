@@ -19,29 +19,23 @@ var studentDetails = module.exports = React.createClass({
   },
 
   render: function () {
-
     var classes = {
-      editableInlineCalendar: ClassNames({
+      editableInlineSchedule: ClassNames({
         'editableInline schedule' : true,
-        'active': (this.state.calendarState === 'edit')
-      }),
-      editableInlineGroup: ClassNames({
-        'editableInline group' : true,
-        'active': (this.state.groupState === 'edit')
+        'active': (this.state.scheduleState === 'edit')
       }),
       editableInlineMappingDate: ClassNames({
-        'editableInline mapping' : true,
-        'active': (this.state.mappingState === 'edit')
+        'editableInline mapping active' : true
       }),
       mappingUpdate: ClassNames({
-        'row mappingUpdate': true,
-        'active' : ((this.state.calendarState === 'confirmed') || (this.state.groupState === 'confirmed'))
+        'row section mappingUpdate': true,
+        'active' : (this.state.scheduleState === 'confirmed')
       })
     };
 
-    var groupSelect = (this.state.groupState === 'edit') ?
+    var groupSelect = (this.state.scheduleState === 'edit') ?
       <GroupPicker updateGroup = {this._onUpdateGroup} group = {this.props.groups[this.state.groupId]} groups = {this.props.groups}/> :
-      <span>{this.props.groups[this.state.groupId].name}</span> ;
+      <span className={'groupPicker'}>{this.props.groups[this.state.groupId].name}</span> ;
 
     return (
       <div id = 'studentDetails'>
@@ -57,33 +51,25 @@ var studentDetails = module.exports = React.createClass({
                 <ActionEditable/>
               </div>
             </div>
-            <div className = 'row section'>
-              <div className = {classes.editableInlineGroup}>
-                {groupSelect}
-                <ActionEditable edit = {this._groupActions().edit} confirm = {this._groupActions().confirm} cancel = {this._groupActions().cancel} active = {this.state.groupState === 'edit'}/>
-              </div>
-            </div>
             <div className = 'row section calendarHeader'>
               <CalendarHeader/>
             </div>
-            <div className = 'row'>
-              <div className = {classes.editableInlineCalendar}>
-                <Calendar schedule = {this.state.studentSchedule} editable = {this.state.calendarState === 'edit'} updateSchedule = {this._onUpdateSchedule}/>
-                <ActionEditable edit = {this._calendarActions().edit} confirm = {this._calendarActions().confirm} cancel = {this._calendarActions().cancel} active = {this.state.calendarState === 'edit'}/>
+            <div className = 'row section'>
+              <div className = {classes.editableInlineSchedule}>
+                {groupSelect}
+                <Calendar schedule = {this.state.studentSchedule} editable = {this.state.scheduleState === 'edit'} updateSchedule = {this._onUpdateSchedule}/>
+                <ActionEditable edit = {this._scheduleActions().edit} confirm = {this._scheduleActions().confirm} cancel = {this._scheduleActions().cancel} active = {this.state.scheduleState === 'edit'}/>
               </div>
             </div>
             <div className = {classes.mappingUpdate}>
-              <div>Please confirm effective date: </div>
+              <span>{'Please confirm effective date: '}</span>
               <div className = {classes.editableInlineMappingDate}>
                 <input defaultValue = {this._formatDate(this.state.dateRangeObject.dateRange[0])}></input>
-                <ActionEditable edit = {this._mappingActions().edit} confirm = {this._mappingActions().confirm} cancel = {this._mappingActions().cancel} active = {this.state.mappingState === 'edit'}/>
+                <ActionEditable confirm = {this._mappingActions().confirm} cancel = {this._mappingActions().cancel} active = {true}/>
               </div>
             </div>
-            <div className = 'row section groupSummary'>
-              <span>{'Available schedule for '+this.props.groups[this.state.groupId].name + ' '}</span>
+            <div className = 'row section availableSchedule'>
               <MonthPicker updateDateRange = {this._onUpdateDateRange} defaultDateRange = {this.props.dateRangeObject.key}/>
-            </div>
-            <div className = 'row'>
               <Calendar schedule = {this.state.groupSchedule} group = {true} editable = {false}/>
             </div>
           </div>
@@ -96,35 +82,17 @@ var studentDetails = module.exports = React.createClass({
     );
   },
 
-  _calendarActions: function () {
+  _scheduleActions: function () {
     return {
       edit : function () {
-        this.setState(this._getState({calendarState: 'edit'}));
+        this.setState(this._getState({scheduleState: 'edit'}));
       }.bind(this),
       confirm : function () {
-        this.setState(this._getState({calendarState: 'confirmed'}));
+        this.setState(this._getState({scheduleState: 'confirmed'}));
       }.bind(this),
       cancel : function () {
         this.setState(this._getState({
-          calendarState: 'view',
-          studentSchedule: this.props.student.schedule,
-          groupSchedule: this.state.groupSummary.schedule
-        }));
-      }.bind(this)
-    };
-  },
-
-  _groupActions: function () {
-    return {
-      edit : function () {
-        this.setState(this._getState({groupState: 'edit'}));
-      }.bind(this),
-      confirm : function () {
-        this.setState(this._getState({groupState: 'confirmed'}));
-      }.bind(this),
-      cancel : function () {
-        this.setState(this._getState({
-          groupState: 'view',
+          scheduleState: 'view',
           studentSchedule: this.props.student.schedule,
           groupSchedule: this.state.groupSummary.schedule
         }));
@@ -134,9 +102,6 @@ var studentDetails = module.exports = React.createClass({
 
   _mappingActions: function () {
     return {
-      edit : function () {
-        this.setState(this._getState({mappingState: 'edit'}));
-      }.bind(this),
       confirm : function () {
         this.setState(this._getState({mappingState: 'confirmed'}));
       }.bind(this),
@@ -171,7 +136,6 @@ var studentDetails = module.exports = React.createClass({
   _onUpdateGroup: function (group) {
     this.setState(this._getState({
       groupId: group.id,
-      calendarState: 'view',
       studentSchedule: this.props.student.schedule,
       groupSchedule: this.state.groupSummary.schedule
     }));
@@ -180,25 +144,24 @@ var studentDetails = module.exports = React.createClass({
   _onUpdateDateRange: function (dateRangeObject) {
     this.setState(this._getState({
       dateRangeObject: dateRangeObject,
-      calendarState: 'view',
       studentSchedule: this.props.student.schedule,
       groupSchedule: this.state.groupSummary.schedule
     }));
   },
 
   _getState: function (newState) {
+
     var defaultState = {
       groupId : this.state && this.state.groupId || this.props.groupId,
       dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject,
       studentSchedule: assign({}, this.state && this.state.studentSchedule || this.props.student.schedule),
-      calendarState: this.state && this.state.calendarState || 'view',
-      groupState: this.state && this.state.groupState || 'view',
+      scheduleState: this.state && this.state.scheduleState || 'view',
       mappingState: this.state && this.state.mappingState || 'view'
     }
 
     var state = assign({}, defaultState, newState);
     state.groupSummary = StudentStore.getGroupSummaryForGroupIdAndDateRange(state.groupId, state.dateRangeObject.dateRange);
-    state.groupSchedule = assign({}, state.groupSummary.schedule);
+    state.groupSchedule = assign({}, (newState && newState.groupSchedule || state.groupSummary.schedule));
 
     return state;
   }

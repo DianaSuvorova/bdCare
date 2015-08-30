@@ -29,14 +29,25 @@ div#studentDetails {
         display: flex;
         justify-content: center;
         &.section { margin-top : $unit / 2; }
-        div.calendar.group { margin-right: $unit * 2; }
-        &.calendarHeader > div.calendarHeader { margin-right: $unit * 2; }
+        &.calendarHeader > div.calendarHeader { margin-left: $unit * 2; }
+        &.availableSchedule > div.calendar {margin-right: $unit * 2;}
+        & > div.editableInline.schedule {
+          padding-left: $unit * 4;
+          position: relative;
+          & > span.groupPicker > select, & > span.groupPicker {
+            text-align: left;
+            position: absolute;
+            top: 0; left: 0;
+          }
+        }
         &.mappingUpdate {
           transition: height $transition-duration ease-in;
           height: 0;
           overflow: hidden;
+          span.actionEditableItem{ display: none; }
           &.active {
-            height: $unit;
+            height: $unit * 1.5;
+            span.actionEditableItem{ display: inline-block; }
           }
         }
       }

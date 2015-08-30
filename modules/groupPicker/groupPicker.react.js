@@ -7,7 +7,7 @@ var groupPicker = module.exports = React.createClass({
   render: function () {
 
     return (
-      <span>
+      <span className = {'groupPicker'}>
         <select onChange={this._onSelectGroup} defaultValue = {this.props.group.id}>
           {
             Object.keys(this.props.groups).map(function(groupId){

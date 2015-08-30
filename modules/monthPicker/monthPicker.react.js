@@ -9,7 +9,7 @@ var monthPicker = module.exports = React.createClass({
 
   render: function () {
     return (
-      <span>
+      <span className = {'monthPicker'}>
         <select onChange={this._onSelectDateRange} defaultValue = {this.props.defaultDateRange}>
           {
             Object.keys(this._dateRangeMap).map(function(dateRange){

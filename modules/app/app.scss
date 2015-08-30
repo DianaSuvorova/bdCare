@@ -110,3 +110,12 @@ input {
     outline: none;
   }
 }
+select {
+  padding-right: 5px;
+  background: transparent;
+  width: $unit * 4;
+  font-size: 12px;
+  border: 0;
+  border-radius: 0;
+  height: $unit;
+}
