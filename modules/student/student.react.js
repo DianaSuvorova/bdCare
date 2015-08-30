@@ -26,7 +26,7 @@ var student = module.exports = React.createClass({
   },
 
   _onClickStudent: function () {
-    this.props.openStudent(this.props.student);
+    this.props.openStudent(this.props.student.id);
   },
 
   _formatDate: function (date) {

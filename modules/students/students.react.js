@@ -39,7 +39,7 @@ var students = module.exports = React.createClass({
   },
 
   render: function () {
-    var studentDetails = (this.state.activeStudent) ? <StudentDetails student = {this.state.activeStudent} groups = {this.state.groups} dateRangeObject = {this.state.dateRangeObject} closeStudentDetails = {this._closeStudentDetails} groupId = {this.state.groupId}/> : null;
+    var studentDetails = (this.state.activeStudentId) ? <StudentDetails student = {this.state.activeStudent} groups = {this.state.groups} dateRangeObject = {this.state.dateRangeObject} closeStudentDetails = {this._closeStudentDetails} groupId = {this.state.groupId}/> : null;
 
     var students = (StudentStore.isEmpty()) ?
       null :
@@ -55,26 +55,31 @@ var students = module.exports = React.createClass({
     this.setState(this._getState());
   },
 
-  _openStudentDetails : function (dateRangeObject, groupId, student) {
-    this.setState(this._getState(dateRangeObject, groupId, student));
+  _openStudentDetails : function (dateRangeObject, groupId, studentId) {
+    this.setState(this._getState(dateRangeObject, groupId, studentId));
   },
 
   _closeStudentDetails : function () {
-    this.setState({activeStudent: null});
+    this.setState({activeStudentId: null});
   },
 
-  _getState: function (dateRangeObject, groupId, activeStudent) {
+  _getState: function (dateRangeObject, groupId, activeStudentId) {
 
     var groups = StudentStore.getGroupsMap();
     var dateRangeObject = dateRangeObject || this.props.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
     var groupId = groupId || this.props.groupId || Object.keys(groups)[0];
 
-    var activeStudent = activeStudent || this.state && this.state.activeStudent;
+    var activeStudentId = activeStudentId || this.state && this.state.activeStudentId;
+    var activeStudent = null;
+    if (activeStudentId) {
+      activeStudent = StudentStore.getStudentByStudentIdAndDateRange(activeStudentId, dateRangeObject.dateRange, groupId);
+    }
 
     return {
       groupId: groupId,
       dateRangeObject: dateRangeObject,
       groups: groups,
+      activeStudentId: activeStudentId,
       activeStudent: activeStudent
     };
   }

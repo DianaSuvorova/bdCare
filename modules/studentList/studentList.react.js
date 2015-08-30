@@ -40,7 +40,7 @@ var studentList = module.exports = React.createClass({
   },
 
   _onAddNewStudent: function () {
-    this.props.openStudent(StudentStore.getNewStudent());
+    this.props.openStudent('new');
   },
 
 });

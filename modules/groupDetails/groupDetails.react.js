@@ -36,8 +36,8 @@ var groupDetails = module.exports = React.createClass({
       );
   },
 
-  _openStudent: function (student) {
-    this.props.openStudent (this.state.dateRangeObject, this.state.groupId, student)
+  _openStudent: function (studentId) {
+    this.props.openStudent (this.state.dateRangeObject, this.state.groupId, studentId)
   },
 
   _onUpdateGroup: function (group) {

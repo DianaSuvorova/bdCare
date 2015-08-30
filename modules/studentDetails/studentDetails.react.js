@@ -19,6 +19,7 @@ var studentDetails = module.exports = React.createClass({
   },
 
   render: function () {
+
     var classes = {
       editableInlineSchedule: ClassNames({
         'editableInline schedule' : true,
@@ -93,7 +94,7 @@ var studentDetails = module.exports = React.createClass({
       cancel : function () {
         this.setState(this._getState({
           scheduleState: 'view',
-          studentSchedule: this.props.student.schedule,
+          studentSchedule: this.props.student.mappings[0].schedule,
           groupSchedule: this.state.groupSummary.schedule
         }));
       }.bind(this)
@@ -108,7 +109,7 @@ var studentDetails = module.exports = React.createClass({
       cancel : function () {
         this.setState(this._getState({
           mappingState: 'view',
-          studentSchedule: this.props.student.schedule,
+          studentSchedule: this.props.student.mappings[0].schedule,
           groupSchedule: this.state.groupSummary.schedule
         }));
       }.bind(this)
@@ -136,7 +137,7 @@ var studentDetails = module.exports = React.createClass({
   _onUpdateGroup: function (group) {
     this.setState(this._getState({
       groupId: group.id,
-      studentSchedule: this.props.student.schedule,
+      studentSchedule: this.props.student.mappings[0].schedule,
       groupSchedule: this.state.groupSummary.schedule
     }));
   },
@@ -144,17 +145,16 @@ var studentDetails = module.exports = React.createClass({
   _onUpdateDateRange: function (dateRangeObject) {
     this.setState(this._getState({
       dateRangeObject: dateRangeObject,
-      studentSchedule: this.props.student.schedule,
+      studentSchedule: this.props.student.mappings[0].schedule,
       groupSchedule: this.state.groupSummary.schedule
     }));
   },
 
   _getState: function (newState) {
-
-    var defaultState = {
+  var defaultState = {
       groupId : this.state && this.state.groupId || this.props.groupId,
       dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject,
-      studentSchedule: assign({}, this.state && this.state.studentSchedule || this.props.student.schedule),
+      studentSchedule: assign({}, this.state && this.state.studentSchedule || this.props.student.mappings[0].schedule),
       scheduleState: this.state && this.state.scheduleState || 'view',
       mappingState: this.state && this.state.mappingState || 'view'
     }

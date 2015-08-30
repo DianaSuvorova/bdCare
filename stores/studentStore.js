@@ -199,8 +199,7 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
         var student = assign(
           {},
           _students[mapping.studentId],
-          {group: _groups[mapping.groupId].name},
-          {groupId: _groups[mapping.groupId].id},
+          {group: _groups[mapping.groupId]},
           {schedule: schedule}
         )
 
@@ -211,35 +210,46 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     return studentsMap;
   },
 
-  getStudentByStudentIdAndDateRange: function (studentId, dateRange) {
+  getStudentByStudentIdAndDateRange: function (studentId, dateRange, groupId) {
+    //groupId is only for a new student
     var startDate = dateRange[0];
     var endDate = dateRange[1];
     if (startDate > endDate) {
       console.error('Requested start date=', startDate, ' is later than end date=', endDate);
       return null;
     }
-    //if multiple mappings this returns the lattest
+
+    if (studentId === 'new') {
+      return this.getNewStudent(groupId);
+    }
+
+    //return all mappings for a given range
     var student;
     var listOfDates = createListOfDatesForDateRange(dateRange);
-
+    var mappings = [];
     listOfDates.forEach(function(date) {
-      var groupMappings = getMappingsByStudentIdAndDate(studentId, date);
-      groupMappings.forEach(function (mapping) {
+      var studentMappings = getMappingsByStudentIdAndDate(studentId, date);
+      studentMappings.forEach(function (mapping) {
         var schedule = {};
 
         _slotsDict.forEach(function (slot) {
           schedule[slot] = mapping[slot]
         });
 
-        student = assign(
-          {},
-          _students[mapping.studentId],
-          {group: _groups[mapping.groupId].name},
-          {schedule: schedule}
-        )
+        mappings.push({
+          schedule: schedule,
+          groupId: mapping.groupId,
+          startDate : mapping.start_date
+        });
 
-      })
+      });
     });
+
+    student = assign(
+      {},
+      _students[studentId],
+      {mappings: mappings}
+    )
 
     return student;
   },
@@ -274,7 +284,7 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
   },
 
 
-  getNewStudent : function () {
+  getNewStudent : function (groupId) {
     var emptySchedule = {};
     _slotsDict.forEach(function (slot){
         emptySchedule[slot] = 0;
@@ -284,10 +294,13 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
       id: 'new',
       name: null,
       birthbirthdate: null,
-      schedule: emptySchedule
-    }
+      mappings: [
+        {schedule: emptySchedule,
+        groupId: groupId,
+        startDate : new Date()}
+      ]
+    };
   }
-
 });
 
 studentStore.dispatchToken = Dispatcher.register( function (action) {
