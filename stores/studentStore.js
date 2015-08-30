@@ -46,6 +46,13 @@ function getMappingsByGroupdIdAndDate(groupId, date) {
   });
 }
 
+function getMappingsByStudentId(studentId) {
+  return _mappings.filter(function (mapping) {
+    return (mapping.studentId === studentId)
+  });
+}
+
+
 function getMappingsByStudentIdAndDate(studentId, date) {
   return _mappings.filter(function (mapping) {
     return (mapping.studentId === studentId)
@@ -209,14 +216,8 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     return studentsMap;
   },
 
-  getStudentByStudentIdAndDateRange: function (studentId, dateRange, groupId) {
+  getStudentByStudentIdAndDateRange: function (studentId, groupId) {
     //groupId is only for a new student
-    var startDate = dateRange[0];
-    var endDate = dateRange[1];
-    if (startDate > endDate) {
-      console.error('Requested start date=', startDate, ' is later than end date=', endDate);
-      return null;
-    }
 
     if (studentId === 'new') {
       return this.getNewStudent(groupId);
@@ -224,24 +225,21 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
 
     //return all mappings for a given range
     var student;
-    var listOfDates = createListOfDatesForDateRange(dateRange);
     var mappings = [];
-    listOfDates.forEach(function(date) {
-      var studentMappings = getMappingsByStudentIdAndDate(studentId, date);
-      studentMappings.forEach(function (mapping) {
-        var schedule = {};
+    var studentMappings = getMappingsByStudentId(studentId);
+    studentMappings.forEach(function (mapping) {
+      var schedule = {};
 
-        _slotsDict.forEach(function (slot) {
-          schedule[slot] = mapping[slot]
-        });
-
-        mappings.push({
-          schedule: schedule,
-          groupId: mapping.groupId,
-          startDate : mapping.start_date
-        });
-
+      _slotsDict.forEach(function (slot) {
+        schedule[slot] = mapping[slot]
       });
+
+      mappings.push({
+        schedule: schedule,
+        groupId: mapping.groupId,
+        startDate : mapping.start_date
+      });
+
     });
 
     student = assign(

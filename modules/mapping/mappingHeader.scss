@@ -1,0 +1,7 @@
+div.mappingHeader {
+  display: flex;
+  & > span {
+    text-align: left;
+    padding: 0 $unit / 2;
+  }
+}

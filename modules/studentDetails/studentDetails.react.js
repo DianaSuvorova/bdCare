@@ -2,13 +2,16 @@ var React = require('react');
 var $ = require('jquery-browserify');
 var ClassNames = require('classnames');
 var assign = require('object-assign');
+var Util = require('../util');
 
 var Calendar = require('../calendar/calendar.react');
 var CalendarHeader = require('../calendar/calendarHeader.react');
 var MonthPicker = require('../monthPicker/monthPicker.react');
 var GroupPicker = require('../groupPicker/groupPicker.react');
 var Capacity = require('../capacityCubes/capacityCubes.react');
-var ActionEditable = require('../actionEditable/actionEditable.react')
+var ActionEditable = require('../actionEditable/actionEditable.react');
+var Mapping = require('../mapping/mapping.react');
+var MappingHeader = require('../mapping/mappingHeader.react');
 
 var StudentStore = require('../../stores/studentStore');
 
@@ -38,6 +41,13 @@ var studentDetails = module.exports = React.createClass({
       <GroupPicker updateGroup = {this._onUpdateGroup} group = {this.props.groups[this.state.groupId]} groups = {this.props.groups}/> :
       <span className={'groupPicker'}>{this.props.groups[this.state.groupId].name}</span> ;
 
+    console.log(this.props.student.mappings);
+    var i = 0;
+    var mappings = this.props.student.mappings.map(function (mapping) {
+        return <Mapping key = {'mapping_'+(i++)} mapping = {mapping} groups = {this.props.groups}/>;
+    }.bind(this));
+
+
     return (
       <div id = 'studentDetails'>
         <div className = 'container'>
@@ -48,12 +58,13 @@ var studentDetails = module.exports = React.createClass({
                 <ActionEditable/>
               </div>
               <div className = 'birthdate editableInline'>
-                <input defaultValue = {this._formatDate(this.props.student.birthdate)} placeholder = {'birthdate'}></input>
+                <input defaultValue = {Util.formatDate(this.props.student.birthdate)} placeholder = {'birthdate'}></input>
                 <ActionEditable/>
               </div>
             </div>
-            <div className = 'row section calendarHeader'>
-              <CalendarHeader/>
+            <div className = 'row section'> <MappingHeader/> </div>
+            <div className = 'row'>
+              {mappings}
             </div>
             <div className = 'row section'>
               <div className = {classes.editableInlineSchedule}>
@@ -65,7 +76,7 @@ var studentDetails = module.exports = React.createClass({
             <div className = {classes.mappingUpdate}>
               <span>{'Please confirm effective date: '}</span>
               <div className = {classes.editableInlineMappingDate}>
-                <input defaultValue = {this._formatDate(this.state.dateRangeObject.dateRange[0])}></input>
+                <input defaultValue = {Util.formatDate(this.state.dateRangeObject.dateRange[0])}></input>
                 <ActionEditable confirm = {this._mappingActions().confirm} cancel = {this._mappingActions().cancel} active = {true}/>
               </div>
             </div>
@@ -123,11 +134,6 @@ var studentDetails = module.exports = React.createClass({
     studentSchedule[diff.slot] += diff.value;
 
     this.setState(this._getState({studentSchedule: studentSchedule, groupSchedule: groupSchedule}));
-  },
-
-  _formatDate: function (date) {
-    var format2Digit = function (number) { return ("0" + number).slice(-2); };
-    if (date) return format2Digit(date.getMonth() + 1) + '/' + format2Digit(date.getDate()) + '/' + date.getFullYear();
   },
 
   _onCloseEditStudent: function () {
