@@ -62,9 +62,15 @@ var studentDetails = module.exports = React.createClass({
                 <ActionEditable/>
               </div>
             </div>
-            <div className = 'row section'> <MappingHeader/> </div>
-            <div className = 'row'>
+            <div className = 'row section'>
+              <MappingHeader/>
               {mappings}
+            </div>
+            <div className = 'row addNewMapping'>
+              <span className = 'actionItemText addNewMapping' onClick = {this._onAddNewMapping}>
+                <span>Transfer</span>
+                <i className = 'fa fa-subway'></i>
+              </span>
             </div>
             <div className = 'row section'>
               <div className = {classes.editableInlineSchedule}>

@@ -14,6 +14,7 @@ var mapping = module.exports = React.createClass({
         <span className={'groupPicker'}>{this.props.groups[this.props.mapping.groupId].name}</span>
         <Calendar schedule = {this.props.mapping.schedule} editable = {false}/>
         <span>{Util.formatDate(this.props.mapping.startDate)}</span>
+        <span>{this.props.mapping.status}</span>
       </div>
     );
   }

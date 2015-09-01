@@ -78,6 +78,26 @@ span.actionItem {
   }
 }
 
+span.actionItemText {
+  display: flex;
+  color: $color-gray;
+  cursor: pointer;
+  border: $border-lightgray;
+  border-radius: $unit / 10;
+  line-height: $unit;
+  padding: 2px;
+  i {
+    line-height: $unit;
+    display: inline-block;
+    width: $unit;
+    height: $unit;
+  }
+  &:hover {
+    background-color: $color-active;
+    color: white;
+  }
+}
+
 .editableInline {
   padding-right: $unit;
   margin-right: $unit;

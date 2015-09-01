@@ -223,7 +223,7 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
       return this.getNewStudent(groupId);
     }
 
-    //return all mappings for a given range
+    //return all mappings sorted by date
     var student;
     var mappings = [];
     var studentMappings = getMappingsByStudentId(studentId);
@@ -234,12 +234,24 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
         schedule[slot] = mapping[slot]
       });
 
+      var currentDate = new Date();
+      var status;
+      if (currentDate > mapping.start_date  && (!mapping.end_date || currentDate < mapping.end_date)) status = 'current';
+      else if (currentDate > mapping.end_date) status = 'past';
+      else if (currentDate < mapping.start_date) status = 'projected'
+
       mappings.push({
         schedule: schedule,
         groupId: mapping.groupId,
-        startDate : mapping.start_date
+        startDate: mapping.start_date,
+        endDate: mapping.end_date,
+        status: status 
       });
 
+    });
+
+    mappings.sort(function (a,b) {
+      return a.startDate- b.startDate
     });
 
     student = assign(

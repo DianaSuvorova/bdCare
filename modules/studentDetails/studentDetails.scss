@@ -1,14 +1,14 @@
 div#studentDetails {
   $border-radius: $unit/5;
 
-  width: 100%;
-  height: 100%;
   position: absolute;
   top: 0; left:0;
   overflow: hidden;
   background-color: white;
   text-align: center;
   margin: auto;
+  display: flex;
+  
   & > div.container {
     border: $border-lightgray;
     border-radius: $border-radius;
@@ -27,6 +27,7 @@ div#studentDetails {
       & > div.row {
         flex: 1 0 100%;
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         &.section { margin-top : $unit / 2; }
         &.calendarHeader > div.calendarHeader { margin-left: $unit * 2; }

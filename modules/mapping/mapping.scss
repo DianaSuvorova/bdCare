@@ -1,7 +1,11 @@
 div.mapping {
   display: flex;
   & > span {
+    width: $unit * 3;
     text-align: left;
     padding: 0 $unit / 2;
+  }
+  &.mappingHeader {
+    border-bottom: $border-lightgray;
   }
 }
