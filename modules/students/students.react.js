@@ -72,7 +72,7 @@ var students = module.exports = React.createClass({
     var activeStudentId = activeStudentId || this.state && this.state.activeStudentId;
     var activeStudent = null;
     if (activeStudentId) {
-      activeStudent = StudentStore.getStudentByStudentIdAndDateRange(activeStudentId, dateRangeObject.dateRange, groupId);
+      activeStudent = StudentStore.getStudentByStudentIdAndDateRange(activeStudentId, groupId);
     }
 
     return {

@@ -1,5 +1,7 @@
 div#studentDetails {
   $border-radius: $unit/5;
+  $mappingRowWidth: calc(#{$unit * 5 * 3 + $unit * 2 * 5} + 25px);
+
 
   position: absolute;
   top: 0; left:0;
@@ -8,7 +10,8 @@ div#studentDetails {
   text-align: center;
   margin: auto;
   display: flex;
-  
+  height: 100%;
+
   & > div.container {
     border: $border-lightgray;
     border-radius: $border-radius;
@@ -30,25 +33,28 @@ div#studentDetails {
         flex-wrap: wrap;
         justify-content: center;
         &.section { margin-top : $unit / 2; }
-        &.calendarHeader > div.calendarHeader { margin-left: $unit * 2; }
-        &.availableSchedule > div.calendar {margin-right: $unit * 2;}
-        & > div.editableInline.schedule {
-          padding-left: $unit * 4;
-          position: relative;
-          & > span.groupPicker > select, & > span.groupPicker {
-            text-align: left;
-            position: absolute;
-            top: 0; left: 0;
+        &.addNewMapping {
+            & > div.container {
+              width: $mappingRowWidth;
+            & > span.buttonContainer {
+              float: right;
+              display: flex;
+              align-content: center;
+              width: $unit * 4;
+              padding: 0 $unit / 2;
+            }
           }
         }
-        &.mappingUpdate {
-          transition: height $transition-duration ease-in;
-          height: 0;
-          overflow: hidden;
-          span.actionEditableItem{ display: none; }
-          &.active {
-            height: $unit * 1.5;
-            span.actionEditableItem{ display: inline-block; }
+        & > div.groupMapping {
+          margin-top : $unit / 2;
+          display: flex;
+          & > span {
+            width: $unit * 4;
+            padding: 0 $unit / 2;
+            &.group {
+              line-height: $unit / 2;
+              text-align: left;
+            }
           }
         }
       }

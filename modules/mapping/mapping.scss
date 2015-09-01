@@ -1,11 +1,16 @@
 div.mapping {
   display: flex;
-  & > span {
-    width: $unit * 3;
+  & > span, input {
+    width: $unit * 4;
     text-align: left;
     padding: 0 $unit / 2;
+    line-height: $unit;
   }
-  &.mappingHeader {
+  &.header {
     border-bottom: $border-lightgray;
+  }
+  &.editable {
+    padding-right: 0;
+    margin-right: 0;
   }
 }

@@ -92,7 +92,7 @@ span.actionItemText {
     width: $unit;
     height: $unit;
   }
-  &:hover {
+  &:hover, &.active {
     background-color: $color-active;
     color: white;
   }
@@ -108,8 +108,9 @@ span.actionItemText {
   &:hover, &.active {
     border: 1px solid $color-active;
     & > span.actionEditable > span.actionEditableItem {
-      color: $color-active;
-      &.warning { color: $color-warning; }
+      color: $color-gray;
+      &:hover { color: $color-active;}
+      &.warning:hover { color: $color-warning; }
     }
   }
   &.active {

@@ -7,7 +7,7 @@ var EventEmitter = require('events').EventEmitter;
 var OffLineData = require('./offlineData');
 
 var CHANGE_EVENT = 'change';
-var isOffline = true;
+var isOffline = false;
 
 var _students = {};
 var _groups = {};
@@ -36,6 +36,10 @@ function setData(students, groups, mappings) {
   });
 
   _isEmpty = false;
+}
+
+function addMapping(mapping) {
+  _mappings.push(mapping.attributes);
 }
 
 function getMappingsByGroupdIdAndDate(groupId, date) {
@@ -238,20 +242,21 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
       var status;
       if (currentDate > mapping.start_date  && (!mapping.end_date || currentDate < mapping.end_date)) status = 'current';
       else if (currentDate > mapping.end_date) status = 'past';
-      else if (currentDate < mapping.start_date) status = 'projected'
+      else if (currentDate < mapping.start_date) status = 'projected';
 
       mappings.push({
         schedule: schedule,
+        studentId: mapping.studentId,
         groupId: mapping.groupId,
         startDate: mapping.start_date,
         endDate: mapping.end_date,
-        status: status 
+        status: status
       });
 
     });
 
     mappings.sort(function (a,b) {
-      return a.startDate- b.startDate
+      return a.startDate - b.startDate
     });
 
     student = assign(
@@ -293,7 +298,7 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
   },
 
 
-  getNewStudent : function (groupId) {
+  getNewStudent: function (groupId) {
     var emptySchedule = {};
     _slotsDict.forEach(function (slot){
         emptySchedule[slot] = 0;
@@ -305,10 +310,25 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
       birthbirthdate: null,
       mappings: [
         {schedule: emptySchedule,
-        groupId: groupId,
-        startDate : new Date()}
+          studentId: 'new',
+          status: 'new',
+          groupId: groupId,
+          startDate : new Date()}
       ]
     };
+  },
+
+  getNewMapping: function (student) {
+    var latestMapping = student.mappings[student.mappings.length -1];
+    var mapping = {
+      schedule: assign({}, latestMapping.schedule),
+      groupId: latestMapping.groupId,
+      studentId: latestMapping.studentId,
+      startDate: latestMapping.endDate || new Date(),
+      endDate: null,
+    };
+
+    return mapping;
   }
 });
 
@@ -318,5 +338,10 @@ studentStore.dispatchToken = Dispatcher.register( function (action) {
       setData(action.students, action.groups, action.mappings);
       studentStore.emitChange();
       break;
+    case Constants.API_ADD_MAPPING_SUCCESS:
+      addMapping(action.mapping);
+      studentStore.emitChange();
+      break;
+
   }
 });

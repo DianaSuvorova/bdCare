@@ -8,7 +8,7 @@ var mappingHeader = module.exports = React.createClass({
 
   render: function () {
     return (
-      <div className = 'mapping mappingHeader'>
+      <div className = 'mapping header'>
         <span>{'Group'}</span>
         <CalendarHeader/>
         <span>{'Start Date'}</span>

@@ -10,5 +10,9 @@ var studentAction = module.exports = {
 
   saveStudent: function (studentEntry) {
     Api.saveStudent(studentEntry)
+  },
+
+  addMapping: function (mapping) {
+    Api.addMapping(mapping);
   }
 }

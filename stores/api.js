@@ -37,5 +37,25 @@ var Api = module.exports = {
     };
 
     student.save({name: studentEntry.name, birthdate: studentEntry.birthdate}).then(onSuccess, onError);
+  },
+
+  addMapping: function (mappingEntry) {
+    var pMapping = Parse.Object.extend('Mapping');
+    var mapping = new pMapping();
+
+    var onSuccess = function (mapping) {
+      Dispatcher.dispatch({
+        actionType: Constants.API_ADD_MAPPING_SUCCESS,
+        mapping: mapping
+      });
+
+    };
+
+    var onError = function (mapping, error) {
+      console.log(error)
+    };
+
+    var pMappingEntry = assign({}, {groupId: mappingEntry.groupId, studentId: mappingEntry.studentId, start_date: mappingEntry.startDate}, mappingEntry.schedule);
+    mapping.save(pMappingEntry).then(onSuccess, onError);
   }
 };
