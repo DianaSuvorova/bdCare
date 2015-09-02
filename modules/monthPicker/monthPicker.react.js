@@ -1,5 +1,5 @@
 var React = require('react');
-var $ = require('jquery-browserify');
+var $ = require('jquery');
 var ClassNames = require('classnames');
 var DateRangeStore = require('../../stores/dateRangeStore');
 

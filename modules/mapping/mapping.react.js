@@ -1,5 +1,5 @@
 var React = require('react');
-var $ = require('jquery-browserify');
+var $ = require('jquery');
 var ClassNames = require('classnames');
 var assign = require('object-assign');
 var Util = require('../util');

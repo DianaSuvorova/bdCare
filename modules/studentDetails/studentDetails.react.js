@@ -1,5 +1,5 @@
 var React = require('react');
-var $ = require('jquery-browserify');
+var $ = require('jquery');
 var ClassNames = require('classnames');
 var assign = require('object-assign');
 var Util = require('../util');
@@ -7,6 +7,7 @@ var Util = require('../util');
 var Calendar = require('../calendar/calendar.react');
 var CalendarHeader = require('../calendar/calendarHeader.react');
 var MonthPicker = require('../monthPicker/monthPicker.react');
+var DatePicker = require('../datePicker/datePicker.react');
 var GroupPicker = require('../groupPicker/groupPicker.react');
 var Capacity = require('../capacityCubes/capacityCubes.react');
 var ActionEditable = require('../actionEditable/actionEditable.react');
@@ -70,7 +71,7 @@ var studentDetails = module.exports = React.createClass({
                 <ActionEditable/>
               </div>
               <div className = 'birthdate editableInline'>
-                <input defaultValue = {Util.formatDate(this.props.student.birthdate)} placeholder = {'birthdate'}></input>
+                <DatePicker defaultValue = {this.props.student.birthdate}/>
                 <ActionEditable/>
               </div>
             </div>
