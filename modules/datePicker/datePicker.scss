@@ -1,3 +1,53 @@
 div.ui-datepicker {
   background-color: white;
+  border: $border-lightgray;
+  border-radius: $unit / 10;
+
+  div.ui-datepicker-header{
+    div.ui-datepicker-title {text-align: center; }
+    a.ui-corner-all {
+      cursor: pointer;
+      width: $unit;
+      height: $unit;
+      padding-left: $unit/2;
+      &.ui-datepicker-prev {
+        float: left;
+        &:before {
+          @extend.cssIcon;
+          content: "\f104"
+        }
+      }
+      &.ui-datepicker-next {
+        float: right;
+        &:before {
+          @extend.cssIcon;
+          content: "\f105"
+        }
+      }
+    }
+  }
+  table.ui-datepicker-calendar {
+    border-spacing: 0;
+    tr {
+      padding: 0;
+    }
+    td {
+      padding: 0;
+      border-top: $border-lightgray;
+      &:not(:last-child) {
+        border-right: $border-lightgray;
+      }
+    }
+    a {
+        display: inline-block;
+        text-decoration: none;
+        text-align: center;
+        color: inherit;
+        width: $unit;
+        height: $unit;
+        &:hover {
+          background-color: transparentize($color-active, 0.5);
+        }
+    }
+  }
 }

@@ -7,7 +7,7 @@ var EventEmitter = require('events').EventEmitter;
 var OffLineData = require('./offlineData');
 
 var CHANGE_EVENT = 'change';
-var isOffline = false;
+var isOffline = true;
 
 var _students = {};
 var _groups = {};

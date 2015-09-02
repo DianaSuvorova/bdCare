@@ -11,7 +11,11 @@ var datePicker = module.exports = React.createClass({
   componentDidMount: function () {
     var el = React.findDOMNode(this);
     var $datepicker = $(el).find('input.datepicker');
-    $datepicker.datepicker();
+    $datepicker.datepicker({
+      prevText: '',
+      nextText: ''
+    });
+
   },
 
   render: function () {
