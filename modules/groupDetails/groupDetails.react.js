@@ -20,7 +20,7 @@ var groupDetails = module.exports = React.createClass({
   render: function () {
     var toolbar = (
       <div className = 'toolbar'>
-        <MonthPicker updateDateRange = {this._onUpdateDateRange} defaultDateRange = {this.state.dateRangeObject.key}/>
+        <MonthPicker updateDateRange = {this._onUpdateDateRange} dateRangeObject = {this.state.dateRangeObject}/>
         <GroupPicker updateGroup = {this._onUpdateGroup} group = {this.props.groups[this.state.groupId]} groups = {this.props.groups}/>
       </div>
     );

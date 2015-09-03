@@ -2,7 +2,6 @@ var React = require('react');
 var $ = require('jquery');
 var ClassNames = require('classnames');
 var MonthPicker = require('../monthPicker/monthPicker.react');
-var DatePicker = require('../datePicker/datePicker.react');
 
 var StudentStore = require('../../stores/studentStore');
 var StudentAction = require('../../stores/studentAction');
@@ -40,8 +39,7 @@ var dashboard = module.exports = React.createClass({
     return (
       <div id = 'dashboard'>
         <div className = 'toolbar'>
-          <DatePicker updateDateRange = {this._onUpdateDateRange} />
-          <MonthPicker updateDateRange = {this._onUpdateDateRange} />
+          <MonthPicker dateRangeObject = {this.state.dateRangeObject} updateDateRange = {this._onUpdateDateRange} />
         </div>
         <div className = 'groups'>{groups}</div>
       </div>

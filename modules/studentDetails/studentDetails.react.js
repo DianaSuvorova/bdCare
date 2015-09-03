@@ -48,7 +48,7 @@ var studentDetails = module.exports = React.createClass({
           <div className = 'groupMapping'>
             <span className='group'>{'Availbale spots in '+ this.props.groups[this.state.newMapping.groupId].name}</span>
             <Calendar schedule = {this.state.groupSchedule} group = {true} editable = {false}/>
-            <MonthPicker updateDateRange = {this._onUpdateDateRange} defaultDateRange = {this.props.dateRangeObject.key}/>
+            <MonthPicker updateDateRange = {this._onUpdateDateRange} dateRangeObject = {this.state.dateRangeObject}/>
             <span className = 'empty'></span>
           </div>
       </div>
@@ -57,40 +57,38 @@ var studentDetails = module.exports = React.createClass({
 
     return (
       <div id = 'studentDetails'>
-        <div className = 'container'>
-          <div className = 'toolbox'>
-            <span className = 'actionItemText warning' onClick = {this._onCloseEditStudent}>
-              <span>Close</span>
-              <i className = 'fa fa-times'></i>
-            </span>
+        <div className = 'toolbox'>
+          <span className = 'actionItemText warning' onClick = {this._onCloseEditStudent}>
+            <span>Close</span>
+            <i className = 'fa fa-times'></i>
+          </span>
+        </div>
+        <div className = 'details'>
+          <div className = 'row section'>
+            <div className = 'name editableInline' >
+              <input defaultValue = {this.props.student.name} placeholder = {'name'}></input>
+              <ActionEditable/>
+            </div>
+            <div className = 'birthdate editableInline'>
+              <DatePicker defaultValue = {Util.formatDate(this.props.student.birthdate)}/>
+              <ActionEditable/>
+            </div>
           </div>
-          <div className = 'details'>
-            <div className = 'row section'>
-              <div className = 'name editableInline' >
-                <input defaultValue = {this.props.student.name} placeholder = {'name'}></input>
-                <ActionEditable/>
-              </div>
-              <div className = 'birthdate editableInline'>
-                <DatePicker defaultValue = {this.props.student.birthdate}/>
-                <ActionEditable/>
-              </div>
-            </div>
-            <div className = 'row section'>
-              <MappingHeader/>
-              {mappings}
-            </div>
-            <div className = 'row addNewMapping'>
-              <div className = 'container'>
-                <span className = 'buttonContainer'>
-                  <span className = {classes.addNewMappingButton} onClick = {this._onToggleAddNewMapping}>
-                    <span>Transfer</span>
-                    <i className = 'fa fa-subway'></i>
-                  </span>
+          <div className = 'row section'>
+            <MappingHeader/>
+            {mappings}
+          </div>
+          <div className = 'row addNewMapping'>
+            <div className = 'container'>
+              <span className = 'buttonContainer'>
+                <span className = {classes.addNewMappingButton} onClick = {this._onToggleAddNewMapping}>
+                  <span>Transfer</span>
+                  <i className = 'fa fa-subway'></i>
                 </span>
-              </div>
+              </span>
             </div>
-              {newMapping}
           </div>
+            {newMapping}
         </div>
       </div>
     );

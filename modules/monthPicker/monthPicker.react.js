@@ -1,28 +1,44 @@
 var React = require('react');
 var $ = require('jquery');
+var assign = require('object-assign');
 var ClassNames = require('classnames');
 var DateRangeStore = require('../../stores/dateRangeStore');
 
 var monthPicker = module.exports = React.createClass({
 
   _dateRangeMap: DateRangeStore.getDateRangeMap(),
+  _dateRangeKeys: DateRangeStore.getDateRangeKeys(),
+
 
   render: function () {
+    this.idx = this._dateRangeKeys.indexOf(this.props.dateRangeObject.key);
+
+    var classes = {
+      prev: ClassNames({
+        'prev' : true,
+        'active' : this.idx > 0
+      }),
+      next:  ClassNames({
+        'next' : true,
+        'active' : this.idx < this._dateRangeKeys.length - 1
+      })
+    };
+
     return (
       <span className = {'monthPicker'}>
-        <select onChange={this._onSelectDateRange} defaultValue = {this.props.defaultDateRange}>
-          {
-            Object.keys(this._dateRangeMap).map(function(dateRange){
-              return <option key = {dateRange} value = {dateRange}>{dateRange}</option>;
-            }.bind(this))
-          }
-        </select>
+        <span className = {classes.prev} onClick = {this._onClickPrev}><i className ='fa fa-angle-left'></i></span>
+        <span className = 'month'>{this.props.dateRangeObject.key}</span>
+        <span className = {classes.next} onClick = {this._onClickNext}><i className ='fa fa-angle-right'></i></span>
       </span>
     )
   },
 
-  _onSelectDateRange: function (event) {
-    this.props.updateDateRange(this._dateRangeMap[event.target.value]);
+  _onClickPrev: function () {
+    this.props.updateDateRange(this._dateRangeMap[this._dateRangeKeys[this.idx - 1]]);
+  },
+
+  _onClickNext: function () {
+    this.props.updateDateRange(this._dateRangeMap[this._dateRangeKeys[this.idx + 1]]);
   }
 
 });

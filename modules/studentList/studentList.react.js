@@ -6,7 +6,6 @@ var assign = require('object-assign');
 var StudentStore = require('../../stores/studentStore');
 
 var Student = require('../student/student.react')
-var MonthPicker = require('../monthPicker/monthPicker.react');
 var GroupPicker = require('../groupPicker/groupPicker.react');
 var CalendarHeader = require('../calendar/CalendarHeader.react');
 

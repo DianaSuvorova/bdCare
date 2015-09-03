@@ -1,7 +1,7 @@
 div.mapping {
   display: flex;
   & > span, input {
-    width: $unit * 4;
+    width: $unit * 6;
     text-align: left;
     padding: 0 $unit / 2;
     line-height: $unit;

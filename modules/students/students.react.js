@@ -39,13 +39,15 @@ var students = module.exports = React.createClass({
   },
 
   render: function () {
-    var studentDetails = (this.state.activeStudentId) ? <StudentDetails student = {this.state.activeStudent} groups = {this.state.groups} dateRangeObject = {this.state.dateRangeObject} closeStudentDetails = {this._closeStudentDetails} groupId = {this.state.groupId}/> : null;
+    var content = (this.state.activeStudentId) ?
+      <StudentDetails student = {this.state.activeStudent} groups = {this.state.groups} dateRangeObject = {this.state.dateRangeObject} closeStudentDetails = {this._closeStudentDetails} groupId = {this.state.groupId}/> :
+      <GroupDetails groupId = {this.state.groupId} dateRangeObject = {this.state.dateRangeObject} openStudent = {this._openStudentDetails} activeStudent = {this.state.activeStudent} groups = {this.state.groups}/>
+
 
     var students = (StudentStore.isEmpty()) ?
       null :
       (<div id = 'students'>
-        <GroupDetails groupId = {this.state.groupId} dateRangeObject = {this.state.dateRangeObject} openStudent = {this._openStudentDetails} activeStudent = {this.state.activeStudent} groups = {this.state.groups}/>
-        {studentDetails}
+        {content}
       </div>)
 
     return students;

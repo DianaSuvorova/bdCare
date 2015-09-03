@@ -1,6 +1,9 @@
 div#dashboard {
   width: 100%;
-  div.tooolbar {}
+  div.toolbar {
+    display: flex;
+    justify-content: space-around;
+  }
   div.groups {
     display: flex;
     flex-flow: row wrap;

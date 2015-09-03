@@ -37,6 +37,10 @@ var dateRangeStore = module.exports = assign({}, EventEmitter.prototype, {
     return _dateRangeMap;
   },
 
+  getDateRangeKeys: function () {
+    return Object.keys(_dateRangeMap);
+  },
+
   getCurrentDateRangeObject : function () {
     if (!Object.keys(_dateRangeMap).length) {
        setDateRangeMap();

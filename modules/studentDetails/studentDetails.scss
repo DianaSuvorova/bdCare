@@ -1,63 +1,51 @@
 div#studentDetails {
   $border-radius: $unit/5;
-  $mappingRowWidth: calc(#{$unit * 5 * 3 + $unit * 2 * 5} + 25px);
+  $mappingRowWidth: calc(#{$unit * 7 * 3 + $unit * 2 * 5} + 25px);
 
-
-  position: absolute;
-  top: 0; left:0;
-  overflow: hidden;
-  background-color: white;
-  text-align: center;
-  margin: auto;
+  border: $border-lightgray;
+  border-radius: $border-radius;
+  margin: $unit / 2;
+  padding: $unit / 2;
   display: flex;
-  height: 100%;
-
-  & > div.container {
-    border: $border-lightgray;
-    border-radius: $border-radius;
-    margin: $unit / 2;
-    padding: $unit / 2;
-    position: relative;
+  flex-direction: column;
+  & > div.toolbox {
+     margin-top : $unit / 2;
+    & > span { float: right; }
+  }
+  & > div.details {
     display: flex;
-    flex-direction: column;
-    & > div.toolbox {
-       margin-top : $unit / 2;
-      & > span { float: right; }
-    }
-    & > div.details {
+    flex-wrap: wrap;
+    & > div.row {
+      flex: 1 0 100%;
       display: flex;
       flex-wrap: wrap;
-      & > div.row {
-        flex: 1 0 100%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        &.section { margin-top : $unit / 2; }
-        &.addNewMapping {
-            & > div.container {
-              width: $mappingRowWidth;
-            & > span.buttonContainer {
-              float: right;
-              display: flex;
-              align-content: center;
-              width: $unit * 4;
-              padding: 0 $unit / 2;
-            }
+      justify-content: center;
+      &.section { margin-top : $unit / 2; }
+      &.addNewMapping {
+          & > div.container {
+            width: $mappingRowWidth;
+          & > span.buttonContainer {
+            float: right;
+            display: flex;
+            align-content: center;
+            width: $unit * 6;
+            padding: 0 $unit / 2;
           }
         }
-        & > div.groupMapping {
-          margin-top : $unit / 2;
-          display: flex;
-          & > span {
-            width: $unit * 4;
-            padding: 0 $unit / 2;
-            &.group {
-              line-height: $unit / 2;
-              text-align: left;
-            }
+      }
+      & > div.groupMapping {
+        margin-top : $unit / 2;
+        display: flex;
+        & > span {
+          width: $unit * 6;
+          padding: 0 $unit / 2;
+          &.group {
+            line-height: $unit / 2;
+            text-align: left;
           }
         }
       }
     }
   }
+
 }

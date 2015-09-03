@@ -91,6 +91,7 @@ span.actionItemText {
     display: inline-block;
     width: $unit;
     height: $unit;
+    text-align: center;
   }
   &:hover, &.active {
     background-color: $color-active;
