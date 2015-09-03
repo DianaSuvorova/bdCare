@@ -37,6 +37,16 @@ div.ui-datepicker {
       &:not(:last-child) {
         border-right: $border-lightgray;
       }
+      &.ui-datepicker-today {
+        font-weight: bold;
+      }
+      &.ui-datepicker-current-day{
+        background-color: transparentize($color-active, 0.5);
+        font-weight: bold;
+      }
+      &:hover {
+        background-color: transparentize($color-active, 0.5);
+      }
     }
     a {
         display: inline-block;
@@ -45,9 +55,6 @@ div.ui-datepicker {
         color: inherit;
         width: $unit;
         height: $unit;
-        &:hover {
-          background-color: transparentize($color-active, 0.5);
-        }
     }
   }
 }

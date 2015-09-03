@@ -70,7 +70,7 @@ var studentDetails = module.exports = React.createClass({
               <ActionEditable/>
             </div>
             <div className = 'birthdate editableInline'>
-              <DatePicker defaultValue = {Util.formatDate(this.props.student.birthdate)}/>
+              <DatePicker defaultDate = {this.props.student.birthdate}/>
               <ActionEditable/>
             </div>
           </div>
