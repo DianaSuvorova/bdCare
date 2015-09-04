@@ -42,6 +42,10 @@ function addMapping(mapping) {
   _mappings.push(mapping.attributes);
 }
 
+function updateStudent(student) {
+  _students[student.id] = assign({}, {id: student.id}, student.attributes)
+}
+
 function getMappingsByGroupdIdAndDate(groupId, date) {
   return _mappings.filter(function (mapping) {
     return (mapping.groupId === groupId)
@@ -342,6 +346,9 @@ studentStore.dispatchToken = Dispatcher.register( function (action) {
       addMapping(action.mapping);
       studentStore.emitChange();
       break;
-
+    case Constants.API_UPDATE_STUDENT_SUCCESS:
+      updateStudent(action.student);
+      studentStore.emitChange();
+      break;
   }
 });

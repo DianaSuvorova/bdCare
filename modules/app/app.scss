@@ -114,9 +114,12 @@ span.actionItemText {
       &.warning:hover { color: $color-warning; }
     }
   }
+  & > input { pointer-events: none;}
   &.active {
     padding-right: $unit * 2;
     margin-right: 0;
+    & > input { pointer-events: all;}
+
   }
 }
 

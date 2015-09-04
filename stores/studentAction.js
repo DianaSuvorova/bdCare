@@ -14,5 +14,13 @@ var studentAction = module.exports = {
 
   addMapping: function (mapping) {
     Api.addMapping(mapping);
+  },
+
+  updateName: function (studentId, name) {
+    Api.updateName(studentId, name);
+  },
+
+  updateBirthdate: function (studentId, birthdate) {
+    Api.updateBirthdate(studentId, birthdate);
   }
 }

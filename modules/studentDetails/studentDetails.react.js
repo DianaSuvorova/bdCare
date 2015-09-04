@@ -30,6 +30,14 @@ var studentDetails = module.exports = React.createClass({
       addNewMappingButton: ClassNames({
         'actionItemText addNewMapping' : true,
         'active': this.state.newMapping
+      }),
+      nameEditableInline: ClassNames({
+        'name editableInline' : true,
+        'active': this.state.nameState === 'edit'
+      }),
+      birthdateEditableInline: ClassNames({
+        'birthdate editableInline': true,
+        'active': this.state.birthdateState === 'edit'
       })
     }
 
@@ -65,13 +73,13 @@ var studentDetails = module.exports = React.createClass({
         </div>
         <div className = 'details'>
           <div className = 'row section'>
-            <div className = 'name editableInline' >
-              <input defaultValue = {this.props.student.name} placeholder = {'name'}></input>
-              <ActionEditable/>
+            <div className = {classes.nameEditableInline} >
+              <input defaultValue = {this.props.student.name}></input>
+              <ActionEditable edit = {this._nameActions().edit} confirm = {this._nameActions().confirm} cancel = {this._nameActions().cancel} active = {this.state.nameState === 'edit'}/>
             </div>
-            <div className = 'birthdate editableInline'>
+            <div className = {classes.birthdateEditableInline}>
               <DatePicker defaultDate = {this.props.student.birthdate}/>
-              <ActionEditable/>
+              <ActionEditable edit = {this._birthdateActions().edit} confirm = {this._birthdateActions().confirm} cancel = {this._birthdateActions().cancel} active = {this.state.birthdateState === 'edit'}/>
             </div>
           </div>
           <div className = 'row section'>
@@ -102,6 +110,38 @@ var studentDetails = module.exports = React.createClass({
       }.bind(this),
       cancel : function () {
         this.setState(this._getState({newMapping: null}));
+      }.bind(this)
+    };
+  },
+
+  _nameActions: function () {
+    return {
+      edit : function () {
+        this.setState(this._getState({nameState: 'edit'}));
+      }.bind(this),
+      confirm : function () {
+        var name = $(React.findDOMNode(this)).find('.name.editableInline input').val();
+        StudentAction.updateName(this.props.student.id, name);
+        this.setState(this._getState({nameState: 'confirmed'}));
+      }.bind(this),
+      cancel : function () {
+        this.setState(this._getState({nameState: 'canceled'}));
+      }.bind(this)
+    };
+  },
+
+  _birthdateActions: function () {
+    return {
+      edit : function () {
+        this.setState(this._getState({birthdateState: 'edit'}));
+      }.bind(this),
+      confirm : function () {
+        var birthdate = $(React.findDOMNode(this)).find('.birthdate.editableInline input').val();
+        StudentAction.updateBirthdate(this.props.student.id, birthdate);
+        this.setState(this._getState({birthdateState: 'confirmed'}));
+      }.bind(this),
+      cancel : function () {
+        this.setState(this._getState({birthdateState: 'canceled'}));
       }.bind(this)
     };
   },
@@ -145,8 +185,8 @@ var studentDetails = module.exports = React.createClass({
       groupId : this.state && this.state.groupId || this.props.groupId,
       dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject,
       studentSchedule: assign({}, this.state && this.state.studentSchedule || this.props.student.mappings[0].schedule),
-      scheduleState: this.state && this.state.scheduleState || 'view',
-      mappingState: this.state && this.state.mappingState || 'view',
+      nameState: this.state && this.state.nameState || 'view',
+      birthdateState: this.state && this.state.birthdateState || 'view',
       newMapping: this.state && this.state.newMapping || null
     }
 

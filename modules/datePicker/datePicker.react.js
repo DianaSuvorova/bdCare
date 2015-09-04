@@ -11,8 +11,8 @@ var datePicker = module.exports = React.createClass({
   _dateRangeMap: DateRangeStore.getDateRangeMap(),
 
   componentDidMount: function () {
-    var el = React.findDOMNode(this);
-    var $datepicker = $(el).find('input.datepicker');
+    var $datepicker = $(React.findDOMNode(this));
+
     $datepicker.datepicker({
       prevText: '',
       nextText: ''
@@ -22,9 +22,7 @@ var datePicker = module.exports = React.createClass({
 
   render: function () {
     return (
-      <div>
         <input className = 'datepicker input-small' data-date-format='mm/dd/yyyy' defaultValue = {Util.formatDate(this.props.defaultDate)} />
-      </div>
     )
   }
 
