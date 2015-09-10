@@ -59,7 +59,7 @@ var dashboard = module.exports = React.createClass({
   },
 
   _getState: function (dateRangeObject) {
-    var dateRangeObject = dateRangeObject || this.state && this.state.dateRangeObject;
+    var dateRangeObject = dateRangeObject || this.state && this.state.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
     return {
       dateRangeObject: dateRangeObject,
       groups: StudentStore.getDashboardSummaryForDateRange(dateRangeObject.dateRange)

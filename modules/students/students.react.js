@@ -115,7 +115,7 @@ var students = module.exports = React.createClass({
     var defaultState = {
       groups: groups,
       groupId: this.props.groupId || Object.keys(groups)[0],
-      dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject,
+      dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject || DateRangeStore.getCurrentDateRangeObject(),
       activeStudentId: this.state && this.state.activeStudentId
     };
 
