@@ -7,7 +7,7 @@ var EventEmitter = require('events').EventEmitter;
 var OffLineData = require('./offlineData');
 
 var CHANGE_EVENT = 'change';
-var isOffline = true;
+var isOffline = false;
 
 var _students = {};
 var _groups = {};
@@ -45,6 +45,11 @@ function addMapping(mapping) {
 function updateStudent(student) {
   _students[student.id] = assign({}, {id: student.id}, student.attributes)
 }
+
+function addStudent(student) {
+  _students[student.id] = assign({}, {id: student.id}, student.attributes);
+}
+
 
 function getMappingsByGroupdIdAndDate(groupId, date) {
   return _mappings.filter(function (mapping) {
@@ -350,5 +355,12 @@ studentStore.dispatchToken = Dispatcher.register( function (action) {
       updateStudent(action.student);
       studentStore.emitChange();
       break;
+    case Constants.API_ADD_STUDENT_SUCCESS:
+      addStudent(action.student);
+      addMapping(action.mapping);
+      studentStore.emitChange();
+      break;
+
+
   }
 });

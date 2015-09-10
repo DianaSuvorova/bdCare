@@ -15,7 +15,7 @@ var dashboard = module.exports = React.createClass({
   getInitialState: function () {
     if (StudentStore.isEmpty()) {
       StudentAction.loadStudents(this.props.schoolId);
-      return { groups: [], dateRangeObject: null};
+      return { groups: [], dateRangeObject: DateRangeStore.getCurrentDateRangeObject()};
     }
     else {
       return this._getState();
@@ -59,7 +59,7 @@ var dashboard = module.exports = React.createClass({
   },
 
   _getState: function (dateRangeObject) {
-    var dateRangeObject = dateRangeObject || this.state && this.state.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
+    var dateRangeObject = dateRangeObject || this.state && this.state.dateRangeObject;
     return {
       dateRangeObject: dateRangeObject,
       groups: StudentStore.getDashboardSummaryForDateRange(dateRangeObject.dateRange)

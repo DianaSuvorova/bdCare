@@ -8,8 +8,8 @@ var studentAction = module.exports = {
     Api.getStudents(schoolId);
   },
 
-  saveStudent: function (studentEntry) {
-    Api.saveStudent(studentEntry)
+  addStudent: function (student, mapping) {
+    Api.addStudent(student, mapping);
   },
 
   addMapping: function (mapping) {

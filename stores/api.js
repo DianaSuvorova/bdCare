@@ -30,26 +30,34 @@ var Api = module.exports = {
 
   },
 
-  saveStudent: function(studentEntry) {
+  addStudent: function(studentEntry, mappingEntry) {
     var pStudent = Parse.Object.extend('Student');
     var student = new pStudent();
 
     var onSuccess = function (student) {
-      console.log(student)
-    };
+      var onMappingSuccess = function (mapping) {
+        Dispatcher.dispatch({
+          actionType: Constants.API_ADD_STUDENT_SUCCESS,
+          student: student,
+          mapping: mapping
+        });
+      };
+      this.addMapping(assign(mappingEntry, {studentId: student.id}), onMappingSuccess);
+
+    }.bind(this);
 
     var onError = function (student, error) {
       console.log(error)
     };
 
-    student.save({name: studentEntry.name, birthdate: studentEntry.birthdate}).then(onSuccess, onError);
+    student.save({name: studentEntry.name, birthdate: new Date(studentEntry.birthdate)}).then(onSuccess, onError);
   },
 
-  addMapping: function (mappingEntry) {
+  addMapping: function (mappingEntry, onSuccess) {
     var pMapping = Parse.Object.extend('Mapping');
     var mapping = new pMapping();
 
-    var onSuccess = function (mapping) {
+    var onSuccess = onSuccess || function (mapping) {
       Dispatcher.dispatch({
         actionType: Constants.API_ADD_MAPPING_SUCCESS,
         mapping: mapping

@@ -11,7 +11,7 @@ var monthPicker = module.exports = React.createClass({
 
 
   render: function () {
-    this.idx = this._dateRangeKeys.indexOf(this.props.dateRangeObject.key);
+    this.idx = this.props.dateRangeObject && this._dateRangeKeys.indexOf(this.props.dateRangeObject.key);
 
     var classes = {
       prev: ClassNames({

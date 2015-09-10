@@ -13,15 +13,11 @@ var Capacity = require('../capacityCubes/capacityCubes.react');
 
 var groupDetails = module.exports = React.createClass({
 
-  getInitialState: function () {
-    return this._getState(this.props.groupId, this.props.dateRangeObject);
-  },
-
   render: function () {
     var toolbar = (
       <div className = 'toolbar'>
-        <MonthPicker updateDateRange = {this._onUpdateDateRange} dateRangeObject = {this.state.dateRangeObject}/>
-        <GroupPicker updateGroup = {this._onUpdateGroup} group = {this.props.groups[this.state.groupId]} groups = {this.props.groups}/>
+        <MonthPicker updateDateRange = {this._onUpdateDateRange} dateRangeObject = {this.props.dateRangeObject}/>
+        <GroupPicker updateGroup = {this._onUpdateGroup} group = {this.props.groups[this.props.groupId]} groups = {this.props.groups}/>
       </div>
     );
 
@@ -29,39 +25,23 @@ var groupDetails = module.exports = React.createClass({
       <div id = 'groupDetails'>
         <div className = 'summary'>
           {toolbar}
-          <Capacity schedule = {this.state.groupSummary.schedule} capacity = {this.state.groupSummary.capacity}  header = {false}/>
+          <Capacity schedule = {this.props.groupSummary.schedule} capacity = {this.props.groupSummary.capacity}  header = {false}/>
         </div>
-        <StudentList students = {this.state.students} openStudent = {this._openStudent}/>
+        <StudentList students = {this.props.students} openStudent = {this._openStudent}/>
       </div>
       );
   },
 
   _openStudent: function (studentId) {
-    this.props.openStudent (this.state.dateRangeObject, this.state.groupId, studentId)
+    this.props.openStudentDetails(studentId)
   },
 
   _onUpdateGroup: function (group) {
-    this.setState(this._getState(group.id, null));
+    this.props.updateGroup(group.id);
   },
 
   _onUpdateDateRange: function (dateRangeObject) {
-    this.setState(this._getState(null, dateRangeObject));
-  },
-
-  _getState: function (groupId, dateRangeObject) {
-    var groupId = groupId || this.state.groupId;
-    var dateRangeObject = dateRangeObject || this.state.dateRangeObject;
-
-    var groupSummary = StudentStore.getGroupSummaryForGroupIdAndDateRange(groupId, dateRangeObject.dateRange);
-    var students = StudentStore.getStudentsMapForGroupIdAndDateRange(groupId, dateRangeObject.dateRange);
-
-    return {
-      groupId: groupId,
-      dateRangeObject: dateRangeObject,
-      groupSummary: groupSummary,
-      students: students
-    };
-  },
-
+    this.props.updateDateRange(dateRangeObject);
+  }
 
 });

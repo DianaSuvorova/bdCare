@@ -11,12 +11,16 @@ var DatePicker = require('../datePicker/datePicker.react');
 var mappingEditable = module.exports = React.createClass({
 
   render: function () {
+    var actionEditable = (this.props.mappingActions) ?
+        <ActionEditable confirm = {this.props.mappingActions().confirm} cancel = {this.props.mappingActions().cancel} active = {true}/> :
+        null;
+
     return (
       <div className = 'mapping editable editableInline active'>
         <GroupPicker updateGroup = {this.props.updateGroup} group = {this.props.groups[this.props.mapping.groupId]} groups = {this.props.groups}/>
         <Calendar schedule = {this.props.mapping.schedule} editable = {true} updateSchedule = {this.props.updateSchedule}/>
         <DatePicker defaultDate = {this.props.mapping.startDate} />
-        <ActionEditable confirm = {this.props.mappingActions().confirm} cancel = {this.props.mappingActions().cancel} active = {true}/>
+        {actionEditable}
         <span className = 'empty'></span>
       </div>
     );
