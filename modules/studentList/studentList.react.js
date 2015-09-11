@@ -33,7 +33,7 @@ var studentList = module.exports = React.createClass({
     return (
       <div id = 'studentList'>
           {header}
-          {students}
+      <div className= 'body'>{students}</div>
       </div>
       );
   },

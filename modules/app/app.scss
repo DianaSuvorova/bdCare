@@ -39,7 +39,8 @@ div#app {
   div.content {
     display: flex;
     height: calc(100% - #{$unit * 3});
-    flex: 1 0;
+    flex: 1 1 auto;
+    min-height: $unit * 6;
     align-items: flex-start;
     justify-content: center;
   }

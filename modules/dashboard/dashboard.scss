@@ -5,6 +5,8 @@ div#dashboard {
     justify-content: space-around;
   }
   div.groups {
+    height: calc(100% - #{$unit});
+    overflow-y: auto;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;

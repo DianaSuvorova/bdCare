@@ -1,4 +1,7 @@
 div#studentList {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - #{$unit * 4});
   & > div.header {
    display: flex;
    border-bottom: $border-lightgray;
@@ -18,5 +21,10 @@ div#studentList {
        height: 100%;
       }
     }
+  }
+  & > div.body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    min-height: 0px;
   }
 }
