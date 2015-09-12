@@ -6,6 +6,8 @@
     "browserify": "^10.0.0",
     "classnames": "^2.1.1",
     "events": "^1.0.2",
+    "filesaver": "0.0.13",
+    "filesaver.js": "^0.2.0",
     "flux": "^2.0.3",
     "font-awesome": "^4.3.0",
     "grunt": "^0.4.5",
@@ -26,6 +28,7 @@
     "react-router": "^0.13.3",
     "reactify": "^1.1.1",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.2.1"
+    "watchify": "^3.2.1",
+    "xlsx": "^0.8.0"
   }
 }
