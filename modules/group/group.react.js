@@ -12,7 +12,7 @@ var group = module.exports = React.createClass({
       <div className = 'group' onClick = {this._onClick}>
         <div>{this.props.group.name}</div>
         <div>
-          <span className= 'label'>total capcity: </span>
+          <span className= 'label'>total capacity: </span>
           <span className= 'value'>{this.props.group.capacity} </span>
         </div>
         <CalendarHeader/>
