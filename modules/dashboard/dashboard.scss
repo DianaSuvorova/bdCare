@@ -2,6 +2,10 @@ div#dashboard {
   width: 100%;
   div.toolbar {
     display: flex;
+    justify-content: flex-end;
+  }
+  div.groupsToolbar {
+    display: flex;
     justify-content: space-around;
   }
   div.groups {

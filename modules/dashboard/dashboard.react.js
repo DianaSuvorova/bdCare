@@ -39,11 +39,22 @@ var dashboard = module.exports = React.createClass({
     return (
       <div id = 'dashboard'>
         <div className = 'toolbar'>
+          <span className = 'actionItemText dowload' onClick = {this._onClickDownload}>
+            <span>Download Excel</span>
+            <i className = 'fa fa-file-excel-o'></i>
+          </span>
+        </div>
+        <div className = 'groupsToolbar'>
           <MonthPicker dateRangeObject = {this.state.dateRangeObject} updateDateRange = {this._onUpdateDateRange} />
         </div>
         <div className = 'groups'>{groups}</div>
       </div>
       );
+  },
+
+
+  _onClickDownload: function () {
+    StudentStore.getExcel();
   },
 
   _onChange: function () {

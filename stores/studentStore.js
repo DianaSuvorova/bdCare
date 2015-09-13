@@ -39,7 +39,6 @@ function setData(students, groups, mappings) {
     return mapping.attributes;
   });
 
-  saveToExcel();
   _isEmpty = false;
 }
 
@@ -375,6 +374,10 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     };
 
     return mapping;
+  },
+
+  getExcel: function () {
+    saveToExcel();
   }
 });
 
@@ -442,7 +445,7 @@ function saveToExcel() {
   })
 
   var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
-  FileSaver.saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "test.xlsx")
+  FileSaver.saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "bdCare.xlsx")
 }
 
 function datenum(v, date1904) {
