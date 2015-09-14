@@ -21,7 +21,7 @@ var waitlist = module.exports = React.createClass({
 
     var waitlist = (Object.keys(students).length) ? (
           <div className = 'waitlist'>
-            <span>{'Waitlist students that can be enrolled this month'}</span>
+            <header>{'Waitlist students that can be enrolled this month'}</header>
             <div className = 'waitlistSchedule'>{studentList}</div>
           </div>) :
           null;

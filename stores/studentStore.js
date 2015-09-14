@@ -380,11 +380,11 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     saveToExcel();
   },
 
-  //ddummy implementation of a function.
+  //dummy implementation of a function.
   //Gonna return random students from store.
   getWaitlistForGroupAndDateRange: function () {
     var waitlist = {};
-    numWaitlisted = Math.floor(Math.random() * 3);
+    numWaitlisted = Math.floor(Math.random() * 4);
     var keys =  Object.keys(_students);
     for (var i = 0; i < numWaitlisted; i++) {
       var idx = Math.floor(Math.random() * keys.length);
@@ -394,7 +394,27 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
       waitlist[student.id] = student;
     }
     return waitlist;
+  },
+
+  //another dummy function.
+  getActionablesForGroupAndDateRange: function () {
+    var actionables = [];
+    var numActionables = Math.floor(Math.random() * 3);
+    var keys =  Object.keys(_students);
+    for (var i = 0; i < numActionables; i++) {
+      var idx = Math.floor(Math.random() * keys.length);
+      var student = _students[keys[idx]];
+      var rnd = Math.random();
+      var text;
+      if (rnd < 0.3) text = 'is leaving the daycare next month';
+      else if (rnd < 0.6) text = 'is having birthday party next Friday';
+      else text = 'is ready to move to Preschoolers group';
+      actionables.push({id: '_a' + student.id, text: student.name + ' ' + text})
+    }
+    return actionables;
   }
+
+
 });
 
 studentStore.dispatchToken = Dispatcher.register( function (action) {
