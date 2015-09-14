@@ -378,6 +378,22 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
 
   getExcel: function () {
     saveToExcel();
+  },
+
+  //ddummy implementation of a function.
+  //Gonna return random students from store.
+  getWaitlistForGroupAndDateRange: function () {
+    var waitlist = {};
+    numWaitlisted = Math.floor(Math.random() * 3);
+    var keys =  Object.keys(_students);
+    for (var i = 0; i < numWaitlisted; i++) {
+      var idx = Math.floor(Math.random() * keys.length);
+      var mappingIdx = Math.floor(Math.random() * _mappings.length);
+      var mapping = _mappings[mappingIdx];
+      var student = assign({}, _students[keys[idx]], {schedule: mapping});
+      waitlist[student.id] = student;
+    }
+    return waitlist;
   }
 });
 

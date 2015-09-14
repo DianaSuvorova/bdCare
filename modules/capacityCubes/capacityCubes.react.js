@@ -7,6 +7,10 @@ var capacityCubes = module.exports = React.createClass({
   render: function () {
 
     var classes = {
+      capacity : ClassNames({
+        'capacityCubes': true,
+        'waitlist': this.props.waitlist
+      }),
       slot : function (slot) {
         return 'slot ' + slot.replace('_', ' ')
       }
@@ -14,21 +18,28 @@ var capacityCubes = module.exports = React.createClass({
 
     var cubes = function (slot) {
       var cubes = [];
-      for (var i = 0; i < (this.props.capacity - this.props.schedule[slot]); i++ ) {
-        var cube = <span key = {slot+'_taken_'+i} className = 'cube taken'></span>
-        cubes.push(cube);
+      var cube;
+      if (this.props.waitlist) {
+        if (this.props.schedule[slot]) cube = <span key = {slot+'_taken_'+i} className = 'cube taken'></span>
+        else cube = <span key = {slot+'_available_'+i} className = 'cube available'></span>
+        cubes.push(cube)
       }
+      else {
+        for (var i = 0; i < (this.props.capacity - this.props.schedule[slot]); i++ ) {
+          cube = <span key = {slot+'_taken_'+i} className = 'cube taken'></span>
+          cubes.push(cube);
+        }
 
-      for (var i = 0; i < this.props.schedule[slot]; i++ ) {
-        var cube = <span key = {slot+'_available_'+i} className = 'cube available'></span>
-        cubes.push(cube);
+        for (var i = 0; i < this.props.schedule[slot]; i++ ) {
+          cube = <span key = {slot+'_available_'+i} className = 'cube available'></span>
+          cubes.push(cube);
+        }
       }
-
       return cubes;
     }.bind(this);
 
     return (
-      <div className = 'capacityCubes'>
+      <div className = {classes.capacity}>
         <div className = 'vis'>
           <span className = 'day'>
             <span className = {classes.slot('mon_am')}>{cubes('mon_am')}</span>

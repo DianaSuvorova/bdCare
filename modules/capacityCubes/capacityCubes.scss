@@ -1,7 +1,7 @@
 div.capacityCubes {
 
   $border-radius: $unit/5;
-  
+
   div.vis{
     height: $unit * 3;
     display: flex;
@@ -41,5 +41,12 @@ div.capacityCubes {
         }
       }
     }
+  }
+  &.waitlist {
+    & > div.vis {
+      height: $unit * 0.5;
+      & > span.day > span.slot > span.cube.taken { background-color: $color-gray; }
+    }
+
   }
 }

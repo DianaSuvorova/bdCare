@@ -4,6 +4,8 @@ var ClassNames = require('classnames');
 var Capacity = require('../capacityCubes/capacityCubes.react');
 var CalendarHeader = require('../calendar/calendarHeader.react');
 
+var Waitlist = require('../waitlist/waitlist.react');
+
 var group = module.exports = React.createClass({
 
   render: function () {
@@ -16,7 +18,8 @@ var group = module.exports = React.createClass({
           <span className= 'value'>{this.props.group.capacity} </span>
         </div>
         <CalendarHeader/>
-        <Capacity schedule = {this.props.group.schedule} capacity = {this.props.group.capacity}/>
+        <Capacity schedule = {this.props.group.schedule} capacity = {this.props.group.capacity} waitlist = {false}/>
+        <Waitlist/>
       </div>
     );
 
