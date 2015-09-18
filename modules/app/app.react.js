@@ -1,7 +1,7 @@
 var React = require('react');
 var $ = require('jquery');
 var ClassNames = require('classnames');
-var Router = require('react-router');
+var Router = require('./../router/router');
 
 var Navbar = require('./../navbar/navbar.react');
 var Dashboard = require('./../dashboard/dashboard.react');
@@ -44,3 +44,18 @@ var app = module.exports = React.createClass({
 });
 
 React.render(React.createElement(app), document.body);
+
+
+Router.add(/about/, function() {
+    console.log('about');
+})
+.add(/products\/(.*)\/edit\/(.*)/, function() {
+    console.log('products', arguments);
+})
+.add(function() {
+    console.log('default');
+})
+.check('/products/12/edit/22').listen();
+
+// forwarding
+Router.navigate('/about');
