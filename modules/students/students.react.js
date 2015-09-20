@@ -104,9 +104,11 @@ var students = module.exports = React.createClass({
 
   _onUpdateGroup: function (groupId) {
     this.setState(this._getState({groupId: groupId}));
+    Router.navigate('/group/'+ groupId + '/period/' + this.state.dateRangeObject.key);
   },
 
   _onUpdateDateRange: function (dateRangeObject) {
+    Router.navigate('/group/'+ this.state.groupId + '/period/' + dateRangeObject.key);
     this.setState(this._getState({dateRangeObject: dateRangeObject}));
   },
 
