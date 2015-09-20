@@ -13,6 +13,8 @@ var StudentStore = require('../../stores/studentStore');
 var StudentAction = require('../../stores/studentAction');
 var DateRangeStore = require('../../stores/dateRangeStore');
 
+var Router = require('./../router/router');
+
 var students = module.exports = React.createClass({
 
   getInitialState: function () {

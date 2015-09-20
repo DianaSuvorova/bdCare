@@ -1,7 +1,13 @@
 module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-
+    express: {
+      dev: {
+        options: {
+          script: 'server.js'
+        }
+      }
+    },
     browserify: {
       dev: {
         options: {
@@ -39,8 +45,8 @@ module.exports = function (grunt) {
     watch: {
       livereload: {
           options: { livereload: true },
-          files: ['build/*'],
-        },
+          files: ['build/build.js', 'build/build.css']
+      },
       browserify: {
         files: ['modules/**/*.js', 'dispatcher/*.js', 'stores/*.js'],
         tasks: ['browserify:dev']
@@ -96,8 +102,9 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-replace');
+  grunt.loadNpmTasks('grunt-express-server');
 
-  grunt.registerTask('default', ['dev', 'watch']);
+  grunt.registerTask('default', ['express', 'dev', 'watch']);
   grunt.registerTask('dev', ['browserify:dev', 'sass', 'copy', 'replace']);
   grunt.registerTask('build', ['browserify:build', 'sass', 'copy', 'replace', 'cssmin', 'uglify']);
 

@@ -21,6 +21,7 @@ Router.prototype.initialize = function (o) {
 Router.prototype.getFragment = function () {
   var fragment = clearSlashes(decodeURI(location.pathname));
   fragment = this.root != '/' ? fragment.replace(this.root, '') : fragment;
+  return clearSlashes(fragment);
 };
 
 Router.prototype.add = function (re, handler) {
@@ -62,9 +63,15 @@ Router.prototype.check = function (f) {
 };
 
 Router.prototype.listen = function () {
-  window.onpopstate = function (event) {
-    this.check(this.getFragment())
-  }.bind(this);
+  var currentFragment = this.getFragment();
+  var fn = function() {
+    if (currentFragment !== this.getFragment()) {
+      currentFragment = this.getFragment();
+      this.check(currentFragment);
+    }
+  }.bind(this)
+  clearInterval(this.interval);
+  this.interval = setInterval(fn, 50);
   return this;
 };
 

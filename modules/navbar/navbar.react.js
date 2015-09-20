@@ -2,6 +2,7 @@ var React = require('react');
 var $ = require('jquery');
 var ClassNames = require('classnames');
 var Link = require('react-router').Link;
+var Router = require('./../router/router');
 
 var navbar = module.exports = React.createClass({
 
@@ -17,14 +18,18 @@ var navbar = module.exports = React.createClass({
 
     return (
       <div id = 'navbar' className = {this.props.className} >
-        <span className = {classes.dashboard} onClick = {this._onClickNavigate}>Dashboard</span>
-        <span className = {classes.students} onClick = {this._onClickNavigate}>Students</span>
+        <span className = {classes.dashboard} onClick = {this._onNavigateDashboard}>Dashboard</span>
+        <span className = {classes.students} onClick = {this._onNavigateStudents}>Students</span>
       </div>
       );
   },
 
-  _onClickNavigate: function (e) {
-    this.props.navigateTo($(e.target).text());
+  _onNavigateDashboard: function () {
+    Router.navigate('/dashboard');
   },
+
+  _onNavigateStudents: function () {
+    Router.navigate('/group');
+  }
 
 });
