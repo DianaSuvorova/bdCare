@@ -4,6 +4,10 @@ var ClassNames = require('classnames');
 var Link = require('react-router').Link;
 var Router = require('./../router/router');
 
+var StudentStore = require('../../stores/studentStore');
+var DateRangeStore = require('../../stores/dateRangeStore');
+
+
 var navbar = module.exports = React.createClass({
 
   render: function () {
@@ -29,7 +33,11 @@ var navbar = module.exports = React.createClass({
   },
 
   _onNavigateStudents: function () {
-    Router.navigate('/group');
+    var groups = StudentStore.getGroupsMap();
+
+    var dateRangeObject = DateRangeStore.getCurrentDateRangeObject();
+    var groupId = Object.keys(groups)[0];
+    Router.navigate('/group/'+ groupId + '/period/' + dateRangeObject.key);
   }
 
 });

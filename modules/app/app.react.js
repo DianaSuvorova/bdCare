@@ -28,16 +28,14 @@ var app = module.exports = React.createClass({
   componentDidMount: function () {
     Router.add(/group\/(.*)\/period\/(.*)/, function() {
         var dateRangeObject = DateRangeStore.getDateRangeMap()[arguments[1]];
-        this.setState(this._getState({students: true, groupId: arguments[0], dateRangeObject}));
-    }.bind(this))
-    .add(/group/, function() {
-        this.setState(this._getState({students: true, groupId: null, dateRangeObject: null}));
+        this.setState(this._getState({students: true, groupId: arguments[0], dateRangeObject: dateRangeObject}));
     }.bind(this))
     .add(/dashboard/, function() {
       this.setState(this._getState({students: false}))
     }.bind(this))
     .check()
-    .listen();
+    .listen()
+    .navigate('dashboard/');
   },
 
   render: function () {
