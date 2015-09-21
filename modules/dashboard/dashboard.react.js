@@ -9,6 +9,7 @@ var StudentAction = require('../../stores/studentAction');
 var DateRangeStore = require('../../stores/dateRangeStore');
 
 var Group = require('../group/group.react');
+var Router = require('./../router/router');
 
 var dashboard = module.exports = React.createClass({
 
@@ -62,7 +63,7 @@ var dashboard = module.exports = React.createClass({
   },
 
   _navigateToGroup: function (groupId) {
-    this.props.navigateTo('Students', this.state.dateRangeObject, groupId)
+    Router.navigate('/group/'+ groupId + '/period/' + this.state.dateRangeObject.key);
   },
 
   _onUpdateDateRange: function (dateRangeObject) {

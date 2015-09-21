@@ -6,6 +6,7 @@ var assign = require('object-assign');
 var GroupDetails = require('../groupDetails/groupDetails.react');
 var StudentDetails = require('../studentDetails/studentDetails.react');
 var NewStudentDetails = require('../studentDetails/newStudentDetails.react');
+var Router = require('./../router/router');
 
 var Api = require('../../stores/api');
 
@@ -85,6 +86,7 @@ var students = module.exports = React.createClass({
 
   _createNewStudent: function (student, mapping) {
     StudentAction.addStudent(student, mapping);
+    Router.navigate('/group/'+ this.state.groupId + '/period/' + dateRangeObject.key);
     this.setState({activeStudentId: null});
   },
 
@@ -94,29 +96,31 @@ var students = module.exports = React.createClass({
 
   _openStudentDetails : function (studentId) {
     this.setState(this._getState({activeStudentId: studentId}));
+    Router.navigate('/student/'+ studentId);
   },
 
   _closeStudentDetails : function () {
+    Router.navigate('/group/'+ this.state.groupId + '/period/' + this.state.dateRangeObject.key);
     this.setState({activeStudentId: null});
   },
 
   _onUpdateGroup: function (groupId) {
     this.setState(this._getState({groupId: groupId}));
+    Router.navigate('/group/'+ groupId + '/period/' + this.state.dateRangeObject.key);
   },
 
   _onUpdateDateRange: function (dateRangeObject) {
     this.setState(this._getState({dateRangeObject: dateRangeObject}));
+    Router.navigate('/group/'+ this.state.groupId + '/period/' + dateRangeObject.key);
   },
 
-
   _getState: function (newState) {
-
     var groups = StudentStore.getGroupsMap();
     var defaultState = {
       groups: groups,
-      groupId: this.props.groupId || Object.keys(groups)[0],
-      dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject || DateRangeStore.getCurrentDateRangeObject(),
-      activeStudentId: this.state && this.state.activeStudentId
+      groupId: this.props.groupId,
+      dateRangeObject: this.props.dateRangeObject,
+      activeStudentId: this.props.activeStudentId
     };
 
     var state = assign({}, defaultState, newState);
