@@ -33,14 +33,24 @@ var app = module.exports = React.createClass({
     .add(/dashboard/, function() {
       this.setState(this._getState({students: false}))
     }.bind(this))
+    .add(/student\/(.*)/, function() {
+        var groups = StudentStore.getGroupsMap();
+
+        var dateRangeObject = DateRangeStore.getCurrentDateRangeObject();
+        var groupId = Object.keys(groups)[0];
+        this.setState(this._getState({students: true, groupId: groupId, dateRangeObject: dateRangeObject, activeStudentId: arguments[0]}));
+    }.bind(this))
+    .add(function() {
+      Router.navigate('/dashboard');
+    }.bind(this))
     .check()
-    .listen()
-    .navigate('dashboard/');
+    .listen();
+//    .navigate('dashboard/');
   },
 
   render: function () {
     var content = (this.state.students) ?
-      <Students dateRangeObject = {this.state.dateRangeObject} groupId = {this.state.groupId}/> :
+      <Students dateRangeObject = {this.state.dateRangeObject} groupId = {this.state.groupId} activeStudentId = {this.state.activeStudentId}/> :
       <Dashboard/> ;
 
     return (
@@ -56,6 +66,7 @@ var app = module.exports = React.createClass({
     var groups = StudentStore.getGroupsMap();
 
     var defaultState = {
+      activeStudentId: null,
       students: false,
       dateRangeObject: DateRangeStore.getCurrentDateRangeObject(),
       groupId: Object.keys(groups)[0]
