@@ -11,7 +11,7 @@ var DateRangeStore = require('./dateRangeStore.js');
 
 
 var CHANGE_EVENT = 'change';
-var isOffline = false;
+var isOffline = true;
 
 var _students = {};
 var _groups = {};

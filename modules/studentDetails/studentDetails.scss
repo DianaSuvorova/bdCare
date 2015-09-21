@@ -6,28 +6,28 @@ div#studentDetails {
   border-radius: $border-radius;
   margin: $unit / 2;
   padding: $unit / 2;
-  display: flex;
-  flex-direction: column;
+  @include display-flex;
+  @include flex-direction (column);
   & > div.toolbox {
      margin-top : $unit / 2;
     & > span { float: right; }
   }
   & > div.details {
-    display: flex;
-    flex-wrap: wrap;
+    @include display-flex;
+    @include flex-flow( row wrap);
     & > div.row {
-      flex: 1 0 100%;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      @include flex(1 0 100%);
+      @include display-flex;
+      @include flex-flow( row wrap);
+      @include justify-content(center);
       &.section { margin-top : $unit / 2; }
       &.addNewMapping {
           & > div.container {
             width: $mappingRowWidth;
           & > span.buttonContainer {
             float: right;
-            display: flex;
-            align-content: center;
+            @include display-flex;
+            @include justify-content(center);
             width: $unit * 6;
             padding: 0 $unit / 2;
           }
@@ -35,7 +35,7 @@ div#studentDetails {
       }
       & > div.groupMapping {
         margin-top : $unit / 2;
-        display: flex;
+        @include display-flex;
         & > span {
           width: $unit * 6;
           padding: 0 $unit / 2;

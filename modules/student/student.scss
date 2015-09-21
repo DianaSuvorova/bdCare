@@ -1,6 +1,6 @@
 div.student {
   height: $unit;
-  display: flex;
+  @include display-flex;
   cursor: pointer;
   & > input, & > span {
     display: inline-block;

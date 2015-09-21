@@ -1,9 +1,9 @@
 div#studentList {
-  display: flex;
-  flex-direction: column;
+  @include display-flex;
+  @include flex-direction (column);
   height: calc(100% - #{$unit * 4});
   & > div.header {
-   display: flex;
+   @include display-flex;
    border-bottom: $border-lightgray;
    line-height: $unit;
    & > div {

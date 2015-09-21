@@ -1,5 +1,5 @@
 div.group {
-  flex: 0 0 auto;
+  @include flex(0 0 auto);
   &.validTarget {
     background-color: green;
   }
