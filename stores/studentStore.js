@@ -9,9 +9,12 @@ var FileSaver = require('filesaver.js');
 
 var DateRangeStore = require('./dateRangeStore.js');
 
+var Mapping = require('./mapping');
+var Student = require('./student');
+var Group = require('./group');
 
 var CHANGE_EVENT = 'change';
-var isOffline = true;
+var isOffline = false;
 
 var _students = {};
 var _groups = {};
@@ -20,142 +23,49 @@ var _isEmpty = true;
 var _slotsDict = ['mon_am', 'mon_pm', 'tue_am', 'tue_pm', 'wed_am', 'wed_pm', 'thu_am', 'thu_pm', 'fri_am', 'fri_pm'];
 
 if (isOffline) {
-    _students = OffLineData.students;
-    _groups = OffLineData.groups;
-    _mappings= OffLineData.mappings;
+    setData(OffLineData.students, OffLineData.groups, OffLineData.mappings);
     _isEmpty = false;
 }
 
 function setData(students, groups, mappings) {
+  _mappings = mappings.map(function (mapping) {
+    return new Mapping(mapping.attributes);
+  });
+
   students.forEach(function (student) {
-    _students[student.id] = assign({}, {id: student.id}, student.attributes)
+    _students[student.id] = new Student(assign({}, {id: student.id}, student.attributes, {mappings: getMappings({studentId: student.id})}));
   });
 
   groups.forEach(function (group) {
-    _groups[group.id] = assign({}, {id: group.id}, group.attributes)
-  });
-
-  _mappings = mappings.map(function (mapping) {
-    return mapping.attributes;
+    _groups[group.id] = new Group(assign({}, {id: group.id}, group.attributes, {mappings: getMappings({groupId: group.id})}));
   });
 
   _isEmpty = false;
 }
 
 function addMapping(mapping) {
-  _mappings.push(mapping.attributes);
+  _mappings.push(new Mapping(mapping.attributes));
 }
 
 function updateStudent(student) {
-  _students[student.id] = assign({}, {id: student.id}, student.attributes)
+  _students[student.id] = new Student(assign({}, {id: student.id}, student.attributes))
 }
 
 function addStudent(student) {
-  _students[student.id] = assign({}, {id: student.id}, student.attributes);
+  _students[student.id] = new Student(assign({}, {id: student.id}, student.attributes));
 }
 
-function getMappingsByGroupdIdAndDate(groupId, date) {
+function getMappings(pFilter) {
+  var defaultFilter = { groupId: null, studentId: null, date: null};
+  var filter = assign(defaultFilter, pFilter);
+
   return _mappings.filter(function (mapping) {
-    return (mapping.groupId === groupId)
-    && (date >= mapping.start_date)
-    && (!mapping.end_date || date <= mapping.end_date)
+    return (
+      (!filter.groupId || filter.groupId && mapping.groupId === filter.groupId)
+      && (!filter.studentId || filter.studentId && mapping.studentId === filter.studentId)
+      && (!filter.date || filter.date && (filter.date >= mapping.start_date && !mapping.end_date || date <= mapping.end_date))
+  )
   });
-}
-
-function getMappingsByStudentId(studentId) {
-  return _mappings.filter(function (mapping) {
-    return (mapping.studentId === studentId)
-  });
-}
-
-
-function getMappingsByStudentIdAndDate(studentId, date) {
-  return _mappings.filter(function (mapping) {
-    return (mapping.studentId === studentId)
-    && (date >= mapping.start_date)
-    && (!mapping.end_date || date <= mapping.end_date)
-  });
-}
-
-function createListOfDatesForDateRange(dateRange) {
-  var startDate = dateRange[0];
-  var endDate = dateRange[1];
-  var localStartDate = new Date(startDate);
-  var listOfDates = []
-  for (var d = localStartDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-    var dayOfWeek = d.getDay()
-    if (dayOfWeek != 0 && dayOfWeek != 6) {
-      listOfDates.push(new Date(d));
-    }
-  }
-  return listOfDates;
-}
-
-function slotKeysDictForDate(d) {
-  var date = new Date(d);
-  var keyIndex = date.getDay() - 1;
-  return {'am' : _slotsDict[keyIndex * 2], 'pm' : _slotsDict[keyIndex * 2 + 1]};
-}
-
-
-function dailyStudentCountForGroupIdForDate(groupId, date) {
-  var groupMappings = getMappingsByGroupdIdAndDate(groupId, date)
-
-  var amCount = 0;
-  var pmCount = 0;
-
-  var slotKeys = slotKeysDictForDate(date)
-  var amKey = slotKeys['am'];
-  var pmKey = slotKeys['pm'];
-  groupMappings.forEach( function(mapping) {
-    amCount += mapping[amKey];
-    pmCount += mapping[pmKey];
-  });
-
-  return {'am' : amCount, 'pm': pmCount};
-}
-
-function minimumSlotsLoadForGroupIdForDateRange(groupId, dateRange) {
-  var slotsBreakdown = {};
-  var studentLoadPerDate = studentLoadForGroupIdForDateRange(groupId, dateRange)
-
-  for (var date in studentLoadPerDate) {
-    var slotKeyDict = slotKeysDictForDate(date)
-    for (var timeOfDay in slotKeyDict) {
-      var slotKey = slotKeyDict[timeOfDay];
-      var timeOfDayLoad = studentLoadPerDate[date][timeOfDay];
-      if  (!(slotKey in slotsBreakdown) ||
-            (timeOfDayLoad < slotsBreakdown[slotKey])) {
-        slotsBreakdown[slotKey] = timeOfDayLoad;
-      }
-    }
-  }
-  return slotsBreakdown;
-}
-
-// returns a dictionary of date to dictionary of total count in am and pm range for this date
-// i.e. {"12-01-2015": {'am' : 10, 'pm':9}}
-function studentLoadForGroupIdForDateRange(groupId, dateRange) {
-    var studentsCountPerDay = {};
-
-    var listOfDates = createListOfDatesForDateRange(dateRange)
-    listOfDates.forEach( function(date) {
-      var dailyCount = dailyStudentCountForGroupIdForDate(groupId, date)
-      studentsCountPerDay[date] = {'am': dailyCount['am'], 'pm': dailyCount['pm']};
-    });
-
-    return studentsCountPerDay;
-}
-
-function getAvailableScheduleForGroupId(groupId, dateRange) {
-  var slotsTaken = minimumSlotsLoadForGroupIdForDateRange(groupId, dateRange);
-  var slotsAvailable = {};
-
-  for (slot in slotsTaken) {
-    slotsAvailable[slot] = _groups[groupId].capacity - slotsTaken[slot];
-  }
-
-  return slotsAvailable;
 }
 
 function getMappingsByGroupdIdWithProjectedDateInRange(groupId, dateRange) {
@@ -233,18 +143,22 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
       return null;
     }
 
-    var studentsList = getMappingsByGroupdIdAndDate(groupId, startDate).map(function (mapping) {
-      return new StudentWeeklyScheduleRow(_students[mapping.studentId], mapping);
+    var studentsList = getMappings({groupId: groupId, date:startDate}).map(function (mapping) {
+      return new Student(_students[mapping.studentId], mapping);
     });
     return studentsList;
   },
 
-  getStudentsMapForGroupIdAndDateRange: function (groupId, dateRange) {
-    var listOfDates = createListOfDatesForDateRange(dateRange);
+  getStudents: function (pFilter) {
+    var defaultFilter = {groupId: null, studentId: null, dateRange: null}
+    var filter = assign(pFilter, defaultFilter);
+    if (filter.studentId === 'new') return new Student({groupId: filter.groupId});
+
+    var listOfDates = createListOfDatesForDateRange(filter.dateRange);
     var studentsMap = [];
 
     listOfDates.forEach( function(date) {
-      var groupMappings = getMappingsByGroupdIdAndDate(groupId, date);
+      var groupMappings = getMappings({groupId: filter.groupId, date: date});
       groupMappings.forEach(function (mapping) {
         var schedule = {};
 
@@ -268,14 +182,12 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
   getStudentByStudentIdAndDateRange: function (studentId, groupId) {
     //groupId is only for a new student
 
-    if (studentId === 'new') {
-      return this.getNewStudent(groupId);
-    }
+
 
     //return all mappings sorted by date
     var student;
     var mappings = [];
-    var studentMappings = getMappingsByStudentId(studentId);
+    var studentMappings = getMappings({studentId: studentId});
     studentMappings.forEach(function (mapping) {
       var schedule = {};
 
@@ -317,62 +229,32 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     return _groups;
   },
 
-  getGroupSummaryForGroupIdAndDateRange: function (groupId, dateRange) {
+  getGroups: function (pFilter) {
+    var defaultFilter = {groupId: null, studentId: null, dateRange: null}
+    var filter = assign(pFilter || {}, defaultFilter);
 
-    var startDate = dateRange[0];
-    var endDate = dateRange[1];
+    var startDate = filter.dateRange && filter.dateRange[0];
+    var endDate = filter.dateRange && filter.dateRange[1];
     if (startDate > endDate) {
       console.error('Requested start date=', startDate, ' is later than end date=', endDate);
       return null;
     }
 
-    return assign(
-      {},
-      _groups[groupId],
-      {schedule: getAvailableScheduleForGroupId(groupId, dateRange)},
-      {studentIdsEligibleForUpgrade: getStudentsIdsEligibleForUpgrade(groupId, dateRange)}
-    )
+    var groupIds = filter.groupId || Object.keys(_groups);
+    var groups = [];
+    groupIds.forEach( function (groupId) {
+      groups.push(_groups[groupId]);
+    }.bind(this));
+     return groups;
   },
-
-  getDashboardSummaryForDateRange: function(dateRange) {
-    var groupsSchedule = [];
-    Object.keys(_groups).forEach( function (groupId) {
-      groupsSchedule.push(this.getGroupSummaryForGroupIdAndDateRange(groupId, dateRange));
-    }.bind(this))
-    return groupsSchedule;
-  },
-
 
   getNewStudent: function (groupId) {
-    var emptySchedule = {};
-    _slotsDict.forEach(function (slot){
-        emptySchedule[slot] = 0;
-    })
-
-    return {
-      id: 'new',
-      name: null,
-      birthbirthdate: null,
-      mappings: [
-        {schedule: emptySchedule,
-          studentId: 'new',
-          status: 'new',
-          groupId: groupId,
-          startDate : new Date()}
-      ]
-    };
+    return new Student(groupId);
   },
 
   getNewMapping: function (student) {
     var latestMapping = student.mappings[student.mappings.length -1];
-    var mapping = {
-      schedule: assign({}, latestMapping.schedule),
-      groupId: latestMapping.groupId,
-      studentId: latestMapping.studentId,
-      startDate: latestMapping.endDate || new Date(),
-      endDate: null,
-    };
-
+    var mapping = new Mapping(latestMapping);
     return mapping;
   },
 
