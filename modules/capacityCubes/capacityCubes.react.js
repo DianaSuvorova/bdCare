@@ -5,7 +5,7 @@ var ClassNames = require('classnames');
 var capacityCubes = module.exports = React.createClass({
 
   render: function () {
-    
+
     var classes = {
       capacity : ClassNames({
         'capacityCubes': true,

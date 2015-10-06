@@ -1,4 +1,5 @@
 var Mapping = require('./mapping');
+var Helpers = require('./helpers');
 var assign = require('object-assign');
 
 var Group = function () {
@@ -35,7 +36,7 @@ Group.prototype._getMinimumSlotsLoad = function(dateRange) {
 
   var slotsBreakdown = {};
   for (var date in studentLoadPerDate) {
-    var slotKeyDict = slotKeysDictForDate(date)
+    var slotKeyDict = Helpers.slotKeysDictForDate(date)
     for (var timeOfDay in slotKeyDict) {
       var slotKey = slotKeyDict[timeOfDay];
       var timeOfDayLoad = studentLoadPerDate[date][timeOfDay];
@@ -60,7 +61,7 @@ Group.prototype._getStudentCount = function(date) {
   var amCount = 0;
   var pmCount = 0;
 
-  var slotKeys = slotKeysDictForDate(date);
+  var slotKeys = Helpers.slotKeysDictForDate(date);
   var amKey = slotKeys['am'];
   var pmKey = slotKeys['pm'];
   groupMappings.forEach( function(mapping) {
@@ -76,7 +77,7 @@ Group.prototype._getStudentCount = function(date) {
 Group.prototype._getStudentLoad = function(dateRange) {
     var studentsCountPerDay = {};
 
-    var listOfDates = getListOfDates(dateRange)
+    var listOfDates = Helpers.getListOfDates(dateRange)
     listOfDates.forEach( function(date) {
       var dailyCount = this._getStudentCount(date)
       studentsCountPerDay[date] = {'am': dailyCount['am'], 'pm': dailyCount['pm']};
@@ -84,27 +85,5 @@ Group.prototype._getStudentLoad = function(dateRange) {
 
     return studentsCountPerDay;
 };
-
-
-function getListOfDates(dateRange) {
-  var startDate = dateRange[0];
-  var endDate = dateRange[1];
-  var localStartDate = new Date(startDate);
-  var listOfDates = []
-  for (var d = localStartDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-    var dayOfWeek = d.getDay()
-    if (dayOfWeek != 0 && dayOfWeek != 6) {
-      listOfDates.push(new Date(d));
-    }
-  }
-  return listOfDates;
-}
-
-function slotKeysDictForDate(d) {
-  var _slotsDict = ['mon_am', 'mon_pm', 'tue_am', 'tue_pm', 'wed_am', 'wed_pm', 'thu_am', 'thu_pm', 'fri_am', 'fri_pm'];
-  var date = new Date(d);
-  var keyIndex = date.getDay() - 1;
-  return {'am' : _slotsDict[keyIndex * 2], 'pm' : _slotsDict[keyIndex * 2 + 1]};
-}
 
 module.exports = Group;

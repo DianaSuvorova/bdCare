@@ -48,7 +48,7 @@ var students = module.exports = React.createClass({
       openStudentDetails = {this._openStudentDetails}
       activeStudent = {this.state.activeStudent}
       groups = {this.state.groups}
-      groupSummary = {this.state.groupSummary}
+      group = {this.state.groupSummary}
       updateDateRange = {this._onUpdateDateRange}
       updateGroup = {this._onUpdateGroup}
     />
@@ -129,8 +129,8 @@ var students = module.exports = React.createClass({
       state.activeStudent = StudentStore.getStudentByStudentIdAndDateRange(state.activeStudentId, state.groupId);
     }
 
-    state.students = StudentStore.getStudentsMapForGroupIdAndDateRange(state.groupId, state.dateRangeObject.dateRange);
-    state.groupSummary = StudentStore.getGroupSummaryForGroupIdAndDateRange(state.groupId, state.dateRangeObject.dateRange);
+    state.students = StudentStore.getStudents({groupId: state.groupId, dateRange: state.dateRangeObject.dateRange});
+    state.groupSummary = StudentStore.getGroups({groupId: state.groupId, groupId: state.dateRangeObject.dateRange})[0];
 
     return state;
   }

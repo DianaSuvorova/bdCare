@@ -12,6 +12,7 @@ var DateRangeStore = require('./dateRangeStore.js');
 var Mapping = require('./mapping');
 var Student = require('./student');
 var Group = require('./group');
+var Helpers = require('./helpers');
 
 var CHANGE_EVENT = 'change';
 var isOffline = false;
@@ -150,34 +151,45 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
   },
 
   getStudents: function (pFilter) {
-    var defaultFilter = {groupId: null, studentId: null, dateRange: null}
-    var filter = assign(pFilter, defaultFilter);
+    var defaultFilter = {groupId: null, dateRange: null}
+    var filter = assign(defaultFilter, pFilter);
     if (filter.studentId === 'new') return new Student({groupId: filter.groupId});
 
-    var listOfDates = createListOfDatesForDateRange(filter.dateRange);
+    //if dateRange
+    var listOfDates = Helpers.getListOfDates(filter.dateRange);
     var studentsMap = [];
-
     listOfDates.forEach( function(date) {
-      var groupMappings = getMappings({groupId: filter.groupId, date: date});
-      groupMappings.forEach(function (mapping) {
-        var schedule = {};
-
-        _slotsDict.forEach(function (slot) {
-          schedule[slot] = mapping[slot]
-        });
-
-        var student = assign(
-          {},
-          _students[mapping.studentId],
-          {schedule: schedule}
-        )
-
-        studentsMap[mapping.studentId] = student;
+      Object.keys(_students).forEach( function(studentId) {
+        _students[studentId].mappings.forEach( function (mapping) {
+          if (mapping.isActive(date) && mapping.groupId === filter.groupId) {
+            studentsMap[studentId] = _students[studentId];
+          }
+        })
       })
-    });
-
+    })
     return studentsMap;
   },
+
+  //     var groupMappings = getMappings({groupId: filter.groupId, date: date});
+  //     groupMappings.forEach(function (mapping) {
+  //       var schedule = {};
+  //
+  //       _slotsDict.forEach(function (slot) {
+  //         schedule[slot] = mapping[slot]
+  //       });
+  //
+  //       var student = assign(
+  //         {},
+  //         _students[mapping.studentId],
+  //         {schedule: schedule}
+  //       )
+  //
+  //       studentsMap[mapping.studentId] = student;
+  //     })
+  //   });
+  //
+  //   return studentsMap;
+  // },
 
   getStudentByStudentIdAndDateRange: function (studentId, groupId) {
     //groupId is only for a new student
