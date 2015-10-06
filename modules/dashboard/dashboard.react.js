@@ -33,7 +33,8 @@ var dashboard = module.exports = React.createClass({
 
   render: function () {
 
-    var groups = this.state.groups.map(function (group) {
+    var groups = Object.keys(this.state.groups).map(function (groupId) {
+      var group = this.state.groups[groupId];
       return <Group key = {group.id} group = {group} dateRange = {this.state.dateRangeObject.dateRange} onNavigateToGroup = {this._navigateToGroup}/>
     }.bind(this));
 

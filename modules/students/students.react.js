@@ -53,6 +53,7 @@ var students = module.exports = React.createClass({
       updateGroup = {this._onUpdateGroup}
     />
     if (this.state.activeStudentId === 'new') {
+      console.log(this.state);
       content = <NewStudentDetails
         student = {this.state.activeStudent}
         groups = {this.state.groups}
@@ -94,14 +95,23 @@ var students = module.exports = React.createClass({
     this.setState(this._getState());
   },
 
-  _openStudentDetails : function (studentId) {
-    this.setState(this._getState({activeStudentId: studentId}));
-    Router.navigate('/student/'+ studentId);
+  _openStudentDetails : function (studentId, groupId) {
+    if  (studentId === 'new') {
+      this.setState(this._getState({activeStudentId: studentId, groupId: groupId}));
+      Router.navigate('/group/' + groupId + '/student/'+ studentId );
+    }
+    else {
+      this.setState(this._getState({activeStudentId: studentId}));
+      Router.navigate('/student/'+ studentId);
+    }
+
   },
 
   _closeStudentDetails : function () {
-    Router.navigate('/group/'+ this.state.groupId + '/period/' + this.state.dateRangeObject.key);
-    this.setState({activeStudentId: null});
+    var groupId = this.state.groupId || Object.keys(StudentStore.getGroups())[0];
+    var dateRangeObject = this.state.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
+    Router.navigate('/group/'+ groupId + '/period/' + dateRangeObject.key);
+    this.setState(this._getState({activeStudentId: null, groupId: groupId, dateRangeObject: dateRangeObject}));
   },
 
   _onUpdateGroup: function (groupId) {
@@ -115,7 +125,7 @@ var students = module.exports = React.createClass({
   },
 
   _getState: function (newState) {
-    var groups = StudentStore.getGroupsMap();
+    var groups = StudentStore.getGroups();
     var defaultState = {
       groups: groups,
       groupId: this.props.groupId,
@@ -126,11 +136,11 @@ var students = module.exports = React.createClass({
     var state = assign({}, defaultState, newState);
 
     if (state.activeStudentId) {
-      state.activeStudent = StudentStore.getStudentByStudentIdAndDateRange(state.activeStudentId, state.groupId);
+        state.activeStudent = StudentStore.getStudents({studentId: state.activeStudentId, groupId: state.groupId})[state.activeStudentId];
     }
 
     state.students = StudentStore.getStudents({groupId: state.groupId, dateRange: state.dateRangeObject.dateRange});
-    state.groupSummary = StudentStore.getGroups({groupId: state.groupId, groupId: state.dateRangeObject.dateRange})[0];
+    state.groupSummary = StudentStore.getGroups({groupId: state.groupId, groupId: state.dateRangeObject.dateRange})[state.groupId];
 
     return state;
   }

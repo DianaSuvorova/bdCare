@@ -33,7 +33,7 @@ var groupDetails = module.exports = React.createClass({
   },
 
   _openStudent: function (studentId) {
-    this.props.openStudentDetails(studentId)
+    this.props.openStudentDetails(studentId, this.props.group.id)
   },
 
   _onUpdateGroup: function (group) {

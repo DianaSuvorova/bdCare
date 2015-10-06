@@ -153,92 +153,36 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
   getStudents: function (pFilter) {
     var defaultFilter = {groupId: null, dateRange: null}
     var filter = assign(defaultFilter, pFilter);
-    if (filter.studentId === 'new') return new Student({groupId: filter.groupId});
+    var studentsMap = {};
+    if (filter.studentId === 'new') {
+      var student = new Student({groupId: filter.groupId});
+      studentsMap['new'] = student;
+      return studentsMap;
+    }
 
     //if dateRange
-    var listOfDates = Helpers.getListOfDates(filter.dateRange);
-    var studentsMap = [];
-    listOfDates.forEach( function(date) {
+    if (filter.dateRange) {
+      var listOfDates = Helpers.getListOfDates(filter.dateRange);
+      listOfDates.forEach( function(date) {
+        Object.keys(_students).forEach( function(studentId) {
+          _students[studentId].mappings.forEach( function (mapping) {
+            if (mapping.isActive(date) && (!filter.groupId || mapping.groupId === filter.groupId)) {
+              studentsMap[studentId] = _students[studentId];
+            }
+          })
+        });
+      })
+    }
+    else {
       Object.keys(_students).forEach( function(studentId) {
         _students[studentId].mappings.forEach( function (mapping) {
-          if (mapping.isActive(date) && mapping.groupId === filter.groupId) {
+          if (!filter.groupId || mapping.groupId === filter.groupId) {
             studentsMap[studentId] = _students[studentId];
           }
         })
-      })
-    })
+      });
+    }
     return studentsMap;
-  },
-
-  //     var groupMappings = getMappings({groupId: filter.groupId, date: date});
-  //     groupMappings.forEach(function (mapping) {
-  //       var schedule = {};
-  //
-  //       _slotsDict.forEach(function (slot) {
-  //         schedule[slot] = mapping[slot]
-  //       });
-  //
-  //       var student = assign(
-  //         {},
-  //         _students[mapping.studentId],
-  //         {schedule: schedule}
-  //       )
-  //
-  //       studentsMap[mapping.studentId] = student;
-  //     })
-  //   });
-  //
-  //   return studentsMap;
-  // },
-
-  getStudentByStudentIdAndDateRange: function (studentId, groupId) {
-    //groupId is only for a new student
-
-
-
-    //return all mappings sorted by date
-    var student;
-    var mappings = [];
-    var studentMappings = getMappings({studentId: studentId});
-    studentMappings.forEach(function (mapping) {
-      var schedule = {};
-
-      _slotsDict.forEach(function (slot) {
-        schedule[slot] = mapping[slot]
-      });
-
-      var currentDate = new Date();
-      var status;
-      if (currentDate > mapping.start_date  && (!mapping.end_date || currentDate < mapping.end_date)) status = 'current';
-      else if (currentDate > mapping.end_date) status = 'past';
-      else if (currentDate < mapping.start_date) status = 'projected';
-
-      mappings.push({
-        schedule: schedule,
-        studentId: mapping.studentId,
-        groupId: mapping.groupId,
-        startDate: mapping.start_date,
-        endDate: mapping.end_date,
-        status: status
-      });
-
-    });
-
-    mappings.sort(function (a,b) {
-      return a.startDate - b.startDate
-    });
-
-    student = assign(
-      {},
-      _students[studentId],
-      {mappings: mappings}
-    )
-
-    return student;
-  },
-
-  getGroupsMap: function () {
-    return _groups;
   },
 
   getGroups: function (pFilter) {
@@ -253,9 +197,9 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     }
 
     var groupIds = filter.groupId || Object.keys(_groups);
-    var groups = [];
+    var groups = {};
     groupIds.forEach( function (groupId) {
-      groups.push(_groups[groupId]);
+      groups[groupId] = _groups[groupId];
     }.bind(this));
      return groups;
   },

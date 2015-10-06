@@ -26,16 +26,26 @@ Student.prototype.initialize = function (o) {
 Student.prototype.getMapping = function (pFilter) {
   var defaultFilter = {groupId: null, dateRange: null}
   var filter = assign(defaultFilter, pFilter);
-  var listOfDates = Helpers.getListOfDates(filter.dateRange);
-
   var mappings = [];
-  listOfDates.forEach( function(date) {
+  if (filter.dateRange) {
+    var listOfDates = Helpers.getListOfDates(filter.dateRange);
+
+    listOfDates.forEach( function(date) {
+      this.mappings.forEach(function (mapping) {
+        if (mapping.isActive(date) && (!mapping.groupId || mapping.groupId === filter.groupId)) {
+          mappings.push(mapping);
+        }
+      });
+    }.bind(this));
+  }
+  else {
     this.mappings.forEach(function (mapping) {
-      if (mapping.isActive(date) && mapping.groupId === filter.groupId) {
+      if (!filter.groupId || mapping.groupId === filter.groupId) {
         mappings.push(mapping);
       }
     });
-  }.bind(this));
+
+  }
 
   mappings.sort(function (a,b) {
     return a.startDate - b.startDate
