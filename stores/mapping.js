@@ -30,4 +30,15 @@ Mapping.prototype._getStatus = function () {
   else if (currentDate < this.startDate) return'projected';
 };
 
+Mapping.prototype.toExcelFormat = function () {
+
+  return _slotsDict.map(function (dayTime){
+    if (this.schedule[dayTime] > 0) {
+      return (dayTime.indexOf("am") > -1) ? "8:00-12:30" : "12:30 - 5:00";
+    } else {
+      return "";
+    }
+  }.bind(this));
+};
+
 module.exports = Mapping;

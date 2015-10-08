@@ -52,6 +52,14 @@ Student.prototype.getMapping = function (pFilter) {
   });
 
   return mappings[0];
+};
+
+Student.prototype.toExcelFormat = function (pFilter) {
+  var formattedMapping = this.getMapping(pFilter).toExcelFormat();
+  formattedMapping.unshift(this.name);
+  return formattedMapping;
+
+
 }
 
 module.exports = Student;
