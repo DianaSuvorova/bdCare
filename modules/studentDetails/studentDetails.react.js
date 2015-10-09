@@ -25,7 +25,6 @@ var studentDetails = module.exports = React.createClass({
   },
 
   render: function () {
-
     var classes = {
       addNewMappingButton: ClassNames({
         'actionItemText addNewMapping' : true,
@@ -55,7 +54,7 @@ var studentDetails = module.exports = React.createClass({
           <MappingEditable mappingActions = {this._mappingActions} mapping = {this.state.newMapping} groups = {this.props.groups} updateSchedule = {this._onUpdateSchedule} updateGroup = {this._onUpdateGroup}/>
           <div className = 'groupMapping'>
             <span className='group'>{'Availbale spots in '+ this.props.groups[this.state.newMapping.groupId].name}</span>
-            <Calendar schedule = {this.state.groupSchedule} group = {true} editable = {false}/>
+            <Calendar schedule = {this.props.groups[this.state.groupId].getAvailableSchedule(this.state.dateRangeObject.dateRange)} group = {true} editable = {false}/>
             <MonthPicker updateDateRange = {this._onUpdateDateRange} dateRangeObject = {this.state.dateRangeObject}/>
             <span className = 'empty'></span>
           </div>
@@ -159,16 +158,11 @@ var studentDetails = module.exports = React.createClass({
   },
 
   _onUpdateGroup: function (group) {
-    var newMapping = assign({}, this.state.newMapping, {groupId: group.id})
-    this.setState(this._getState({newMapping: newMapping}));
+    this.setState(this._getState({groupId: group.id}));
   },
 
   _onUpdateDateRange: function (dateRangeObject) {
-    this.setState(this._getState({
-      dateRangeObject: dateRangeObject,
-      studentSchedule: this.props.student.mappings[0].schedule,
-      groupSchedule: this.state.groupSummary.schedule
-    }));
+    this.setState(this._getState({dateRangeObject: dateRangeObject}));
   },
 
   _onToggleAddNewMapping: function () {
@@ -182,17 +176,19 @@ var studentDetails = module.exports = React.createClass({
 
   _getState: function (newState) {
   var defaultState = {
-      groupId : this.state && this.state.groupId || this.props.groupId,
+      groupId : this.state && this.state.groupId || this.props.student.getMapping().groupId,
       dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject,
-      studentSchedule: assign({}, this.state && this.state.studentSchedule || this.props.student.mappings[0].schedule),
       nameState: this.state && this.state.nameState || 'view',
       birthdateState: this.state && this.state.birthdateState || 'view',
       newMapping: this.state && this.state.newMapping || null
     }
 
     var state = assign({}, defaultState, newState);
-    state.groupSummary = StudentStore.getGroupSummaryForGroupIdAndDateRange(state.newMapping && state.newMapping.groupId ||state.groupId, state.dateRangeObject.dateRange);
-    state.groupSchedule = assign({},  state.groupSummary.schedule);
+    var filter = {};
+    filter.groupId = state.newMapping && state.newMapping.groupId ||state.groupId;
+    filter.dateRange = state.dateRangeObject.dateRange;
+
+    state.groupSummary = StudentStore.getGroups(filter)[filter.groupId];
 
     return state;
   }

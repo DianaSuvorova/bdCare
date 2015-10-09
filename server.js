@@ -8,6 +8,7 @@ app.use(express.static(__dirname + '/build'));
 //virtual directory.
 app.use('/group/', express.static(__dirname + '/build'));
 app.use('/group/*/period/', express.static(__dirname + '/build'));
+app.use('/group/*/student/', express.static(__dirname + '/build'));
 app.use('/student/', express.static(__dirname + '/build'));
 
 app.all('*', function (req, res) {

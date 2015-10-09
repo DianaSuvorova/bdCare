@@ -34,7 +34,7 @@ var app = module.exports = React.createClass({
       this.setState(this._getState({students: false}))
     }.bind(this))
     .add(/student\/(.*)/, function() {
-        var groups = StudentStore.getGroupsMap();
+        var groups = StudentStore.getGroups();
 
         var dateRangeObject = DateRangeStore.getCurrentDateRangeObject();
         var groupId = Object.keys(groups)[0];
@@ -63,7 +63,7 @@ var app = module.exports = React.createClass({
   },
 
   _getState: function (newState) {
-    var groups = StudentStore.getGroupsMap();
+    var groups = StudentStore.getGroups();
 
     var defaultState = {
       activeStudentId: null,

@@ -16,7 +16,7 @@ var studentList = module.exports = React.createClass({
     var students = Object.keys(this.props.students).map(function (studentId) {
       i++;
       var student = this.props.students[studentId];
-      return <Student key = {studentId} student = {student} index = {i} openStudent = {this.props.openStudent}/>
+      return <Student key = {studentId} student = {student} dateRangeObject = {this.props.dateRangeObject} groupId = {this.props.groupId}  index = {i} openStudent = {this.props.openStudent}/>
     }.bind(this));
 
     var header = (

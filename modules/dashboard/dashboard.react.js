@@ -33,8 +33,9 @@ var dashboard = module.exports = React.createClass({
 
   render: function () {
 
-    var groups = this.state.groups.map(function (group) {
-      return <Group key = {group.id} group = {group} onNavigateToGroup = {this._navigateToGroup}/>
+    var groups = Object.keys(this.state.groups).map(function (groupId) {
+      var group = this.state.groups[groupId];
+      return <Group key = {group.id} group = {group} dateRange = {this.state.dateRangeObject.dateRange} onNavigateToGroup = {this._navigateToGroup}/>
     }.bind(this));
 
     return (
@@ -74,7 +75,7 @@ var dashboard = module.exports = React.createClass({
     var dateRangeObject = dateRangeObject || this.state && this.state.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
     return {
       dateRangeObject: dateRangeObject,
-      groups: StudentStore.getDashboardSummaryForDateRange(dateRangeObject.dateRange)
+      groups: StudentStore.getGroups()
     };
   }
 

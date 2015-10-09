@@ -14,13 +14,13 @@ var student = module.exports = React.createClass({
         'student': true
       })
     }
-
+    
     return (
       <div className = {classes.student} onClick = {this._onClickStudent}>
         <span className = {'index'} >{this.props.index}</span>
         <span>{this.props.student.name}</span>
         <span>{this._formatDate(this.props.student.birthdate)}</span>
-        <Calendar schedule = {this.props.student.schedule} editable = {false} />
+        <Calendar schedule = {this.props.student.getMapping({dateRange: this.props.dateRangeObject.dateRange, groupId: this.props.groupId}).schedule} editable = {false} />
       </div>
     )
   },
