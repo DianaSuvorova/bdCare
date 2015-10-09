@@ -2,6 +2,8 @@ var Mapping = require('./mapping');
 var Helpers = require('./helpers');
 var assign = require('object-assign');
 
+var _slotsDict = ['mon_am', 'mon_pm', 'tue_am', 'tue_pm', 'wed_am', 'wed_pm', 'thu_am', 'thu_pm', 'fri_am', 'fri_pm'];
+
 var Group = function () {
   this.initialize.apply(this, arguments);
   return this;
@@ -26,6 +28,7 @@ Group.prototype.getAvailableSchedule = function (dateRange) {
 
   return slotsAvailable;
 };
+
 
 Group.prototype.getStudentsIdsEligibleForUpgrade = function (dateRange) {
   var startDate = dateRange[0];
@@ -126,6 +129,15 @@ Group.prototype.toExcelFormat = function(dateRange, students) {
   this.getStudentIds(dateRange).forEach(function (studentId) {
     if (students[studentId]) formattedGroup.push(students[studentId].toExcelFormat({groupId: this.id, dateRange: dateRange}))
   }.bind(this))
+
+  var reservedSchedule = this._getMinimumSlotsLoad(dateRange);
+  var reservedScheduleArray = [""];
+  _slotsDict.forEach(function (slot) {
+    reservedScheduleArray.push(reservedSchedule[slot]);
+  });
+  
+  formattedGroup.push(reservedScheduleArray);
+
   return formattedGroup;
 
 };
