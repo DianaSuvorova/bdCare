@@ -125,7 +125,10 @@ Group.prototype.getStudentIds = function (dateRange) {
 
 Group.prototype.toExcelFormat = function(dateRange, students) {
   var studentLoadPerDate = this._getStudentLoad(dateRange);
-  var formattedGroup = [];
+
+  var groupHeader = [this.name].concat(_slotsDict);
+
+  var formattedGroup = [groupHeader];
   this.getStudentIds(dateRange).forEach(function (studentId) {
     if (students[studentId]) formattedGroup.push(students[studentId].toExcelFormat({groupId: this.id, dateRange: dateRange}))
   }.bind(this))
@@ -135,8 +138,9 @@ Group.prototype.toExcelFormat = function(dateRange, students) {
   _slotsDict.forEach(function (slot) {
     reservedScheduleArray.push(reservedSchedule[slot]);
   });
-  
+
   formattedGroup.push(reservedScheduleArray);
+  formattedGroup.push([""]);
 
   return formattedGroup;
 

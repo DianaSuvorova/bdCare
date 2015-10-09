@@ -22,7 +22,6 @@ var _students = {};
 var _groups = {};
 var _mappings = [];
 var _isEmpty = true;
-var _slotsDict = ['mon_am', 'mon_pm', 'tue_am', 'tue_pm', 'wed_am', 'wed_pm', 'thu_am', 'thu_pm', 'fri_am', 'fri_pm'];
 
 if (isOffline) {
     setData(OffLineData.students, OffLineData.groups, OffLineData.mappings);

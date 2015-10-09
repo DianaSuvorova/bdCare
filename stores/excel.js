@@ -92,10 +92,6 @@ function generateExcelWorksheetForDateRange(dateRange, _groups, _students) {
   var data = []
   Object.keys(_groups).map(function(groupId) {
       var group = _groups[groupId];
-      var groupHeader = _slotsDict.slice();
-      groupHeader.unshift(_groups[groupId].name)
-      data.push([""]);
-      data.push(groupHeader);
       data = data.concat(group.toExcelFormat(dateRange, _students));
   });
   return sheet_from_array_of_arrays(data);
