@@ -2,7 +2,7 @@ var React = require('react');
 var $ = require('jquery');
 var ClassNames = require('classnames');
 
-var Capacity = require('../capacityCubes/capacityCubes.react');
+var Capacity = require('../capacity/capacity.react');
 var StudentStore = require('../../stores/studentStore');
 
 var actionables = module.exports = React.createClass({

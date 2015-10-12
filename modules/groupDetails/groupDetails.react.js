@@ -8,7 +8,7 @@ var StudentStore = require('../../stores/studentStore');
 var StudentList = require('../studentList/studentList.react')
 var MonthPicker = require('../monthPicker/monthPicker.react');
 var GroupPicker = require('../groupPicker/groupPicker.react');
-var Capacity = require('../capacityCubes/capacityCubes.react');
+var Capacity = require('../capacity/capacity.react');
 
 
 var groupDetails = module.exports = React.createClass({

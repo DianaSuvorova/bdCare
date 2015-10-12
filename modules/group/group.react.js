@@ -1,7 +1,7 @@
 var React = require('react');
 var $ = require('jquery');
 var ClassNames = require('classnames');
-var Capacity = require('../capacityCubes/capacityCubes.react');
+var Capacity = require('../capacity/capacity.react');
 var CalendarHeader = require('../calendar/calendarHeader.react');
 
 var Waitlist = require('../waitlist/waitlist.react');
@@ -13,9 +13,9 @@ var group = module.exports = React.createClass({
 
     return (
       <div className = 'group' onClick = {this._onClick}>
-        <div>{this.props.group.name}</div>
-        <div>
-          <span className= 'label'>total capacity: </span>
+        <div className = 'header'>{this.props.group.name}</div>
+        <div className = 'subheader'>
+          <span className= 'label'> {'TOTAL CAPACITY'} </span>
           <span className= 'value'>{this.props.group.capacity} </span>
         </div>
         <CalendarHeader/>

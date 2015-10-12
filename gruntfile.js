@@ -77,7 +77,15 @@ module.exports = function (grunt) {
       html: {
         src: 'index.html',
         dest: 'build/'
-      }
+      },
+      // assets: {
+      //   files: [{
+      //      expand: true,
+      //      cwd: 'assets',
+      //      src: ['**'],
+      //      dest: 'build/'
+      //  }]
+      // }
     },
 
     replace: {

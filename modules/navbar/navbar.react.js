@@ -22,8 +22,12 @@ var navbar = module.exports = React.createClass({
 
     return (
       <div id = 'navbar' className = {this.props.className} >
-        <span className = {classes.dashboard} onClick = {this._onNavigateDashboard}>Dashboard</span>
-        <span className = {classes.students} onClick = {this._onNavigateStudents}>Students</span>
+        <div className = {'logo'} onClick = {this._onNavigateDashboard}>
+          <span className = {'green'}>bd</span>
+          <span>care</span>
+        </div>
+        <div className = {classes.dashboard} onClick = {this._onNavigateDashboard}>DASHBOARD</div>
+        <div className = {classes.students} onClick = {this._onNavigateStudents}>STUDENTS</div>
       </div>
       );
   },
@@ -33,7 +37,7 @@ var navbar = module.exports = React.createClass({
   },
 
   _onNavigateStudents: function () {
-    var groups = StudentStore.getGroupsMap();
+    var groups = StudentStore.getGroups();
 
     var dateRangeObject = DateRangeStore.getCurrentDateRangeObject();
     var groupId = Object.keys(groups)[0];

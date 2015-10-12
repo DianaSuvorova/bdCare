@@ -1,18 +1,26 @@
 div#navbar {
-  flex: 0 0 $unit * 2;
-  span {
+  font-size: $font-size-small;
+  background-color: $color-navbar-background;
+  @include flex(1 1 $height-header);
+  padding: 0 $unit * 3;
+  div {
+    height: $height-header - $unit/6;
+    line-height: $height-header - $unit/6;
     cursor: pointer;
     float: left;
     margin-right: $unit * 2;
-    padding-right: $unit;
-    color: lightgray;
-    border-bottom: $border-lightgray;
+    color: white;
     &.active {
-      color: black;
-      border-bottom: $border-bold;
+      border-bottom: $unit/6 solid $color-green;
     }
     &:first-of-type {
       width: $unit * 2;
+    }
+    &.logo {
+      font-size: $font-size-large;
+      span.green {
+        color: $color-green;
+      }
     }
   }
 }
