@@ -23,12 +23,11 @@ Group.prototype.getAvailableSchedule = function (dateRange) {
   var slotsAvailable = {};
 
   for (slot in slotsTaken) {
-    slotsAvailable[slot] = this.capacity - slotsTaken[slot];
+    slotsAvailable[slot] = this.capacity - slotsTaken[slot] || 0;
   }
 
   return slotsAvailable;
 };
-
 
 Group.prototype.getStudentsIdsEligibleForUpgrade = function (dateRange) {
   var startDate = dateRange[0];

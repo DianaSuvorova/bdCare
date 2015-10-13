@@ -20,7 +20,6 @@ var group = module.exports = React.createClass({
         </div>
         <CalendarHeader/>
         <Capacity schedule = {this.props.group.getAvailableSchedule(this.props.dateRange)} capacity = {this.props.group.capacity} waitlist = {false}/>
-        <Waitlist/>
         <Actionables/>
       </div>
     );

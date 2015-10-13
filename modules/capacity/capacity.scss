@@ -1,43 +1,52 @@
 div.capacityCubes {
-
-  $border-radius: $unit/5;
-
-  div.vis{
-    height: $unit * 3;
+  @include display-flex;
+  @include justify-content(center);
+  div.vis {
     @include display-flex;
-    @include flex-direction(row);
-    & > span.day {
-      height: 100%;
+    @include flex-flow( column wrap);
+    div.partialRows{
       @include display-flex;
       @include flex-direction(row);
-      @include align-items(flex-end);
-      margin: 1px;
-      border : $border-lightgray;
-      border-radius: $border-radius;
-      & > span.slot {
+      & > span.day {
         height: 100%;
-        width: $unit;
         @include display-flex;
-        @include flex-flow(column-reverse wrap);
-        & > span.cube {
-          @include flex(1 0 auto);
+        @include flex-direction(row);
+        @include align-items(flex-end);
+        margin: 1px;
+        & > span.slot {
+          height: 100%;
           width: $unit;
-          &.taken { background-color: $color-active; }
-          &:not(:first-child) {border-bottom: $border-lightgray;}
-        }
-        &.am {
-          border-right: $border-lightgray;
+          @include display-flex;
+          @include flex-flow(column-reverse wrap);
           & > span.cube {
-            &:first-child { border-radius: 0 0 0 $border-radius; }
-            &:last-child { border-radius: $border-radius 0 0 0; }
+            @include flex(1 0 auto);
+            width: $unit;
+            height: $unit / 3;
+            margin: 1px;
+            background-color: $color-subheader-background;
+            &.taken { background-color: $color-green; }
           }
         }
-        &.pm {
-          & > span.cube {
-            &:first-child { border-radius: 0 0 $border-radius 0 ; }
-            &:last-child { border-radius: 0 $border-radius 0 0; }
-          }
-        }
+      }
+    }
+    div.fullRow {
+      margin: 1px;
+      @include flex(1 0 100%);
+      height: $unit;
+      background-color: $color-green-dark-background;
+      @include display-flex;
+      @include justify-content(space-between);
+      color: $color-green-text;
+      span.value {
+        line-height: $unit;
+        width: $unit;
+        text-align: center;
+        background-color: $color-green-light-background;
+        font-size: $font-size-medium;
+      }
+      span.label {
+        margin-right: $unit/3;
+        font-size: $font-size-small;
       }
     }
   }

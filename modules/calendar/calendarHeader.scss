@@ -1,7 +1,11 @@
 div.calendarHeader {
+  @include display-flex;
+  @include justify-content(center);
   & > span {
     display: inline-block;
-    width: calc(#{$unit * 2} + 6px);
+    width: calc(#{$unit * 2} + 4px);
     text-align: center;
+    font-size: $font-size-small;
+    color: $color-calendar-header;
   }
 }
