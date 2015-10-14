@@ -26,6 +26,11 @@ div.group {
       background-color: $color-green;
       border-radius: $unit/5;
     }
+    &.waitlist {
+      margin: $unit* 0.8 0;
+      span.value {
+        background-color: $color-blue;
+      }
+    }
   }
-
 }

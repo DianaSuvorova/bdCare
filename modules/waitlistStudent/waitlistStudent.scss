@@ -1,0 +1,8 @@
+div.waitlistStudent {
+  @include display-flex;
+  @include flex-flow(column wrap);
+  margin: $unit * 0.8 0;
+  color: $color-waitlist-names;
+  font-family: $font-family-sourceSansPro;
+  div {width: $calendar-width;}
+}

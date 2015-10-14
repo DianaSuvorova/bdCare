@@ -120,7 +120,19 @@ Group.prototype.getStudentIds = function (dateRange) {
     });
   }.bind(this))
   return Object.keys(studentIds);
-}
+};
+
+Group.prototype.getWaitlistStudentIds = function (dateRange) {
+  var waitlist = [];
+  numWaitlisted = Math.floor(Math.random() * 4);
+  for (var i = 0; i < numWaitlisted; i++) {
+    var mappingIdx = Math.floor(Math.random() * this.mappings.length);
+    var mapping = this.mappings[mappingIdx];
+    waitlist.push(mapping.studentId)
+  }
+  return waitlist;
+
+};
 
 Group.prototype.toExcelFormat = function(dateRange, students) {
   var studentLoadPerDate = this._getStudentLoad(dateRange);

@@ -3,7 +3,8 @@ div.calendarHeader {
   @include justify-content(center);
   & > span {
     display: inline-block;
-    width: calc(#{$unit * 2} + 4px);
+
+    width: $day-width;
     text-align: center;
     font-size: $font-size-small;
     color: $color-calendar-header;

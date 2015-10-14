@@ -51,6 +51,8 @@ $height-header: $unit * 2;
 $height-footer: $unit;
 $toolbar-height: $unit;
 $panel-width: $unit * 10;
+$day-width: calc(#{$unit * 2} + 4px);
+$calendar-width: calc(#{$unit * 10} + 10px);
 
 
 //height navbar 80px

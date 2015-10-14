@@ -51,9 +51,10 @@ div.capacityCubes {
     }
   }
   &.waitlist {
+    margin: 0;
     & > div.vis {
-      height: $unit * 0.5;
-      & > span.day > span.slot > span.cube.taken { background-color: $color-gray; }
+      & > div.partialRows > span.day  > span.slot > span.cube.taken { background-color: $color-blue; }
+      & > div.fullRow { display: none; }
     }
 
   }
