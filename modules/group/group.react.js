@@ -21,8 +21,6 @@ var group = module.exports = React.createClass({
           return <WaitlistStudent  key = {studentId} student = {waitlistStudents[studentId]} groupId = {this.props.group.id}/>;
         }.bind(this));
 
-    console.log(waitlistStudents);
-
     return (
       <div className = 'group' onClick = {this._onClick}>
         <div className = 'header'>{this.props.group.name}</div>

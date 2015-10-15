@@ -1,6 +1,7 @@
 div.group {
   @include flex(0 0 auto);
   background-color: white;
+  margin: 0 $unit;
   div.header {
     height: $unit * 1.5;
     line-height: $unit * 1.5;

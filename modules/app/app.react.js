@@ -20,6 +20,7 @@ var app = module.exports = React.createClass({
   getInitialState : function () {
     return {
       students: false,
+      aboutUs: false,
       dateRangeObject: DateRangeStore.getCurrentDateRangeObject(),
       groupId: null
     }
@@ -32,6 +33,9 @@ var app = module.exports = React.createClass({
     }.bind(this))
     .add(/dashboard/, function() {
       this.setState(this._getState({students: false}))
+    }.bind(this))
+    .add(/aboutus/, function() {
+      this.setState(this._getState({aboutUs: true}))
     }.bind(this))
     .add(/student\/(.*)/, function() {
         var groups = StudentStore.getGroups();
@@ -69,7 +73,8 @@ var app = module.exports = React.createClass({
       activeStudentId: null,
       students: false,
       dateRangeObject: DateRangeStore.getCurrentDateRangeObject(),
-      groupId: Object.keys(groups)[0]
+      groupId: Object.keys(groups)[0],
+      aboutUs: false
     };
 
     var state = assign({}, defaultState, newState);

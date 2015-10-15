@@ -12,8 +12,8 @@ div#dashboard {
     height: calc(100% - #{$unit});
     overflow-y: auto;
     @include display-flex;
-    @include flex-flow(row wrap);
-    @include justify-content(space-around);
+    @include flex-flow(column wrap);
+//    @include justify-content(space-around);
     padding: $unit $unit * 3;
     & > div {cursor: pointer}
   }
