@@ -127,11 +127,11 @@ Group.prototype.getWaitlistStudentIds = function (dateRange) {
   numWaitlisted = Math.floor(Math.random() * 4);
   for (var i = 0; i < numWaitlisted; i++) {
     var mappingIdx = Math.floor(Math.random() * this.mappings.length);
-    var mapping = this.mappings[mappingIdx];
+    var mapping = this.mappings[mappingIdx].clone();
+    mapping.waitlist= true;
     waitlist.push(mapping.studentId)
   }
   return waitlist;
-
 };
 
 Group.prototype.toExcelFormat = function(dateRange, students) {

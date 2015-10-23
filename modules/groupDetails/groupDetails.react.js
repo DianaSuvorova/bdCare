@@ -14,20 +14,25 @@ var Capacity = require('../capacity/capacity.react');
 var groupDetails = module.exports = React.createClass({
 
   render: function () {
-    var toolbar = (
-      <div className = 'toolbar'>
-        <MonthPicker updateDateRange = {this._onUpdateDateRange} dateRangeObject = {this.props.dateRangeObject}/>
-        <GroupPicker updateGroup = {this._onUpdateGroup} group = {this.props.groups[this.props.groupId]} groups = {this.props.groups}/>
-      </div>
-    );
 
     return (
       <div id = 'groupDetails'>
-        <div className = 'summary'>
-          {toolbar}
-          <Capacity schedule = {this.props.group.getAvailableSchedule(this.props.dateRangeObject.dateRange)} capacity = {this.props.group.capacity}  header = {false}/>
+        <div className = 'container'>
+          <div className = 'summary'>
+            <div className = 'header'>
+              <span className = 'groupName'>{this.props.group.name}</span>
+            </div>
+            <Capacity
+              schedule = {this.props.group.getAvailableSchedule(this.props.dateRangeObject.dateRange)}
+              capacity = {this.props.group.capacity}
+            />
+          </div>
         </div>
-        <StudentList students = {this.props.students} openStudent = {this._openStudent} dateRangeObject = {this.props.dateRangeObject} groupId = {this.props.groupId} />
+        <StudentList
+          group = {this.props.group}
+          openStudent = {this._openStudent}
+          dateRangeObject = {this.props.dateRangeObject}
+          />
       </div>
       );
   },

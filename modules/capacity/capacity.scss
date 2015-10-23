@@ -24,7 +24,12 @@ div.capacityCubes {
             height: $unit / 3;
             margin: 1px;
             background-color: $color-subheader-background;
-            &.taken { background-color: $color-green; }
+            &.taken {
+              background-color: $color-green;
+              &.waitlist {
+                background-color: $color-blue;
+              }
+            }
           }
         }
       }
@@ -49,13 +54,5 @@ div.capacityCubes {
         font-size: $font-size-small;
       }
     }
-  }
-  &.waitlist {
-    margin: 0;
-    & > div.vis {
-      & > div.partialRows > span.day  > span.slot > span.cube.taken { background-color: $color-blue; }
-      & > div.fullRow { display: none; }
-    }
-
   }
 }

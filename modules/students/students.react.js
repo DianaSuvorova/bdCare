@@ -6,6 +6,9 @@ var assign = require('object-assign');
 var GroupDetails = require('../groupDetails/groupDetails.react');
 var StudentDetails = require('../studentDetails/studentDetails.react');
 var NewStudentDetails = require('../studentDetails/newStudentDetails.react');
+var MonthPicker = require('../monthPicker/monthPicker.react');
+var GroupPicker = require('../groupPicker/groupPicker.react');
+
 
 var Api = require('../../stores/api');
 
@@ -43,8 +46,6 @@ var students = module.exports = React.createClass({
 
   render: function () {
     var content = <GroupDetails
-      students = {this.state.students}
-      groupId = {this.state.groupId}
       dateRangeObject = {this.state.dateRangeObject}
       openStudentDetails = {this._openStudentDetails}
       activeStudent = {this.state.activeStudent}
@@ -78,6 +79,14 @@ var students = module.exports = React.createClass({
     var students = (StudentStore.isEmpty()) ?
       null :
       (<div id = 'students'>
+        <div className = 'toolbar'>
+          <MonthPicker dateRangeObject = {this.state.dateRangeObject} updateDateRange = {this._onUpdateDateRange} />
+          <GroupPicker update = {this._onUpdateGroup} kvObject = {this.state.groups[this.state.groupId]} kvMap = {this.state.groups}/>
+          <span className = 'actionItemText ' onClick = {this._onAddNewStudent}>
+            <i className = 'fa fa-plus'></i>
+            <span>Add student</span>
+          </span>
+        </div>
         {content}
       </div>)
 
@@ -102,8 +111,12 @@ var students = module.exports = React.createClass({
     this.setState({activeStudentId: null});
   },
 
-  _onUpdateGroup: function (groupId) {
-    this.setState(this._getState({groupId: groupId}));
+  _onUpdateGroup: function (group) {
+    this.setState(this._getState({groupId: group.id}));
+  },
+
+  _onAddNewStudent: function () {
+
   },
 
   _onUpdateDateRange: function (dateRangeObject) {

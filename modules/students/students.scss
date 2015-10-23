@@ -1,7 +1,16 @@
 div#students {
   height: 100%;
   overflow-y: hidden;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  @include display-flex;
+  @include flex-flow(row wrap);
+  @include justify-content(space-around);
+  div.toolbar {
+    @include flex(1 0 100%);
+    padding: 0 $unit * 3;
+    height: $toolbar-height;
+    background-color: $color-toolbar-background;
+    @include display-flex;
+    @include justify-content(space-between);
+  }
+
 }

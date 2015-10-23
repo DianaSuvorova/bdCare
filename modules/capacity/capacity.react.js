@@ -21,9 +21,14 @@ var capacityCubes = module.exports = React.createClass({
     var cubes = function (slot) {
       var cubes = [];
       var cube;
-      if (this.props.waitlist) {
-        if (this.props.schedule[slot]) cube = <span key = {slot+'_taken_'+i} className = 'cube taken'></span>
-        else cube = <span key = {slot+'_available_'+i} className = 'cube available'></span>
+      var waitlist = (this.props.waitlist) ? ' waitlist' : '';
+      if (this.props.single) {
+        if (this.props.schedule[slot]) {
+          cube = <span key = {slot+'_taken_'+i} className = {'cube taken' + waitlist}></span>
+        }
+        else {
+          cube = <span key = {slot+'_available_'+i} className = {'cube available'+ waitlist}></span>
+        }
         cubes.push(cube)
       }
       else {
@@ -31,14 +36,20 @@ var capacityCubes = module.exports = React.createClass({
           cube = <span key = {slot+'_taken_'+i} className = 'cube taken'></span>
           cubes.push(cube);
         }
-
-        for (var i = 0; i < this.props.schedule[slot]; i++ ) {
+        for (var i = 0; i < (this.props.schedule[slot]); i++ ) {
           cube = <span key = {slot+'_available_'+i} className = 'cube available'></span>
           cubes.push(cube);
         }
       }
+
+
       return cubes;
     }.bind(this);
+
+    var  fullRow = (this.props.single) ? null : (<div className = 'fullRow'>
+                <span className= 'value'> {fullRows} </span>
+                <span className= 'label'> {'FULL SCHEDULES'} </span>
+              </div>);
 
     return (
       <div className = {classes.capacity}>
@@ -65,10 +76,7 @@ var capacityCubes = module.exports = React.createClass({
               <span className = {classes.slot('fri_pm')}>{cubes('fri_pm')}</span>
             </span>
           </div>
-          <div className = 'fullRow'>
-            <span className= 'value'> {fullRows} </span>
-            <span className= 'label'> {'FULL SCHEDULES'} </span>
-          </div>
+          {fullRow}
         </div>
       </div>
       );

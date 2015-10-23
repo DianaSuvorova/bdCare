@@ -25,7 +25,7 @@ var monthPicker = module.exports = React.createClass({
     };
 
     return (
-      <span className = {'monthPicker'}>
+      <span className = {'picker'}>
         <span className = {classes.prev} onClick = {this._onClickPrev}><i className ='fa fa-caret-left'></i></span>
         <span className = 'month'>{this.props.dateRangeObject.key}</span>
         <span className = {classes.next} onClick = {this._onClickNext}><i className ='fa fa-caret-right'></i></span>

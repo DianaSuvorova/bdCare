@@ -28,7 +28,7 @@ div.group {
       border-radius: $unit/5;
     }
     &.waitlist {
-      margin: $unit* 0.8 0;
+      margin-top: $unit * 0.5;
       span.value {
         background-color: $color-blue;
       }

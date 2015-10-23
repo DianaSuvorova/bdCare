@@ -6,34 +6,70 @@ var assign = require('object-assign');
 var StudentStore = require('../../stores/studentStore');
 
 var Student = require('../student/student.react')
-var GroupPicker = require('../groupPicker/groupPicker.react');
 var CalendarHeader = require('../calendar/CalendarHeader.react');
 
 var studentList = module.exports = React.createClass({
 
   render: function () {
+    var students = StudentStore.getStudents(this.props.group.getStudentIds(this.props.dateRangeObject.dateRange));
     var i = 0;
-    var students = Object.keys(this.props.students).map(function (studentId) {
+    var studentEls = Object.keys(students).map(function (studentId) {
       i++;
-      var student = this.props.students[studentId];
-      return <Student key = {studentId} student = {student} dateRangeObject = {this.props.dateRangeObject} groupId = {this.props.groupId}  index = {i} openStudent = {this.props.openStudent}/>
+      var student = students[studentId];
+      return <Student
+          key = {studentId}
+          student = {student}
+          dateRangeObject = {this.props.dateRangeObject}
+          groupId = {this.props.group.id}
+          index = {i}
+          openStudent = {this.props.openStudent}
+          waitlist = {false}
+        />
     }.bind(this));
+
+    var waitlistStudents = StudentStore.getStudents(this.props.group.getWaitlistStudentIds(this.props.dateRangeObject.dateRange));
+    var i = 0;
+    var waitlistStudentEls = Object.keys(waitlistStudents).map(function (studentId) {
+      i++;
+      var student = students[studentId];
+      return <Student
+          key = {studentId}
+          student = {student}
+          dateRangeObject = {this.props.dateRangeObject}
+          groupId = {this.props.group.id}
+          index = {i}
+          openStudent = {this.props.openStudent}
+          waitlist = {true}
+        />
+    }.bind(this));
+
 
     var header = (
       <div className = 'header'>
-        <div className = 'index'>
-          <span className = {'actionItem'} onClick = {this._onAddNewStudent}><i className = 'fa fa-plus'></i></span>
+        <div className = 'subheader'>
+          <span className= 'label'>{'ENROLLED STUDENTS'}</span>
+          <span className= 'value'>{Object.keys(students).length}</span>
         </div>
-        <div>Name</div>
-        <div>Date of Birth</div>
+        <CalendarHeader/>
+      </div>
+    )
+
+    var waitlistHeader = (
+      <div className = 'header waitlist'>
+        <div className = 'subheader'>
+          <span className= 'label'>{'WAITLIST STUDENTS'}</span>
+          <span className= 'value'>{Object.keys(waitlistStudents).length}</span>
+        </div>
         <CalendarHeader/>
       </div>
     )
 
     return (
       <div id = 'studentList'>
-          {header}
-      <div className= 'body'>{students}</div>
+        {waitlistHeader}
+        <div className= 'body'>{waitlistStudentEls}</div>
+        {header}
+        <div className= 'body'>{studentEls}</div>
       </div>
       );
   },

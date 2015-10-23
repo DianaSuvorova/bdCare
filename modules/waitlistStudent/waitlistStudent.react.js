@@ -10,7 +10,7 @@ var waitlistStudent = module.exports = React.createClass({
     return  (
       <div className = 'waitlistStudent'>
         <div>{this.props.student.name}</div>
-        <Capacity schedule = {this.props.student.getMapping({groupId: this.props.groupId}).schedule} capacity = {1} waitlist = {true}/>
+        <Capacity schedule = {this.props.student.getMapping({groupId: this.props.groupId}).schedule} capacity = {1} single = {true} waitlist={true}/>
       </div>
     )
 

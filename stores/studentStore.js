@@ -94,7 +94,8 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
          var student = new Student({groupId: filter.groupId});
              studentsMap['new'] = student;
        }
-       studentsMap[studentId] = _students[studentId];
+       //there are some undefined students. Need to check db consistency.
+       if (_students[studentId]) studentsMap[studentId] = _students[studentId];
      });
      return studentsMap;
   },
