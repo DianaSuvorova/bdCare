@@ -16,6 +16,7 @@ div#groupDetails {
       @include align-items(center);
       & > div.header {
         width: $panel-width;
+        text-align: center;
       }
     }
   }
