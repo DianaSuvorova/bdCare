@@ -4,13 +4,15 @@ div#students {
   @include display-flex;
   @include flex-flow(row wrap);
   @include justify-content(space-around);
-  div.toolbar {
+  & > div.toolbar {
     @include flex(1 0 100%);
-    padding: 0 $unit * 3;
     height: $toolbar-height;
     background-color: $color-toolbar-background;
     @include display-flex;
-    @include justify-content(space-between);
+    &  > span.picker {
+      margin: 0 $unit;
+    }
+//    @include justify-content(space-between);
   }
 
 }

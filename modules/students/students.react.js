@@ -137,7 +137,7 @@ var students = module.exports = React.createClass({
     var state = assign({}, defaultState, newState);
 
     if (state.activeStudentId) {
-      state.activeStudent = StudentStore.getStudentByStudentIdAndDateRange(state.activeStudentId, state.groupId);
+      state.activeStudent = StudentStore.getStudents([state.activeStudentId])[state.activeStudentId];
     }
 
     var group = state.groups[state.groupId];

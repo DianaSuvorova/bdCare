@@ -4,11 +4,12 @@ div.student {
   @include display-flex;
   cursor: pointer;
   font-size: $font-size-medium;
-  text-overflow: ellipsis;
+  background-color: white;
   & > span {
     display: inline-block;
     text-align: left;
     width: $unit * 5;
+    text-overflow: ellipsis;
     &.index {
       color: $color-calendar-header;
       text-align: center;
@@ -17,5 +18,14 @@ div.student {
   }
   & > div.capacityCubes {
     margin-top : $unit / 4;
+  }
+  &:hover{
+    background-color: $color-student-hover;
+  }
+
+  &.waitlist{
+    &:hover{
+      background-color: $color-waitlist-student-hover;
+    }
   }
 }

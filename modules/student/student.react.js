@@ -12,7 +12,8 @@ var student = module.exports = React.createClass({
 
     var classes = {
       student : ClassNames({
-        'student': true
+        'student': true,
+        'waitlist': this.props.waitlist
       })
     }
     return (
