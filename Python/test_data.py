@@ -8,6 +8,16 @@ import dateutil.relativedelta
 
 from random import randrange, seed
 
+connection = None
+
+def _get_connection():
+    global connection
+    if not connection:
+        connection = httplib.HTTPSConnection('api.parse.com', 443)
+        connection.connect()
+
+    return connection
+
 
 # pip install git+https://github.com/dgrtwo/ParsePy.git
 from parse_rest.connection import register
@@ -88,6 +98,23 @@ def create_student_with_age_group(age_group):
     student.save()
     return student
 
+def create_student_and_mapping(group, every_n_student_is_part_time=5, isOnWaitlist = False):
+    student = create_student_with_age_group(group.name)
+    print student.name
+    mapping = Mapping(groupId=group.objectId, studentId=student.objectId, isOnWaitlist=isOnWaitlist)
+    high = ranges[group.name]["low"]
+    mapping.projected_end_date = student.birthdate + dateutil.relativedelta.relativedelta(months=high)
+    mapping.start_date = start_date
+
+    for slot in mapping_slots:
+        attendance = 1
+        if i % every_n_student_is_part_time == 0:
+            attendance = random.randrange(2)
+        setattr(mapping, slot, attendance)
+
+        mapping.save()
+
+
 if __name__ == "__main__":
 
     # harcode seed so that patterns are repeatable
@@ -108,30 +135,19 @@ if __name__ == "__main__":
         print "deleting student object ID", student.objectId
         student.delete()
 
-
-
     for group in groups:
         i = 0
         while i < int(group.capacity):
             i+=1
-            student = create_student_with_age_group(group.name)
+            create_student_and_mapping(group)
 
-            print student.name
-
-
-            mapping = Mapping(groupId=group.objectId, studentId=student.objectId)
-            high = ranges[group.name]["low"]
-            mapping.projected_end_date = student.birthdate + dateutil.relativedelta.relativedelta(months=high)
-            mapping.start_date = start_date
-
-            for slot in mapping_slots:
-                attendance = 1
-                if i % 5 == 0:
-                    attendance = random.randrange(2)
-                setattr(mapping, slot, attendance)
-
-            mapping.save()
-
+        i = 0
+        waitlist_number = (int(group.capacity) / 4) + 1
+        while i < waitlist_number:
+            i+=1
+            create_student_and_mapping(group=group,
+                                       every_n_student_is_part_time=2,
+                                       isOnWaitlist=True)
 
     print "the end"
 
