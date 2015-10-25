@@ -6,7 +6,7 @@ import random
 
 import dateutil.relativedelta
 
-from random import randrange
+from random import randrange, seed
 
 
 # pip install git+https://github.com/dgrtwo/ParsePy.git
@@ -90,10 +90,25 @@ def create_student_with_age_group(age_group):
 
 if __name__ == "__main__":
 
+    # harcode seed so that patterns are repeatable
+    random.seed(1)
     register('nV79RgGdpHJuLACeL96jDcybxA5fcLBSYmYbYH5u', 'NarFd6S5g0RkEuMv9RcMAzFpAHbIGfShpdnKaeIE')
 
     groups = Group.Query.all()
     total_students = 0
+
+    print "processing groups"
+    mappings = Mapping.Query.all()
+    for mapping in mappings:
+        print "Deleting mapping object ID ", mapping.objectId
+        mapping.delete()
+
+    existing_students = Student.Query.all()
+    for student in existing_students:
+        print "deleting student object ID", student.objectId
+        student.delete()
+
+
 
     for group in groups:
         i = 0
@@ -105,11 +120,18 @@ if __name__ == "__main__":
 
 
             mapping = Mapping(groupId=group.objectId, studentId=student.objectId)
-            high = ranges[group.name]["high"]
+            high = ranges[group.name]["low"]
             mapping.projected_end_date = student.birthdate + dateutil.relativedelta.relativedelta(months=high)
             mapping.start_date = start_date
 
             for slot in mapping_slots:
-                setattr(mapping, slot, 1)
+                attendance = 1
+                if i % 5 == 0:
+                    attendance = random.randrange(2)
+                setattr(mapping, slot, attendance)
+
             mapping.save()
+
+
+    print "the end"
 
