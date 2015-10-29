@@ -66,8 +66,7 @@ var studentDetails = module.exports = React.createClass({
                 </div>
               </div>);
 
-    var mapping = this.props.student.getMapping({groupId : this.props.groupId, dateRange: this.props.dateRangeObject.dateRange});
-
+    var mapping = this.props.student.getMapping();
     var newMapping = <MappingEditable mappingActions = {this._mappingActions} mapping = {mapping} groups = {this.props.groups} updateSchedule = {this._onUpdateSchedule} updateGroup = {this._onUpdateGroup}/>;
     var mappingEl = (
       <div className = 'activeMapping'>

@@ -18,12 +18,7 @@ var DateRangeStore = require('../../stores/dateRangeStore');
 var app = module.exports = React.createClass({
 
   getInitialState : function () {
-    return {
-      students: false,
-      aboutUs: false,
-      dateRangeObject: DateRangeStore.getCurrentDateRangeObject(),
-      groupId: null
-    }
+    return this._getState();
   },
 
   componentDidMount: function () {
@@ -38,11 +33,7 @@ var app = module.exports = React.createClass({
       this.setState(this._getState({aboutUs: true}))
     }.bind(this))
     .add(/student\/(.*)/, function() {
-        var groups = StudentStore.getGroups();
-
-        var dateRangeObject = DateRangeStore.getCurrentDateRangeObject();
-        var groupId = Object.keys(groups)[0];
-        this.setState(this._getState({students: true, groupId: groupId, dateRangeObject: dateRangeObject, activeStudentId: arguments[0]}));
+        this.setState(this._getState({students: true, activeStudentId: arguments[0]}));
     }.bind(this))
     .add(function() {
       Router.navigate('/dashboard');

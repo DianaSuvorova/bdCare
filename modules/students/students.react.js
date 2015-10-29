@@ -44,7 +44,12 @@ var students = module.exports = React.createClass({
     StudentStore.removeChangeListener(this._onChange);
   },
 
+  componentWillReceiveProps: function (nextProps) {
+    this.setState(this._getState(nextProps));
+  },
+
   render: function () {
+
     var groupDetails = <GroupDetails
       dateRangeObject = {this.state.dateRangeObject}
       openStudentDetails = {this._openStudentDetails}
@@ -103,7 +108,8 @@ var students = module.exports = React.createClass({
   },
 
   _openStudentDetails : function (studentId) {
-    this.setState(this._getState({activeStudentId: studentId}));
+    Router.navigate('/student/'+ studentId);
+//    this.setState(this._getState({activeStudentId: studentId}));
   },
 
   _closeStudentDetails : function () {
@@ -130,7 +136,7 @@ var students = module.exports = React.createClass({
       groups: groups,
       groupId: this.props.groupId || Object.keys(groups)[0],
       dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject || DateRangeStore.getCurrentDateRangeObject(),
-      activeStudentId: this.state && this.state.activeStudentId
+      activeStudentId: this.props.activeStudentId
     };
 
     var state = assign({}, defaultState, newState);
