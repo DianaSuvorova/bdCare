@@ -74,7 +74,7 @@ Group.prototype._getMinimumSlotsLoad = function(dateRange) {
 
 Group.prototype._getMappings = function(date) {
   return this.mappings.filter(function (mapping) {
-    return mapping.isActive(date);
+    return mapping.isActiveEnrolled(date);
   });
 }
 
@@ -114,7 +114,7 @@ Group.prototype.getStudentIds = function (dateRange) {
   var listOfDates = Helpers.getListOfDates(dateRange);
   listOfDates.forEach( function(date) {
     this.mappings.forEach(function (mapping) {
-      if(mapping.isActive(date)) {
+      if(mapping.isActiveEnrolled(date)) {
         studentIds[mapping.studentId] = mapping.studentId
       }
     });
@@ -123,15 +123,16 @@ Group.prototype.getStudentIds = function (dateRange) {
 };
 
 Group.prototype.getWaitlistStudentIds = function (dateRange) {
-  var waitlist = [];
-  numWaitlisted = Math.floor(Math.random() * 4);
-  for (var i = 0; i < numWaitlisted; i++) {
-    var mappingIdx = Math.floor(Math.random() * this.mappings.length);
-    var mapping = this.mappings[mappingIdx].clone();
-    mapping.waitlist= true;
-    waitlist.push(mapping.studentId)
-  }
-  return waitlist;
+  var studentIds = {};
+  var listOfDates = Helpers.getListOfDates(dateRange);
+  listOfDates.forEach( function(date) {
+    this.mappings.forEach(function (mapping) {
+      if(mapping.isActiveWaitlist(date)) {
+        studentIds[mapping.studentId] = mapping.studentId
+      }
+    });
+  }.bind(this))
+  return Object.keys(studentIds);
 };
 
 Group.prototype.toExcelFormat = function(dateRange, students) {

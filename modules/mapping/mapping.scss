@@ -1,16 +1,43 @@
+div.mappingContainer {
+  margin: $unit / 2 0;
+}
+
 div.mapping {
   @include display-flex;
+  @include justify-content(space-between);
   & > span, input {
     width: $unit * 6;
     text-align: left;
     padding: 0 $unit / 2;
     line-height: $unit;
   }
+  & > div.capacityCubes {
+    margin-top : $unit / 4;
+  }
+  font-size: $font-size-medium;
+  background-color: white;
+  &.record {
+    & > div.date {
+      color: $color-calendar-header;
+    }
+    &.container {
+      @include display-flex;
+      @include justify-content(center);
+    }
+  }
   &.header {
-    border-bottom: $border-lightgray;
+    font-size: $font-size-small;
+    height: $unit;
+    line-height: $unit;
+    text-align: center;
+    background-color: $color-subheader-background;
+    color: white;
   }
   &.editable {
-    padding-right: 0;
-    margin-right: 0;
+    background-color: $color-green-light-background;
+    color: $color-green-text;
+    & > div.calendarHeader > span{
+      color: $color-green-text;
+    }
   }
 }

@@ -31,7 +31,7 @@ var studentList = module.exports = React.createClass({
     var i = 0;
     var waitlistStudentEls = Object.keys(waitlistStudents).map(function (studentId) {
       i++;
-      var student = students[studentId];
+      var student = waitlistStudents[studentId];
       return <Student
           key = {studentId}
           student = {student}

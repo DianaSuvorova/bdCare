@@ -4,30 +4,10 @@ var ClassNames = require('classnames');
 
 var groupPicker = module.exports = React.createClass({
 
-  // render: function () {
-  //
-  //   return (
-  //     <span className = {'picker'}>
-  //       <select onChange={this._onSelectGroup} defaultValue = {this.props.group.id}>
-  //         {
-  //           Object.keys(this.props.groups).map(function(groupId){
-  //             return <option key = {groupId} value = {groupId}>{this.props.groups[groupId].name}</option>;
-  //           }.bind(this))
-  //         }
-  //       </select>
-  //     </span>
-  //   )
-  // },
-  //
-  // _onSelectGroup: function (event) {
-  //   this.props.updateGroup(this.props.groups[event.target.value]);
-  // }
-
-
   render: function () {
     this.keys = Object.keys(this.props.kvMap);
     this.key = this.props.kvObject.key || this.props.kvObject.id;
-    this.value = this.props.kvObject.name || this.props.kvObject.value;
+    this.value = this.props.kvObject.name || this.props.kvObject.key;
     this.idx = this.props.kvObject && this.keys.indexOf(this.key);
 
     var classes = {

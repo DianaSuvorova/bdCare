@@ -4,6 +4,7 @@ var ClassNames = require('classnames');
 var assign = require('object-assign');
 var Util = require('../util');
 
+var Calendar = require('../calendar/calendar.react');
 var CalendarHeader = require('../calendar/calendarHeader.react');
 var MonthPicker = require('../monthPicker/monthPicker.react');
 var DatePicker = require('../datePicker/datePicker.react');
@@ -48,58 +49,54 @@ var studentDetails = module.exports = React.createClass({
         return <Mapping key = {'mapping_'+(i++)} mapping = {mapping} groups = {this.props.groups}/>;
     }.bind(this));
 
-      var header = (<div className = 'header'>
-                <div className = 'detail'>
-                  <span className = 'name'>{this.props.student.name}</span>
-                  <span className = 'dob'>{this.props.student.dateOfBirth}</span>
-                </div>
-                <div className = 'contacts'>
-                  <div className = 'header'>{'CONTACTS'}</div>
-                  <div className = 'contact'>
-                    <span className = 'name'>{'Parent Name'}</span>
-                    <span className = 'number'>{'(999) 999 9999'}</span>
-                  </div>
-                  <div className = 'contact'>
-                    <span className = 'name'>{'Parent Name'}</span>
-                    <span className = 'number'>{'(999) 999 9999'}</span>
-                  </div>
-                </div>
-              </div>);
-
-    var mapping = this.props.student.getMapping({groupId : this.props.groupId, dateRange: this.props.dateRangeObject.dateRange});
-
-    var newMapping = <MappingEditable mappingActions = {this._mappingActions} mapping = {mapping} groups = {this.props.groups} updateSchedule = {this._onUpdateSchedule} updateGroup = {this._onUpdateGroup}/>;
-    var mappingEl = (
-      <div className = 'activeMapping'>
-        <MappingHeader/>
-        <Mapping mapping = {mapping} groups = {this.props.groups} groupId = {this.props.groupId} />
-      </div>);
-
-    var group = this.props.groups[this.state.groupId];
-    var helper = (
-      <div className = 'scheduleHelper'>
-        <div>{'Schedule Helper'}</div>
-        <div className = 'helper'>
-          <div className = 'toolbar'>
-            <MonthPicker dateRangeObject = {this.state.dateRangeObject} updateDateRange = {this._onUpdateDateRange} />
-            <GroupPicker update = {this._onUpdateGroup} kvObject = {group} kvMap = {this.props.groups}/>
+    var newMapping = (this.state.newMapping) ?
+      (<div className = 'row section new'>
+          <MappingEditable mappingActions = {this._mappingActions} mapping = {this.state.newMapping} groups = {this.props.groups} updateSchedule = {this._onUpdateSchedule} updateGroup = {this._onUpdateGroup}/>
+          <div className = 'groupMapping'>
+            <span className='group'>{'Availbale spots in '+ this.props.groups[this.state.newMapping.groupId].name}</span>
+            <Calendar schedule = {this.props.groups[this.state.groupId].getAvailableSchedule(this.state.dateRangeObject.dateRange)} group = {true} editable = {false}/>
+            <MonthPicker updateDateRange = {this._onUpdateDateRange} dateRangeObject = {this.state.dateRangeObject}/>
+            <span className = 'empty'></span>
           </div>
-          <div className = 'groupInfo'>
-            <Capacity
-              schedule = {group.getAvailableSchedule(this.state.dateRangeObject.dateRange)}
-              capacity = {group.capacity}
-            />
-          </div>
-        </div>
       </div>
-    )
+      ) :
+      null;
 
     return (
       <div id = 'studentDetails'>
-        {header}
-        {mappingEl}
-        {newMapping}
-        {helper}
+        <div className = 'toolbox'>
+          <span className = 'actionItemText warning' onClick = {this._onCloseEditStudent}>
+            <span>Close</span>
+            <i className = 'fa fa-times'></i>
+          </span>
+        </div>
+        <div className = 'details'>
+          <div className = 'row section'>
+            <div className = {classes.nameEditableInline} >
+              <input defaultValue = {this.props.student.name}></input>
+              <ActionEditable edit = {this._nameActions().edit} confirm = {this._nameActions().confirm} cancel = {this._nameActions().cancel} active = {this.state.nameState === 'edit'}/>
+            </div>
+            <div className = {classes.birthdateEditableInline}>
+              <DatePicker defaultDate = {this.props.student.birthdate}/>
+              <ActionEditable edit = {this._birthdateActions().edit} confirm = {this._birthdateActions().confirm} cancel = {this._birthdateActions().cancel} active = {this.state.birthdateState === 'edit'}/>
+            </div>
+          </div>
+          <div className = 'row section'>
+            <MappingHeader/>
+            {mappings}
+          </div>
+          <div className = 'row addNewMapping'>
+            <div className = 'container'>
+              <span className = 'buttonContainer'>
+                <span className = {classes.addNewMappingButton} onClick = {this._onToggleAddNewMapping}>
+                  <span>Transfer</span>
+                  <i className = 'fa fa-subway'></i>
+                </span>
+              </span>
+            </div>
+          </div>
+            {newMapping}
+        </div>
       </div>
     );
   },
@@ -179,7 +176,7 @@ var studentDetails = module.exports = React.createClass({
 
   _getState: function (newState) {
   var defaultState = {
-      groupId : this.state && this.state.groupId || this.props.groupId,
+      groupId : this.state && this.state.groupId || this.props.student.getMapping().groupId,
       dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject,
       nameState: this.state && this.state.nameState || 'view',
       birthdateState: this.state && this.state.birthdateState || 'view',
@@ -187,6 +184,12 @@ var studentDetails = module.exports = React.createClass({
     }
 
     var state = assign({}, defaultState, newState);
+    var filter = {};
+    filter.groupId = state.newMapping && state.newMapping.groupId ||state.groupId;
+    filter.dateRange = state.dateRangeObject.dateRange;
+
+    state.groupSummary = StudentStore.getGroups(filter)[filter.groupId];
+
     return state;
   }
 

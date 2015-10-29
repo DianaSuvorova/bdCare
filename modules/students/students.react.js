@@ -45,7 +45,7 @@ var students = module.exports = React.createClass({
   },
 
   render: function () {
-    var content = <GroupDetails
+    var groupDetails = <GroupDetails
       dateRangeObject = {this.state.dateRangeObject}
       openStudentDetails = {this._openStudentDetails}
       activeStudent = {this.state.activeStudent}
@@ -54,6 +54,17 @@ var students = module.exports = React.createClass({
       updateDateRange = {this._onUpdateDateRange}
       updateGroup = {this._onUpdateGroup}
     />
+    var content = (<div id = 'students'>
+      <div className = 'toolbar'>
+        <MonthPicker dateRangeObject = {this.state.dateRangeObject} updateDateRange = {this._onUpdateDateRange} />
+        <GroupPicker update = {this._onUpdateGroup} kvObject = {this.state.groups[this.state.groupId]} kvMap = {this.state.groups}/>
+        <span className = 'actionItemText ' onClick = {this._onAddNewStudent}>
+          <i className = 'fa fa-plus'></i>
+          <span>Add student</span>
+        </span>
+      </div>
+      {groupDetails}
+    </div>);
     if (this.state.activeStudentId === 'new') {
       content = <NewStudentDetails
         student = {this.state.activeStudent}
@@ -76,19 +87,7 @@ var students = module.exports = React.createClass({
     }
 
 
-    var students = (StudentStore.isEmpty()) ?
-      null :
-      (<div id = 'students'>
-        <div className = 'toolbar'>
-          <MonthPicker dateRangeObject = {this.state.dateRangeObject} updateDateRange = {this._onUpdateDateRange} />
-          <GroupPicker update = {this._onUpdateGroup} kvObject = {this.state.groups[this.state.groupId]} kvMap = {this.state.groups}/>
-          <span className = 'actionItemText ' onClick = {this._onAddNewStudent}>
-            <i className = 'fa fa-plus'></i>
-            <span>Add student</span>
-          </span>
-        </div>
-        {content}
-      </div>)
+    var students = (StudentStore.isEmpty()) ? null : content;
 
     return students;
   },

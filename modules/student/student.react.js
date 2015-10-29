@@ -3,13 +3,13 @@ var $ = require('jquery');
 var ClassNames = require('classnames');
 
 var Calendar = require('../calendar/calendar.react');
-var Capacity = require('../capacity/capacity.react');var StudentStore = require('../../stores/studentStore');
+var Capacity = require('../capacity/capacity.react');
+var StudentStore = require('../../stores/studentStore');
 
 
 var student = module.exports = React.createClass({
 
   render: function () {
-
     var classes = {
       student : ClassNames({
         'student': true,
