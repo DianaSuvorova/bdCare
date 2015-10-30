@@ -1,9 +1,0 @@
-div.waitlistStudent {
-  @include display-flex;
-  @include flex-flow(column wrap);
-  @include justify-content(center);
-  padding-bottom: $unit * 0.5;
-  color: $color-waitlist-names;
-  font-family: $font-family-sourceSansPro;
-  border-bottom: 1px solid $color-border-waitlist-student;
-}

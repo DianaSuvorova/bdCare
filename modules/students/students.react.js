@@ -107,11 +107,6 @@ var students = module.exports = React.createClass({
     this.setState(this._getState());
   },
 
-  _openStudentDetails : function (studentId) {
-    Router.navigate('/student/'+ studentId);
-//    this.setState(this._getState({activeStudentId: studentId}));
-  },
-
   _closeStudentDetails : function () {
     this.setState({activeStudentId: null});
   },
