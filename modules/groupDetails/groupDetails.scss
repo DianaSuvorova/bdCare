@@ -5,6 +5,9 @@ div#groupDetails {
   @include align-items(center);
   height: 100%;
   & > div.container {
+    width: 100%;
+    position: fixed;
+    top: $unit * 3; right: 0;
     background-color: white;
     width: 100%;
     @include justify-content(center);

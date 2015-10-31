@@ -5,6 +5,9 @@ div#students {
   @include flex-flow(row wrap);
   @include justify-content(space-around);
   & > div.toolbar {
+    width: 100%;
+    position: fixed;
+    top: $unit * 2; right: 0;
     @include flex(1 0 100%);
     height: $toolbar-height;
     background-color: $color-toolbar-background;

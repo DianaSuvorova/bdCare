@@ -86,23 +86,21 @@ html, body {
 }
 
 div#app {
-  @include display-flex;
-  @include flex-direction(column);
-  height: 100%;
-  a {
-    text-decoration:none;
-    color: inherit;
-    display: inline-block;
-  }
-
+  overflow: scroll;
   div.content {
+    margin-top: $unit * 2;
     @include display-flex;
-    height: calc(100% - #{$height-header + $height-footer});
     @include flex(1 1 auto);
     min-height: $unit * 6;
     @include align-items(flex-start);
     @include justify-content(center);
   }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
 }
 
 span.actionItem {

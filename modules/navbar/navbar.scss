@@ -1,7 +1,10 @@
 div#navbar {
+  position: fixed;
+  top:0;
+  width: 100%;
+  height: $unit * 2;
   font-size: $font-size-small;
   background-color: $color-navbar-background;
-  @include flex(1 1 $height-header);
   padding: 0 $unit * 3;
   div {
     height: $height-header - $unit/6;
