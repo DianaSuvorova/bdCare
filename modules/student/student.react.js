@@ -29,6 +29,7 @@ var student = module.exports = React.createClass({
         <span>{this.props.student.name}</span>
         <span>{this._formatDate(this.props.student.birthdate)}</span>
         <Capacity
+          id = {this.props.student.id}
           schedule = {this.mapping.schedule}
             capacity = {1}
             single = {true}

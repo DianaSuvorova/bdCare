@@ -27,6 +27,7 @@ var groupDetails = module.exports = React.createClass({
               <span className = 'groupName'>{this.props.group.name}</span>
             </div>
             <Capacity
+              id = {this.props.group.id}
               schedule = {this.props.group.getAvailableSchedule(this.props.dateRangeObject.dateRange)}
               capacity = {this.props.group.capacity}
               highlightSchedule = {this.state.highlightSchedule}

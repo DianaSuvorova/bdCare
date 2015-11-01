@@ -40,12 +40,11 @@ var capacityCubes = module.exports = React.createClass({
         if (this.props.highlightSchedule && this.props.highlightSchedule[slot]) {
           if (this.props.schedule[slot]) {
             cube = <span key = {slot+'_taken_'+i} className = 'cube waitlist taken'></span>
-
+            cubes.push(cube);
           }
           else {
             //conflict
           }
-          cubes.push(cube);
           for (var i = 0; i < (this.props.schedule[slot] - 1 ); i++ ) {
             cube = <span key = {slot+'_available_'+i} className = 'cube available'></span>
             cubes.push(cube);
