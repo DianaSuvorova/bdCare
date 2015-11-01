@@ -1,27 +1,39 @@
 div.student {
-  height: $unit;
   @include display-flex;
+  border-bottom: 1px solid $color-border-waitlist-student;
+  height: $unit;
   cursor: pointer;
-  & > input, & > span {
-    display: inline-block;
+  font-size: $font-size-medium;
+  background-color: white;
+  & > span {
     text-align: left;
     width: $unit * 5;
-    border-bottom: $border-lightgray;
+    text-overflow: ellipsis;
     &.index {
+      color: $color-calendar-header;
       text-align: center;
       width: $unit * 2;
     }
   }
-  transition: height $transition-duration ease-in;
-  &.hidden {
-    height: 0;
-    overflow: hidden;
-    border-bottom: none;
+  & > div.capacityCubes {
+    margin-top : $unit / 4;
   }
-  &.draggable {
-    cursor: move;
+  &:hover{
+    background-color: $color-student-hover;
   }
-  &:hover {
-     & > span { background-color: transparentize($color-active, 0.5); }
-   }
+
+  &.waitlist{
+    &:hover{
+      background-color: $color-waitlist-student-hover;
+    }
+  }
+  &.short {
+    @include display-flex;
+    @include flex-flow(column wrap);
+    @include justify-content(center);
+    height: $unit * 2;
+    & > span {
+      height: $unit;
+    }
+  }
 }

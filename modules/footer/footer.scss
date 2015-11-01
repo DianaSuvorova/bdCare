@@ -1,0 +1,11 @@
+div#footer {
+  color: $color-calendar-header;
+  font-size: $font-size-small;
+  div {
+    @include display-flex;
+    @include justify-content(center);
+    &.about {
+      & > span {cursor: pointer;}
+    }
+  }
+}

@@ -23,10 +23,21 @@ Group.prototype.getAvailableSchedule = function (dateRange) {
   var slotsAvailable = {};
 
   for (slot in slotsTaken) {
-    slotsAvailable[slot] = this.capacity - slotsTaken[slot];
+    slotsAvailable[slot] = this.capacity - slotsTaken[slot] || 0;
   }
 
   return slotsAvailable;
+};
+
+Group.prototype.getConflictSlots = function (dateRange, studentSchedule) {
+  var slotsConflict = {}
+  var slotsAvailable = this.getAvailableSchedule(dateRange);
+  for (slot in studentSchedule) {
+    if (studentSchedule[slot] && !slotsAvailable[slot]) {
+      slotsConflict[slot] = true;
+    }
+  }
+  return slotsConflict;
 };
 
 
@@ -75,7 +86,7 @@ Group.prototype._getMinimumSlotsLoad = function(dateRange) {
 
 Group.prototype._getMappings = function(date) {
   return this.mappings.filter(function (mapping) {
-    return mapping.isActive(date);
+    return mapping.isActiveEnrolled(date);
   });
 }
 
@@ -115,13 +126,26 @@ Group.prototype.getStudentIds = function (dateRange) {
   var listOfDates = Helpers.getListOfDates(dateRange);
   listOfDates.forEach( function(date) {
     this.mappings.forEach(function (mapping) {
-      if(mapping.isActive(date)) {
+      if(mapping.isActiveEnrolled(date)) {
         studentIds[mapping.studentId] = mapping.studentId
       }
     });
   }.bind(this))
   return Object.keys(studentIds);
-}
+};
+
+Group.prototype.getWaitlistStudentIds = function (dateRange) {
+  var studentIds = {};
+  var listOfDates = Helpers.getListOfDates(dateRange);
+  listOfDates.forEach( function(date) {
+    this.mappings.forEach(function (mapping) {
+      if(mapping.isActiveWaitlist(date)) {
+        studentIds[mapping.studentId] = mapping.studentId
+      }
+    });
+  }.bind(this))
+  return Object.keys(studentIds);
+};
 
 Group.prototype.toExcelFormat = function(dateRange, students) {
   var studentLoadPerDate = this._getStudentLoad(dateRange);

@@ -87,39 +87,17 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
     return _isEmpty;
   },
 
-  getStudents: function (pFilter) {
-    var defaultFilter = {groupId: null, dateRange: null}
-    var filter = assign(defaultFilter, pFilter);
+  getStudents: function (studentIds) {
     var studentsMap = {};
-    if (filter.studentId === 'new') {
-      var student = new Student({groupId: filter.groupId});
-      studentsMap['new'] = student;
-      return studentsMap;
-    }
-
-    //if dateRange
-    if (filter.dateRange) {
-      var listOfDates = Helpers.getListOfDates(filter.dateRange);
-      listOfDates.forEach( function(date) {
-        Object.keys(_students).forEach( function(studentId) {
-          _students[studentId].mappings.forEach( function (mapping) {
-            if (mapping.isActive(date) && (!filter.groupId || mapping.groupId === filter.groupId)) {
-              studentsMap[studentId] = _students[studentId];
-            }
-          })
-        });
-      })
-    }
-    else {
-      Object.keys(_students).forEach( function(studentId) {
-        _students[studentId].mappings.forEach( function (mapping) {
-          if (!filter.groupId || mapping.groupId === filter.groupId) {
-            studentsMap[studentId] = _students[studentId];
-          }
-        })
-      });
-    }
-    return studentsMap;
+     studentIds.forEach(function(studentId) {
+       if (studentId === 'new') {
+         var student = new Student({groupId: filter.groupId});
+             studentsMap['new'] = student;
+       }
+       //there are some undefined students. Need to check db consistency.
+       if (_students[studentId]) studentsMap[studentId] = _students[studentId];
+     });
+     return studentsMap;
   },
 
   getGroups: function (pFilter) {
@@ -153,22 +131,6 @@ var studentStore = module.exports = assign({}, EventEmitter.prototype, {
 
   getExcel: function () {
     Excel(_groups, _students);
-  },
-
-  //dummy implementation of a function.
-  //Gonna return random students from store.
-  getWaitlistForGroupAndDateRange: function () {
-    var waitlist = {};
-    numWaitlisted = Math.floor(Math.random() * 4);
-    var keys =  Object.keys(_students);
-    for (var i = 0; i < numWaitlisted; i++) {
-      var idx = Math.floor(Math.random() * keys.length);
-      var mappingIdx = Math.floor(Math.random() * _mappings.length);
-      var mapping = _mappings[mappingIdx];
-      var student = assign({}, _students[keys[idx]], {schedule: mapping});
-      waitlist[student.id] = student;
-    }
-    return waitlist;
   },
 
   //another dummy function.

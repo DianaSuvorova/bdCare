@@ -1,38 +1,60 @@
-div.capacity {
-
-  $border-radius: $unit/5;
-
-  div.header {
-    & > span {
-      display: inline-block;
-      width: calc(#{$unit * 2} + 6px);
-      text-align: center;
+div.capacityCubes {
+  @include display-flex;
+  @include justify-content(center);
+  div.vis {
+    @include display-flex;
+    @include flex-flow( column wrap);
+    div.partialRows{
+      @include display-flex;
+      @include flex-direction(row);
+      & > span.day {
+        height: 100%;
+        @include display-flex;
+        @include flex-direction(row);
+        @include align-items(flex-end);
+        margin: 1px;
+        & > span.slot {
+          height: 100%;
+          width: $unit;
+          @include display-flex;
+          @include flex-flow(column-reverse wrap);
+          & > span.cube {
+            @include flex(1 0 auto);
+            width: $unit;
+            height: $unit / 3;
+            margin: 1px;
+            background-color: $color-subheader-background;
+            &.taken {
+              background-color: $color-green;
+              &.waitlist {
+                background-color: $color-blue;
+                &.conflict {
+                  background-color: orange;
+                }
+              }
+            }
+          }
+        }
+      }
     }
-  }
-  div.vis{
-    height: $unit * 3;
-    display: flex;
-    flex-direction: row;
-    & > span.day {
-      height: 100%;
-      display: flex;
-      flex-direction: row;
-      align-items: flex-end;
+    div.fullRow {
       margin: 1px;
-      border : $border-lightgray;
-      border-radius: $border-radius;
-      & > span {
+      @include flex(1 0 100%);
+      height: $unit;
+      background-color: $color-green-dark-background;
+      @include display-flex;
+      @include justify-content(space-between);
+      color: $color-green-text;
+      span.value {
+        line-height: $unit;
         width: $unit;
         text-align: center;
-        background-color: $color-active;
-        &.am {
-          border-radius:  $border-radius 0 0 $border-radius;
-          border-right: 1px dashed white;
-        }
-        &.pm {
-          border-radius: 0 $border-radius $border-radius 0;
-          border-left: 1px dashed white;
-        }
+        background-color: $color-green-light-background;
+        font-size: $font-size-medium;
+      }
+      span.label {
+        margin-right: $unit/3;
+        font-size: $font-size-small;
       }
     }
   }

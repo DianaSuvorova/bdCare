@@ -6,13 +6,17 @@ var assign = require('object-assign');
 var GroupDetails = require('../groupDetails/groupDetails.react');
 var StudentDetails = require('../studentDetails/studentDetails.react');
 var NewStudentDetails = require('../studentDetails/newStudentDetails.react');
-var Router = require('./../router/router');
+var MonthPicker = require('../monthPicker/monthPicker.react');
+var GroupPicker = require('../groupPicker/groupPicker.react');
+
 
 var Api = require('../../stores/api');
 
 var StudentStore = require('../../stores/studentStore');
 var StudentAction = require('../../stores/studentAction');
 var DateRangeStore = require('../../stores/dateRangeStore');
+
+var Router = require('./../router/router');
 
 var students = module.exports = React.createClass({
 
@@ -40,20 +44,33 @@ var students = module.exports = React.createClass({
     StudentStore.removeChangeListener(this._onChange);
   },
 
+  componentWillReceiveProps: function (nextProps) {
+    this.setState(this._getState(nextProps));
+  },
+
   render: function () {
-    var content = <GroupDetails
-      students = {this.state.students}
-      groupId = {this.state.groupId}
+
+    var groupDetails = <GroupDetails
       dateRangeObject = {this.state.dateRangeObject}
       openStudentDetails = {this._openStudentDetails}
       activeStudent = {this.state.activeStudent}
       groups = {this.state.groups}
-      group = {this.state.groupSummary}
+      group = {this.state.group}
       updateDateRange = {this._onUpdateDateRange}
       updateGroup = {this._onUpdateGroup}
     />
+    var content = (<div id = 'students'>
+      <div className = 'toolbar'>
+        <MonthPicker dateRangeObject = {this.state.dateRangeObject} updateDateRange = {this._onUpdateDateRange} />
+        <GroupPicker update = {this._onUpdateGroup} kvObject = {this.state.groups[this.state.groupId]} kvMap = {this.state.groups}/>
+        <span className = 'actionItemText ' onClick = {this._onAddNewStudent}>
+          <i className = 'fa fa-plus'></i>
+          <span>Add student</span>
+        </span>
+      </div>
+      {groupDetails}
+    </div>);
     if (this.state.activeStudentId === 'new') {
-      console.log(this.state);
       content = <NewStudentDetails
         student = {this.state.activeStudent}
         groups = {this.state.groups}
@@ -75,11 +92,7 @@ var students = module.exports = React.createClass({
     }
 
 
-    var students = (StudentStore.isEmpty()) ?
-      null :
-      (<div id = 'students'>
-        {content}
-      </div>)
+    var students = (StudentStore.isEmpty()) ? null : content;
 
     return students;
   },
@@ -87,7 +100,6 @@ var students = module.exports = React.createClass({
 
   _createNewStudent: function (student, mapping) {
     StudentAction.addStudent(student, mapping);
-    Router.navigate('/group/'+ this.state.groupId + '/period/' + dateRangeObject.key);
     this.setState({activeStudentId: null});
   },
 
@@ -95,53 +107,44 @@ var students = module.exports = React.createClass({
     this.setState(this._getState());
   },
 
-  _openStudentDetails : function (studentId, groupId) {
-    if  (studentId === 'new') {
-      this.setState(this._getState({activeStudentId: studentId, groupId: groupId}));
-      Router.navigate('/group/' + groupId + '/student/'+ studentId );
-    }
-    else {
-      this.setState(this._getState({activeStudentId: studentId}));
-      Router.navigate('/student/'+ studentId);
-    }
-
-  },
-
   _closeStudentDetails : function () {
-    var groupId = this.state.groupId || Object.keys(StudentStore.getGroups())[0];
-    var dateRangeObject = this.state.dateRangeObject || DateRangeStore.getCurrentDateRangeObject();
-    Router.navigate('/group/'+ groupId + '/period/' + dateRangeObject.key);
-    this.setState(this._getState({activeStudentId: null, groupId: groupId, dateRangeObject: dateRangeObject}));
+    this.setState({activeStudentId: null});
   },
 
-  _onUpdateGroup: function (groupId) {
-    this.setState(this._getState({groupId: groupId}));
-    Router.navigate('/group/'+ groupId + '/period/' + this.state.dateRangeObject.key);
+  _onUpdateGroup: function (group) {
+    this.setState(this._getState({groupId: group.id}));
+  },
+
+  _onAddNewStudent: function () {
+
   },
 
   _onUpdateDateRange: function (dateRangeObject) {
     this.setState(this._getState({dateRangeObject: dateRangeObject}));
-    Router.navigate('/group/'+ this.state.groupId + '/period/' + dateRangeObject.key);
   },
 
+
   _getState: function (newState) {
+
     var groups = StudentStore.getGroups();
     var defaultState = {
       groups: groups,
-      groupId: this.props.groupId,
-      dateRangeObject: this.props.dateRangeObject,
+      groupId: this.props.groupId || Object.keys(groups)[0],
+      dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject || DateRangeStore.getCurrentDateRangeObject(),
       activeStudentId: this.props.activeStudentId
     };
 
     var state = assign({}, defaultState, newState);
 
     if (state.activeStudentId) {
-        state.activeStudent = StudentStore.getStudents({studentId: state.activeStudentId, groupId: state.groupId})[state.activeStudentId];
+      state.activeStudent = StudentStore.getStudents([state.activeStudentId])[state.activeStudentId];
     }
 
-    state.students = StudentStore.getStudents({groupId: state.groupId, dateRange: state.dateRangeObject.dateRange});
-    state.groupSummary = StudentStore.getGroups({groupId: state.groupId, groupId: state.dateRangeObject.dateRange})[state.groupId];
+    var group = state.groups[state.groupId];
+    var studentIds = group.getStudentIds(state.dateRange);
 
+    state.students = StudentStore.getStudents(studentIds);
+    state.group = group;
     return state;
   }
 

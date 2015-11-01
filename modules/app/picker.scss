@@ -1,0 +1,31 @@
+span.picker {
+  font-size: $font-size-medium;
+  text-transform: uppercase;
+  display: inline-block;
+  height: 100%;
+  line-height: $toolbar-height;
+  width: $panel-width;
+  background-color: $color-toolbar-item-background;
+  color: $color-toolbar-item-text;
+  span {
+    display: inline-block;
+    text-align: center;
+    &.value {
+      width: $panel-width - $unit * 2;
+      color: $color-toolbar-item-text;
+    }
+    &.prev, &.next {
+      width: $unit;
+      pointer-events: none;
+      font-size: $font-size-large;
+      color: $color-toolbar-item-background;
+      &.active {
+        cursor: pointer;
+        color: $color-toolbar-icon-background;
+        pointer-events: all;
+      }
+    }
+    &.prev {float: left}
+    &.next {float: right}
+  }
+}

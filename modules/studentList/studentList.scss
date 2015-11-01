@@ -1,24 +1,46 @@
 div#studentList {
   @include display-flex;
-  @include flex-direction (column);
+  @include flex-direction(column);
   height: calc(100% - #{$unit * 4});
+  width: $panel-width * 2;
+  margin-top: $unit * 3;
   & > div.header {
-   @include display-flex;
-   border-bottom: $border-lightgray;
-   line-height: $unit;
-   & > div {
-     width: $unit * 5;
-     text-align: left;
-     &.index { width: $unit * 2; }
+    margin-top: $unit / 2;
+    font-size: $font-size-small;
+    height: $unit;
+    line-height: $unit;
+    text-align: center;
+    background-color: $color-subheader-background;
+    color: white;
+    @include display-flex;
+    @include justify-content(space-between);
+    padding-left: $unit/2;
+    & > div.subheader {
+      @include display-flex;
+      @include justify-content(space-between);
+      width: $panel-width;
+      span.value {
+        line-height: $unit - (2 * $unit / 5);
+        width: $unit * 0.8;
+        margin: $unit / 5;
+        text-align: center;
+        background-color: $color-green;
+        border-radius: $unit/5;
+      }
    }
    & > div.calendarHeader {
-    $day-width: calc(#{$unit * 2} + 5px);
     width: auto;
     span {
        text-align: center;
        display: inline-block;
        width: $day-width;
        height: 100%;
+      }
+    }
+    &.waitlist {
+      margin-top: $unit * 0.5;
+      & > div.subheader > span.value {
+        background-color: $color-blue;
       }
     }
   }

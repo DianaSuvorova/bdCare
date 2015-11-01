@@ -1,3 +1,5 @@
+var assign = require('object-assign');
+
 var Mapping = function () {
   this.initialize.apply(this, arguments);
   return this;
@@ -17,10 +19,26 @@ Mapping.prototype.initialize = function (o) {
  this.startDate = o && o.start_date;
  this.endDate = o && o.end_date;
  this.status = this._getStatus();
+ this.waitlist = o.isOnWaitlist;
+};
+
+Mapping.prototype.clone = function () {
+  var o = assign({}, this, this.schedule, {start_date: this.startDate, end_date: this.endDate});
+  var clone = new Mapping(o);
+  return clone;
 };
 
 Mapping.prototype.isActive = function (date) {
   return date >= this.startDate && ( !this.endDate || date <= this.endDate)
+}
+
+Mapping.prototype.isActiveEnrolled = function (date) {
+  return date >= this.startDate && ( !this.endDate || date <= this.endDate) && (!this.waitlist)
+}
+
+
+Mapping.prototype.isActiveWaitlist = function (date) {
+  return date >= this.startDate && ( !this.endDate || date <= this.endDate) && (this.waitlist)
 }
 
 Mapping.prototype._getStatus = function () {

@@ -1,10 +1,40 @@
 div.group {
   @include flex(0 0 auto);
-  &.validTarget {
-    background-color: green;
+  margin: $unit;
+  div.groupInfo {
+    background-color: white;
+    padding-bottom: $unit;
   }
-  &.invalidTarget {
-    background-color: red;
+  div.header {
+    background-color: white;
+    height: $unit * 1.5;
+    line-height: $unit * 1.5;
+    text-align: center;
+    font-family: $font-family-sourceSansPro;
+    font-weight: bold;
   }
-
+  div.subheader {
+    font-size: $font-size-small;
+    height: $unit;
+    line-height: $unit;
+    text-align: center;
+    background-color: $color-subheader-background;
+    color: white;
+    @include display-flex;
+    @include justify-content(space-between);
+    padding: 0 $unit/2;
+    span.value {
+      line-height: $unit - (2 * $unit / 5);
+      width: $unit * 0.8;
+      margin: $unit / 5;
+      text-align: center;
+      background-color: $color-green;
+      border-radius: $unit/5;
+    }
+    &.waitlist {
+      span.value {
+        background-color: $color-blue;
+      }
+    }
+  }
 }

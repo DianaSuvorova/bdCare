@@ -1,51 +1,70 @@
 div#studentDetails {
-  $border-radius: $unit/5;
-  $mappingRowWidth: calc(#{$unit * 7 * 3 + $unit * 2 * 5} + 25px);
-
-  border: $border-lightgray;
-  border-radius: $border-radius;
-  margin: $unit / 2;
-  padding: $unit / 2;
+  width: $panel-width * 3;
+  height: 100%;
   @include display-flex;
-  @include flex-direction (column);
-  & > div.toolbox {
-     margin-top : $unit / 2;
-    & > span { float: right; }
-  }
-  & > div.details {
+  @include flex-direction(column);
+  @include justify-content(center);
+  & > div.header {
+    margin: $unit / 2 0;
     @include display-flex;
-    @include flex-flow( row wrap);
-    & > div.row {
-      @include flex(1 0 100%);
-      @include display-flex;
-      @include flex-flow( row wrap);
-      @include justify-content(center);
-      &.section { margin-top : $unit / 2; }
-      &.addNewMapping {
-          & > div.container {
-            width: $mappingRowWidth;
-          & > span.buttonContainer {
-            float: right;
-            @include display-flex;
-            @include justify-content(center);
-            width: $unit * 6;
-            padding: 0 $unit / 2;
-          }
-        }
-      }
-      & > div.groupMapping {
-        margin-top : $unit / 2;
+    @include justify-content(center);
+    & > div {
+      @include flex(1 0 auto);
+      height: $unit * 3 ;
+      padding: $unit / 2 ;
+      &.detail {
+        background-color: white;
         @include display-flex;
-        & > span {
-          width: $unit * 6;
-          padding: 0 $unit / 2;
-          &.group {
-            line-height: $unit / 2;
-            text-align: left;
+        @include flex-direction(column);
+        @include justify-content(space-around);
+        & > span.name {
+          font-family: $font-family-montserrat;
+          font-size: $font-size-largest;
+        }
+        & > span.dob {
+            color: $color-calendar-header;
+          }
+      }
+      &.contacts {
+        background-color: $color-subheader-background;
+        @include display-flex;
+        @include flex-direction(column);
+        & > div.header {
+          color: $color-calendar-header;
+          font-size: $font-size-small;
+          font-family: $font-family-sourceSansPro;
+        }
+        & > div.contact {
+          @include display-flex;
+          @include justify-content(space-around);
+          & > span.name {
+            font-size: $font-size-medium;
+            color: white;
+          }
+          & > span.number {
+            color: $color-calendar-header;
+            font-size: $font-size-medium;
+            font-family: $font-family-sourceSansPro;
           }
         }
       }
     }
   }
-
+  & > div.activeMapping {
+    margin: $unit / 2 0;
+    @include display-flex;
+    @include flex-direction(column);
+  }
+  & > div.scheduleHelper{
+    & > div.helper {
+      @include display-flex;
+      & > div.toolbar {
+        @include flex(1 0 $panel-width);
+      }
+      & > div.groupInfo {
+        @include flex(1 0 $panel-width * 2);
+        background-color: white;
+      }
+    }
+  }
 }

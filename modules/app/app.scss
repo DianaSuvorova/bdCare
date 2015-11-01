@@ -1,3 +1,15 @@
+// @font-face {
+//   font-family: Montserrat;
+//   src: url("/montserrat/Montserrat-Bold.otf");
+// }
+
+$font-family-montserrat: 'Montserrat', sans-serif;
+$font-family-sourceSansPro: 'Source Sans Pro', sans-serif;
+$font-size-small: 0.6rem;
+$font-size-medium: 0.8rem;
+$font-size-large: 1rem;
+$font-size-largest: 1.5rem;
+
 //variables
 
 //colors:
@@ -14,8 +26,54 @@ $border: 1px solid black;
 $border-lightgray: 1px solid $color-gray;
 $border-bold: 3px solid black;
 
+$color-body-background: #ECF0F1;
+$color-navbar-background: #2E2E2E;
+$color-toolbar-background: #242424;
+$color-toolbar-item-background: #414040;
+$color-toolbar-icon-background: #858687;
+$color-calendar-header: #858687; // wrong
+$color-toolbar-item-text: white; // wrong
+$color-green: #2ECC71;
+$color-green-highlight: #36db7c;
+$color-green-text-number: #0F763B; //14
+$color-green-dark-background: #39CA74;
+$color-green-light-background: #41D97F;
+$color-green-text: #1E904E; //full schedules
+$color-subheader-background: #545454; //tetris and total capacity
+$color-group-header: #2E2E2E; //toddlers
+$color-section-text: #FFFFFF; //TOTAL Capacity
+$color-calendar-header: #C0C0C0;
+$color-blue: #3498DB; //tetris
+$color-waitlist-names: #545454;
+$color-border-waitlist-student: #DDE3E5;
+$color-student-hover: #B6F5D3;
+$color-waitlist-student-hover: #C6E9FE;
+
+
+
+//measurments
+$height-header: $unit * 2;
+$height-footer: $unit;
+$toolbar-height: $unit;
+$panel-width: $unit * 10;
+$day-width: calc(#{$unit * 2} + 4px);
+$calendar-width: calc(#{$unit * 10} + 10px);
+
+
+//height navbar 80px
+//height border bottom navbar active 6px
+//heigh body 950px
+//padding-body-left-right 100px
+//padding body top 44px
+//september 2015 Monseratt bold
+//Infants SourseSansPro bold
+//Totalcapacity Monserrat bold
+//Menu items schedule Montserrat bold
+//tag 12 monrserrat bold
+
 
 //globals
+
 html, body {
   width: 100%;
   height: 100%;
@@ -23,27 +81,26 @@ html, body {
   line-height: $unit;
   margin: 0;
   font-size: 16px;
+  background-color: $color-body-background;
+  font-family: $font-family-montserrat;
 }
 
 div#app {
-  @include display-flex;
-  @include flex-direction(column);
-  height: 100%;
-
-  a {
-    text-decoration:none;
-    color: inherit;
-    display: inline-block;
-  }
-
+  overflow: scroll;
   div.content {
+    margin-top: $unit * 2;
     @include display-flex;
-    height: calc(100% - #{$unit * 3});
     @include flex(1 1 auto);
     min-height: $unit * 6;
     @include align-items(flex-start);
     @include justify-content(center);
   }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
 }
 
 span.actionItem {
@@ -80,23 +137,23 @@ span.actionItem {
 }
 
 span.actionItemText {
+  font-size: $font-size-small;
   @include display-flex;
-  color: $color-gray;
+  background-color: $color-green;
+  color: white;
   cursor: pointer;
-  border: $border-lightgray;
-  border-radius: $unit / 10;
-  line-height: $unit;
-  padding: 2px;
+  text-transform: uppercase;
+  padding: 0 $unit;
   i {
-    line-height: $unit;
     display: inline-block;
-    width: $unit;
-    height: $unit;
+    line-height: $toolbar-height;
+    width: $unit / 2;
+    height: $toolbar-height;
     text-align: center;
+    color: $color-green-text;
   }
   &:hover, &.active {
-    background-color: $color-active;
-    color: white;
+    //interaction
   }
 }
 
@@ -125,7 +182,8 @@ span.actionItemText {
 }
 
 input {
-  font-size: 16px;
+  background-color: transparent;
+  font-size: $font-size-medium;
   border: none;
   line-height: $unit;
   padding: 0;
