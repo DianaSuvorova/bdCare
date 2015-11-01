@@ -102,9 +102,10 @@ def create_student_and_mapping(group, every_n_student_is_part_time=5, isOnWaitli
     student = create_student_with_age_group(group.name)
     print student.name
     mapping = Mapping(groupId=group.objectId, studentId=student.objectId, isOnWaitlist=isOnWaitlist)
-    high = ranges[group.name]["low"]
+    high = ranges[group.name]["high"]
     mapping.projected_end_date = student.birthdate + dateutil.relativedelta.relativedelta(months=high)
     mapping.start_date = start_date
+    mapping.end_date = mapping.projected_end_date
 
     for slot in mapping_slots:
         attendance = 1
