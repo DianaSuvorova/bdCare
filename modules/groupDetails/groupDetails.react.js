@@ -13,6 +13,10 @@ var Capacity = require('../capacity/capacity.react');
 
 var groupDetails = module.exports = React.createClass({
 
+  getInitialState: function () {
+      return this._getState();
+  },
+
   render: function () {
 
     return (
@@ -25,6 +29,8 @@ var groupDetails = module.exports = React.createClass({
             <Capacity
               schedule = {this.props.group.getAvailableSchedule(this.props.dateRangeObject.dateRange)}
               capacity = {this.props.group.capacity}
+              highlightSchedule = {this.state.highlightSchedule}
+              slotsConflict = {this._onSlotsConflict}
             />
           </div>
         </div>
@@ -32,6 +38,7 @@ var groupDetails = module.exports = React.createClass({
           group = {this.props.group}
           openStudent = {this._openStudent}
           dateRangeObject = {this.props.dateRangeObject}
+          onHighlightSchedule = {this._onHighlightSchedule}
           />
       </div>
       );
@@ -47,6 +54,26 @@ var groupDetails = module.exports = React.createClass({
 
   _onUpdateDateRange: function (dateRangeObject) {
     this.props.updateDateRange(dateRangeObject);
+  },
+
+  _onHighlightSchedule: function (schedule, studentId) {
+    this.setState(this._getState({highlightSchedule: schedule, highlightStudentId: studentId}));
+  },
+
+  _onSlotsConflict: function (slotsConflict) {
+    this.setState(this._getState({slotsConflict: slotsConflict}));
+  },
+
+  _getState: function (newState) {
+
+    var defaultState = {
+      highlightStudentId: null,
+      highlightSchedule: null,
+      slotsConflict: null
+    };
+
+    var state = assign({}, defaultState, newState);
+    return state;
   }
 
 });

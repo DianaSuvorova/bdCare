@@ -29,6 +29,18 @@ Group.prototype.getAvailableSchedule = function (dateRange) {
   return slotsAvailable;
 };
 
+Group.prototype.getConflictSlots = function (dateRange, studentSchedule) {
+  var slotsConflict = {}
+  var slotsAvailable = this.getAvailableSchedule(dateRange);
+  for (slot in studentSchedule) {
+    if (studentSchedule[slot] && !slotsAvailable[slot]) {
+      slotsConflict[slot] = true;
+    }
+  }
+  return slotsConflict;
+};
+
+
 Group.prototype.getStudentsIdsEligibleForUpgrade = function (dateRange) {
   var startDate = dateRange[0];
   var endDate = dateRange[1];

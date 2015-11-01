@@ -12,6 +12,7 @@ div#students {
     height: $toolbar-height;
     background-color: $color-toolbar-background;
     @include display-flex;
+    @include justify-content(space-around);
     &  > span.picker {
       margin: 0 $unit;
     }

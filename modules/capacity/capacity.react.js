@@ -7,7 +7,6 @@ var capacityCubes = module.exports = React.createClass({
   render: function () {
 
     var fullRows = this._getNumFullRows(this.props.schedule, this.props.capacity);
-
     var classes = {
       capacity : ClassNames({
         'capacityCubes': true,
@@ -24,7 +23,8 @@ var capacityCubes = module.exports = React.createClass({
       var waitlist = (this.props.waitlist) ? ' waitlist' : '';
       if (this.props.single) {
         if (this.props.schedule[slot]) {
-          cube = <span key = {slot+'_taken_'+i} className = {'cube taken' + waitlist}></span>
+            var conflict = (this.props.conflictSlots && this.props.conflictSlots[slot]) ? ' conflict' : '';
+            cube = <span key = {slot+'_taken_'+i} className = {'cube taken' + waitlist + conflict}></span>
         }
         else {
           cube = <span key = {slot+'_available_'+i} className = {'cube available'+ waitlist}></span>
@@ -36,13 +36,28 @@ var capacityCubes = module.exports = React.createClass({
           cube = <span key = {slot+'_taken_'+i} className = 'cube taken'></span>
           cubes.push(cube);
         }
-        for (var i = 0; i < (this.props.schedule[slot]); i++ ) {
-          cube = <span key = {slot+'_available_'+i} className = 'cube available'></span>
+
+        if (this.props.highlightSchedule && this.props.highlightSchedule[slot]) {
+          if (this.props.schedule[slot]) {
+            cube = <span key = {slot+'_taken_'+i} className = 'cube waitlist taken'></span>
+
+          }
+          else {
+            //conflict
+          }
           cubes.push(cube);
+          for (var i = 0; i < (this.props.schedule[slot] - 1 ); i++ ) {
+            cube = <span key = {slot+'_available_'+i} className = 'cube available'></span>
+            cubes.push(cube);
+          }
+        }
+        else {
+          for (var i = 0; i < (this.props.schedule[slot]); i++ ) {
+            cube = <span key = {slot+'_available_'+i} className = 'cube available'></span>
+            cubes.push(cube);
+          }
         }
       }
-
-
       return cubes;
     }.bind(this);
 

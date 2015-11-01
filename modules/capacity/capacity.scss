@@ -28,6 +28,9 @@ div.capacityCubes {
               background-color: $color-green;
               &.waitlist {
                 background-color: $color-blue;
+                &.conflict {
+                  background-color: orange;
+                }
               }
             }
           }

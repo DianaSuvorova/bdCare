@@ -20,7 +20,7 @@ var studentList = module.exports = React.createClass({
           key = {studentId}
           student = {student}
           dateRangeObject = {this.props.dateRangeObject}
-          groupId = {this.props.group.id}
+          group = {this.props.group}
           index = {i}
           openStudent = {this.props.openStudent}
           waitlist = {false}
@@ -36,10 +36,11 @@ var studentList = module.exports = React.createClass({
           key = {studentId}
           student = {student}
           dateRangeObject = {this.props.dateRangeObject}
-          groupId = {this.props.group.id}
+          group = {this.props.group}
           index = {i}
           openStudent = {this.props.openStudent}
           waitlist = {true}
+          onHighlightSchedule = {this.props.onHighlightSchedule}
         />
     }.bind(this));
 
@@ -47,8 +48,8 @@ var studentList = module.exports = React.createClass({
     var header = (
       <div className = 'header'>
         <div className = 'subheader'>
-          <span className= 'label'>{'ENROLLED STUDENTS'}</span>
-          <span className= 'value'>{Object.keys(students).length}</span>
+          <span className = 'label'>{'ENROLLED STUDENTS'}</span>
+          <span className = 'value'>{Object.keys(students).length}</span>
         </div>
         <CalendarHeader/>
       </div>
