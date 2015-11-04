@@ -10,7 +10,8 @@ var capacityCubes = module.exports = React.createClass({
     var classes = {
       capacity : ClassNames({
         'capacityCubes': true,
-        'waitlist': this.props.waitlist
+        'waitlist': this.props.waitlist,
+        'editable': this.props.updateSchedule
       }),
       slot : function (slot) {
         return 'slot ' + slot.replace('_', ' ')
@@ -70,24 +71,24 @@ var capacityCubes = module.exports = React.createClass({
         <div className = 'vis'>
           <div className = 'partialRows'>
             <span className = 'day'>
-              <span className = {classes.slot('mon_am')}>{cubes('mon_am')}</span>
-              <span className = {classes.slot('mon_pm')}>{cubes('mon_pm')}</span>
+              <span data-id='mon_am' className = {classes.slot('mon_am')} onClick = {this._onClickSlot}>{cubes('mon_am')}</span>
+              <span data-id='mon_pm' className = {classes.slot('mon_pm')} onClick = {this._onClickSlot}>{cubes('mon_pm')}</span>
             </span>
             <span className = 'day'>
-              <span className = {classes.slot('tue_am')}>{cubes('tue_am')}</span>
-              <span className = {classes.slot('tue_pm')}>{cubes('tue_pm')}</span>
+              <span data-id='tue_am' className = {classes.slot('tue_am')} onClick = {this._onClickSlot}>{cubes('tue_am')}</span>
+              <span data-id='tue_pm' className = {classes.slot('tue_pm')} onClick = {this._onClickSlot}>{cubes('tue_pm')}</span>
             </span>
             <span className = 'day'>
-              <span className = {classes.slot('wed_am')}>{cubes('wed_am')}</span>
-              <span className = {classes.slot('wed_pm')}>{cubes('wed_pm')}</span>
+              <span data-id='wed_am' className = {classes.slot('wed_am')} onClick = {this._onClickSlot}>{cubes('wed_am')}</span>
+              <span data-id='wed_pm' className = {classes.slot('wed_pm')} onClick = {this._onClickSlot}>{cubes('wed_pm')}</span>
             </span>
             <span className = 'day'>
-              <span className = {classes.slot('thu_am')}>{cubes('thu_am')}</span>
-              <span className = {classes.slot('thu_pm')}>{cubes('thu_pm')}</span>
+              <span data-id='thu_am' className = {classes.slot('thu_am')} onClick = {this._onClickSlot}>{cubes('thu_am')}</span>
+              <span data-id='thu_pm' className = {classes.slot('thu_pm')} onClick = {this._onClickSlot}>{cubes('thu_pm')}</span>
             </span>
             <span className = 'day'>
-              <span className = {classes.slot('fri_am')}>{cubes('fri_am')}</span>
-              <span className = {classes.slot('fri_pm')}>{cubes('fri_pm')}</span>
+              <span data-id='fri_am' className = {classes.slot('fri_am')} onClick = {this._onClickSlot}>{cubes('fri_am')}</span>
+              <span data-id='fri_pm' className = {classes.slot('fri_pm')} onClick = {this._onClickSlot}>{cubes('fri_pm')}</span>
             </span>
           </div>
           {fullRow}
@@ -102,6 +103,13 @@ var capacityCubes = module.exports = React.createClass({
       if (schedule[slot] > fullRows) fullRows = schedule[slot];
     });
     return capacity - fullRows;
+  },
+
+  _onClickSlot : function (e) {
+    var slot = $(e.target).closest('[data-id]').attr('data-id');
+    var diff = {slot: slot};
+    diff.value = (this.props.schedule[slot] === 0) ? 1 : -1;
+    this.props.updateSchedule && this.props.updateSchedule(diff);
   }
 
 });

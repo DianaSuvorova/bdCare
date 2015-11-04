@@ -22,7 +22,12 @@ var datePicker = module.exports = React.createClass({
 
   render: function () {
     return (
-        <input className = 'datepicker input-small' data-date-format='mm/dd/yyyy' defaultValue = {Util.formatDate(this.props.defaultDate)} placeholder = {this.props.placeholder} />
+        <input
+          className = 'datepicker input-small'
+          data-date-format='mm/dd/yyyy'
+          defaultValue = {Util.formatDate(this.props.defaultDate)}
+          placeholder = {this.props.placeholder}
+        />
     )
   }
 

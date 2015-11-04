@@ -49,7 +49,6 @@ var students = module.exports = React.createClass({
   },
 
   render: function () {
-
     var groupDetails = <GroupDetails
       dateRangeObject = {this.state.dateRangeObject}
       openStudentDetails = {this._openStudentDetails}

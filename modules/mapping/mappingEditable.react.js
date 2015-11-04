@@ -11,22 +11,13 @@ var DatePicker = require('../datePicker/datePicker.react');
 
 var mappingEditable = module.exports = React.createClass({
 
-  // var actionEditable = (this.props.mappingActions) ?
-  //     <ActionEditable confirm = {this.props.mappingActions().confirm} cancel = {this.props.mappingActions().cancel} active = {true}/> :
-  //     null;
-  //
-  // return (
-  //   <div className = 'mapping editable editableInline active'>
-  //     <Calendar schedule = {this.props.mapping.schedule} editable = {true} updateSchedule = {this.props.updateSchedule}/>
-  //     <DatePicker defaultDate = {this.props.mapping.startDate} />
-  //     {actionEditable}
-  //     <span className = 'empty'></span>
-  //   </div>
-  // );
+  getInitialState: function () {
+    return this._getState()
+  },
 
   render: function () {
     var groupSelector = <span className = {'groupSelector'}>
-        <select onChange={this._onSelectGroup} defaultValue = {this.props.groupId}>
+        <select onChange={this._onSelectGroup} defaultValue = {this.props.mapping.groupId}>
           {
             Object.keys(this.props.groups).map(function(groupId){
               return <option key = {groupId} value = {groupId}>{this.props.groups[groupId].name}</option>;
@@ -44,21 +35,55 @@ var mappingEditable = module.exports = React.createClass({
           <CalendarHeader/>
           <span className = 'empty'></span>
         </div>
-        <div className = 'mapping'>
+        <div className = 'mapping editable'>
           {groupSelector}
-          <DatePicker defaultDate = {this.props.mapping.startDate} />
+          <DatePicker defaultDate = {this.props.mapping.startDate}/>
           <Capacity
-            schedule = {this.props.mapping.schedule}
+              schedule = {this.state.schedule}
               capacity = {1}
               single = {true}
               waitlist={this.props.mapping.waitlist}
+              updateSchedule = {this._onUpdateSchedule}
             />
-          <span>{'confirm'}</span>
+            <span className = 'container'>
+              <span className = 'button' onClick = {this._onConfirm}>{'CONFIRM'}</span>
+            </span>
         </div>
-
       </div>
     );
 
+  },
+
+  _onSelectGroup: function (e) {
+    this.setState(this._getState({groupId: $(e.target).val()}))
+  },
+
+  _onUpdateSchedule: function (diff) {
+    var schedule = this.props.mapping.schedule;
+    schedule[diff.slot] += diff.value;
+    this.setState(this._getState({schedule: schedule}));
+  },
+
+  _onConfirm: function (e) {
+    var date = $(React.findDOMNode(this)).find('input.datepicker').val();
+    var mapping = assign(
+        {},
+        this.props.mapping,
+        {groupId: this.state.groupId},
+        {start_date: date},
+        {waitlist: false},
+        this.state.schedule
+      );
+    this.props.onConfirmMapping(mapping);
+  },
+
+  _getState: function (newState) {
+    var defaultState = {
+      groupId: this.props.mapping.groupId,
+      schedule: this.props.mapping.schedule
+    };
+    var state = assign({}, defaultState, newState);
+    return state;
   }
 
 })

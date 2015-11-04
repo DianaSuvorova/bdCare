@@ -10,6 +10,12 @@ div.mapping {
     text-align: left;
     padding: 0 $unit / 2;
     line-height: $unit;
+    &.container {
+      text-align: center;
+    }
+  }
+  & > input {
+    cursor: pointer;
   }
   & > div.capacityCubes {
     margin-top : $unit / 4;
@@ -32,12 +38,13 @@ div.mapping {
     text-align: center;
     background-color: $color-subheader-background;
     color: white;
-  }
-  &.editable {
-    background-color: $color-green-light-background;
-    color: $color-green-text;
-    & > div.calendarHeader > span{
+    &.editable {
+      background-color: $color-green-light-background;
       color: $color-green-text;
+      & > div.calendarHeader > span{
+        color: $color-green-text;
+      }
     }
   }
+
 }

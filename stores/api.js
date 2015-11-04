@@ -68,7 +68,14 @@ var Api = module.exports = {
       console.log(error)
     };
 
-    var pMappingEntry = assign({}, {groupId: mappingEntry.groupId, studentId: mappingEntry.studentId, start_date: mappingEntry.startDate}, mappingEntry.schedule);
+    var pMappingEntry = assign(
+      {},
+        {groupId: mappingEntry.groupId,
+          studentId: mappingEntry.studentId,
+          start_date: mappingEntry.startDate,
+          isOnWaitlist: false},
+        mappingEntry.schedule
+      );
     mapping.save(pMappingEntry).then(onSuccess, onError);
   },
 

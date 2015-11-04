@@ -44,9 +44,6 @@ var studentDetails = module.exports = React.createClass({
       <span className={'groupPicker'}>{this.props.groups[this.state.groupId].name}</span> ;
 
     var i = 0;
-    var mappings = this.props.student.mappings.map(function (mapping) {
-        return <Mapping key = {'mapping_'+(i++)} mapping = {mapping} groups = {this.props.groups}/>;
-    }.bind(this));
 
       var header = (<div className = 'header'>
                 <div className = 'detail'>
@@ -66,12 +63,22 @@ var studentDetails = module.exports = React.createClass({
                 </div>
               </div>);
 
-    var mapping = this.props.student.getMapping();
-    var newMapping = <MappingEditable mappingActions = {this._mappingActions} mapping = {mapping} groups = {this.props.groups} updateSchedule = {this._onUpdateSchedule} updateGroup = {this._onUpdateGroup}/>;
+    var mappings = this.props.student.getMappings();
+    var mappingsEl = mappings.map(function (mapping) {
+        return <Mapping key = {'mapping_'+(i++)} mapping = {mapping} groups = {this.props.groups}/>;
+    }.bind(this));
+
+    var newMapping = this.props.student.getMapping();
+    var newMappingEl = < MappingEditable
+                        mapping = {newMapping}
+                        groups = {this.props.groups}
+                        onConfirmMapping = {this._onConfirmMapping}
+                      />;
+
     var mappingEl = (
       <div className = 'activeMapping'>
         <MappingHeader/>
-        <Mapping mapping = {mapping} groups = {this.props.groups} groupId = {this.props.groupId} />
+        {mappingsEl}
       </div>);
 
     var group = this.props.groups[this.state.groupId];
@@ -97,62 +104,14 @@ var studentDetails = module.exports = React.createClass({
       <div id = 'studentDetails'>
         {header}
         {mappingEl}
-        {newMapping}
+        {newMappingEl}
         {helper}
       </div>
     );
   },
 
-  _mappingActions: function () {
-    return {
-      confirm : function () {
-        StudentAction.addMapping(this.state.newMapping);
-        this.setState(this._getState({newMapping: null}));
-      }.bind(this),
-      cancel : function () {
-        this.setState(this._getState({newMapping: null}));
-      }.bind(this)
-    };
-  },
-
-  _nameActions: function () {
-    return {
-      edit : function () {
-        this.setState(this._getState({nameState: 'edit'}));
-      }.bind(this),
-      confirm : function () {
-        var name = $(React.findDOMNode(this)).find('.name.editableInline input').val();
-        StudentAction.updateName(this.props.student.id, name);
-        this.setState(this._getState({nameState: 'confirmed'}));
-      }.bind(this),
-      cancel : function () {
-        this.setState(this._getState({nameState: 'canceled'}));
-      }.bind(this)
-    };
-  },
-
-  _birthdateActions: function () {
-    return {
-      edit : function () {
-        this.setState(this._getState({birthdateState: 'edit'}));
-      }.bind(this),
-      confirm : function () {
-        var birthdate = $(React.findDOMNode(this)).find('.birthdate.editableInline input').val();
-        StudentAction.updateBirthdate(this.props.student.id, birthdate);
-        this.setState(this._getState({birthdateState: 'confirmed'}));
-      }.bind(this),
-      cancel : function () {
-        this.setState(this._getState({birthdateState: 'canceled'}));
-      }.bind(this)
-    };
-  },
-
-  _onUpdateSchedule: function (diff) {
-    var mappingSchedule = this.state.newMapping.schedule;
-    mappingSchedule[diff.slot] += diff.value;
-    newMapping = assign({}, this.state.newMapping, {schedule: mappingSchedule})
-
-    this.setState(this._getState({newMapping: newMapping}));
+  _onConfirmMapping: function (mapping) {
+    StudentAction.addMapping(mapping);
   },
 
   _onCloseEditStudent: function () {
@@ -182,7 +141,6 @@ var studentDetails = module.exports = React.createClass({
       dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject,
       nameState: this.state && this.state.nameState || 'view',
       birthdateState: this.state && this.state.birthdateState || 'view',
-      newMapping: this.state && this.state.newMapping || null
     }
 
     var state = assign({}, defaultState, newState);

@@ -45,7 +45,10 @@ function setData(students, groups, mappings) {
 }
 
 function addMapping(mapping) {
-  _mappings.push(new Mapping(mapping.attributes));
+  var mappingObj = new Mapping(mapping.attributes);
+  _students[mappingObj.studentId].addMapping(mappingObj);
+  _groups[mappingObj.groupId].addMapping(mappingObj);
+  _mappings.push(mappingObj);
 }
 
 function updateStudent(student) {

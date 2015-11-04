@@ -20,9 +20,7 @@ var mapping = module.exports = React.createClass({
             waitlist={this.props.mapping.waitlist}
           />
           <span className = 'container'>
-            <span className = 'actionItem edit' onClick = {this._onAddNewStudent}>
-              <i className = 'fa fa-pencil'></i>
-            </span>
+            <span className = 'button'>{'TRANSFER'}</span>
           </span>
       </div>
     );

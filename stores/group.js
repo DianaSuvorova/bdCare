@@ -18,6 +18,10 @@ Group.prototype.initialize = function (o) {
   this.mappings = o.mappings;
 };
 
+Group.prototype.addMapping = function (mapping) {
+  this.mappings.push(mapping);
+};
+
 Group.prototype.getAvailableSchedule = function (dateRange) {
   var slotsTaken = this._getMinimumSlotsLoad(dateRange);
   var slotsAvailable = {};

@@ -211,3 +211,20 @@ select {
   text-decoration: inherit;
   font-size: 18px;
 }
+
+.button {
+  display: inline-block;
+  font-size: $font-size-medium;
+  font-family: $font-family-sourceSansPro;
+  border: 1px solid $color-subheader-background;
+  color: $color-subheader-background;
+  border-radius: $unit/10;
+  line-height: $unit * 0.6;
+  padding: 0 $unit/ 10;
+  cursor: pointer;
+  &:hover {
+    color: white;
+    background:$color-subheader-background;
+
+  }
+}

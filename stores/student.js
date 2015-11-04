@@ -22,6 +22,13 @@ Student.prototype.initialize = function (o) {
   }
 };
 
+Student.prototype.addMapping = function (mapping) {
+  this.mappings.push(mapping);
+};
+
+Student.prototype.getMappings = function () {
+  return this.mappings;
+};
 //getLatest mapping for filter
 Student.prototype.getMapping = function (pFilter) {
   var defaultFilter = {groupId: null, dateRange: null}
