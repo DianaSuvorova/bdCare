@@ -20,7 +20,8 @@ var mapping = module.exports = React.createClass({
             waitlist={this.props.mapping.waitlist}
           />
           <span className = 'container'>
-            <span className = 'button'>{'TRANSFER'}</span>
+            <i className = {'fa fa-circle ' + this.props.mapping.status}></i>
+            <span>{this.props.mapping.status}</span>
           </span>
       </div>
     );

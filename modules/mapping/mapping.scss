@@ -12,6 +12,9 @@ div.mapping {
     line-height: $unit;
     &.container {
       text-align: center;
+      & > i.current { color: $color-green}
+      & > i.projected {color: $color-blue}
+      & > span {padding: 0 $unit / 10;}
     }
   }
   & > input {

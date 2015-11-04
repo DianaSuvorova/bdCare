@@ -43,7 +43,7 @@ Mapping.prototype.isActiveWaitlist = function (date) {
 
 Mapping.prototype._getStatus = function () {
   var currentDate = new Date();
-  if (currentDate > this.start_date  && (!this.endDate || currentDate < this.endDate))return 'current';
+  if (currentDate > this.startDate  && (!this.endDate || currentDate < this.endDate)) return 'current';
   else if (currentDate > this.endDate) return 'past';
   else if (currentDate < this.startDate) return'projected';
 };
