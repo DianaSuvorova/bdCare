@@ -10,22 +10,30 @@ Mapping.prototype = {};
 var _slotsDict = ['mon_am', 'mon_pm', 'tue_am', 'tue_pm', 'wed_am', 'wed_pm', 'thu_am', 'thu_pm', 'fri_am', 'fri_pm'];
 
 Mapping.prototype.initialize = function (o) {
- this.schedule = {};
- _slotsDict.forEach(function (slot) {
-   this.schedule[slot] = o && o[slot] || 0;
- }.bind(this));
- this.groupId = o && o.groupId;
- this.studentId = o && o.studentId;
- this.startDate = o && o.start_date;
- this.endDate = o && o.end_date;
- this.status = this._getStatus();
- this.waitlist = o.isOnWaitlist;
+  this.id = o.id;
+  this.schedule = {};
+  _slotsDict.forEach(function (slot) {
+      this.schedule[slot] = o && o[slot] || 0;
+   }.bind(this));
+   this.groupId = o && o.groupId;
+   this.studentId = o && o.studentId;
+   this.startDate = o && o.start_date;
+   this.endDate = o && o.end_date;
+   this.waitlist = o.isOnWaitlist;
+   this.setAttributes();
 };
 
 Mapping.prototype.clone = function () {
-  var o = assign({}, this, this.schedule, {start_date: this.startDate, end_date: this.endDate});
+  var id = "id" + Math.random().toString(16).slice(2);
+  var o = assign({}, this, this.schedule, {id : id, start_date: this.startDate, end_date: this.endDate});
   var clone = new Mapping(o);
   return clone;
+};
+
+
+Mapping.prototype.setAttributes = function (o) {
+  assign(this, o);
+  this.status = this._getStatus();
 };
 
 Mapping.prototype.isActive = function (date) {

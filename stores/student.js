@@ -26,11 +26,7 @@ Student.prototype.addMapping = function (mapping) {
   this.mappings.push(mapping);
 };
 
-Student.prototype.getMappings = function () {
-  return this.mappings;
-};
-//getLatest mapping for filter
-Student.prototype.getMapping = function (pFilter) {
+Student.prototype.getMappings = function (pFilter) {
   var defaultFilter = {groupId: null, dateRange: null}
   var filter = assign(defaultFilter, pFilter);
   var mappings = [];
@@ -58,7 +54,19 @@ Student.prototype.getMapping = function (pFilter) {
     return a.startDate - b.startDate
   });
 
-  return mappings[0];
+  return mappings;
+};
+//getLatest mapping for filter
+Student.prototype.getMapping = function (pFilter) {
+  var mappings = this.getMappings(pFilter);
+  return mappings[(mappings.length - 1)];
+};
+
+Student.prototype.getNewMapping = function () {
+  var currentMapping = this.getMapping();
+  var newMapping = currentMapping.clone();
+  newMapping.setAttributes({startDate: Helpers.getDateMonthFromToday()});
+  return newMapping;
 };
 
 Student.prototype.toExcelFormat = function (pFilter) {

@@ -14,13 +14,13 @@ var mapping = module.exports = React.createClass({
         <span>{this.props.groups[this.props.mapping.groupId].name}</span>
         <span className = 'date'>{Util.formatDate(this.props.mapping.startDate)}</span>
         <Capacity
-          schedule = {this.props.mapping.schedule}
+            schedule = {this.props.mapping.schedule}
+            id = {this.props.mapping.id}
             capacity = {1}
             single = {true}
             waitlist={this.props.mapping.waitlist}
           />
           <span className = 'container'>
-            <i className = {'fa fa-circle ' + this.props.mapping.status}></i>
             <span>{this.props.mapping.status}</span>
           </span>
       </div>

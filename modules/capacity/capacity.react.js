@@ -25,35 +25,35 @@ var capacityCubes = module.exports = React.createClass({
       if (this.props.single) {
         if (this.props.schedule[slot]) {
             var conflict = (this.props.conflictSlots && this.props.conflictSlots[slot]) ? ' conflict' : '';
-            cube = <span key = {slot+'_taken_'+i} className = {'cube taken' + waitlist + conflict}></span>
+            cube = <span key = {this.props.id + '_' + slot+'_taken_'+i} className = {'cube taken' + waitlist + conflict}></span>
         }
         else {
-          cube = <span key = {slot+'_available_'+i} className = {'cube available'+ waitlist}></span>
+          cube = <span key = {this.props.id + '_' + slot+'_available_'+i} className = {'cube available'+ waitlist}></span>
         }
         cubes.push(cube)
       }
       else {
         for (var i = 0; i < (this.props.capacity - fullRows - (this.props.schedule[slot] > 0 ? this.props.schedule[slot] : 0 )); i++ ) {
-          cube = <span key = {slot+'_taken_'+i} className = 'cube taken'></span>
+          cube = <span key = {this.props.id + '_' + slot+'_taken_'+i} className = 'cube taken'></span>
           cubes.push(cube);
         }
 
         if (this.props.highlightSchedule && this.props.highlightSchedule[slot]) {
           if (this.props.schedule[slot]) {
-            cube = <span key = {slot+'_taken_'+i} className = 'cube waitlist taken'></span>
+            cube = <span key = {this.props.id + '_' + slot+'_taken_'+i} className = 'cube waitlist taken'></span>
             cubes.push(cube);
           }
           else {
             //conflict
           }
           for (var i = 0; i < (this.props.schedule[slot] - 1 ); i++ ) {
-            cube = <span key = {slot+'_available_'+i} className = 'cube available'></span>
+            cube = <span key = {this.props.id + '_' + slot+'_available_'+i} className = 'cube available'></span>
             cubes.push(cube);
           }
         }
         else {
           for (var i = 0; i < (this.props.schedule[slot]); i++ ) {
-            cube = <span key = {slot+'_available_'+i} className = 'cube available'></span>
+            cube = <span key = {this.props.id + '_' + slot+'_available_'+i} className = 'cube available'></span>
             cubes.push(cube);
           }
         }

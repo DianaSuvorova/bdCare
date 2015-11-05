@@ -65,10 +65,10 @@ var studentDetails = module.exports = React.createClass({
 
     var mappings = this.props.student.getMappings();
     var mappingsEl = mappings.map(function (mapping) {
-        return <Mapping key = {'mapping_'+(i++)} mapping = {mapping} groups = {this.props.groups}/>;
+        return <Mapping key = {mapping.id} mapping = {mapping} groups = {this.props.groups}/>;
     }.bind(this));
 
-    var newMapping = this.props.student.getMapping();
+    var newMapping = this.props.student.getNewMapping();
     var newMappingEl = < MappingEditable
                         mapping = {newMapping}
                         groups = {this.props.groups}
@@ -91,10 +91,12 @@ var studentDetails = module.exports = React.createClass({
             <GroupPicker update = {this._onUpdateGroup} kvObject = {group} kvMap = {this.props.groups}/>
           </div>
           <div className = 'groupInfo'>
-            <Capacity
-              schedule = {group.getAvailableSchedule(this.state.dateRangeObject.dateRange)}
-              capacity = {group.capacity}
-            />
+            <div className = 'container'>
+              <Capacity
+                schedule = {group.getAvailableSchedule(this.state.dateRangeObject.dateRange)}
+                capacity = {group.capacity}
+              />
+            </div>
           </div>
         </div>
       </div>

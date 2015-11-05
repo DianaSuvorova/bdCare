@@ -63,7 +63,12 @@ div#studentDetails {
       }
       & > div.groupInfo {
         @include flex(1 0 $panel-width * 2);
+        @include justify-content(flex-start);
         background-color: white;
+        & > div.container {
+          padding-left: $unit * 3;
+          width: $calendar-width;
+        }
       }
     }
   }

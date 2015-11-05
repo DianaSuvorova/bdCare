@@ -3,7 +3,6 @@ div#studentList {
   @include flex-direction(column);
   height: calc(100% - #{$unit * 4});
   width: $panel-width * 2;
-  margin-top: $unit * 3;
   & > div.header {
     margin-top: $unit / 2;
     font-size: $font-size-small;
