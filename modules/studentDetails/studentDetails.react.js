@@ -24,26 +24,6 @@ var studentDetails = module.exports = React.createClass({
   },
 
   render: function () {
-    var classes = {
-      addNewMappingButton: ClassNames({
-        'actionItemText addNewMapping' : true,
-        'active': this.state.newMapping
-      }),
-      nameEditableInline: ClassNames({
-        'name editableInline' : true,
-        'active': this.state.nameState === 'edit'
-      }),
-      birthdateEditableInline: ClassNames({
-        'birthdate editableInline': true,
-        'active': this.state.birthdateState === 'edit'
-      })
-    }
-
-    var groupSelect = (this.state.scheduleState === 'edit') ?
-      <GroupPicker updateGroup = {this._onUpdateGroup} group = {this.props.groups[this.state.groupId]} groups = {this.props.groups}/> :
-      <span className={'groupPicker'}>{this.props.groups[this.state.groupId].name}</span> ;
-
-    var i = 0;
 
       var header = (<div className = 'header'>
                 <div className = 'detail'>
@@ -87,16 +67,16 @@ var studentDetails = module.exports = React.createClass({
         <div>{'Schedule Helper'}</div>
         <div className = 'helper'>
           <div className = 'toolbar'>
-            <MonthPicker dateRangeObject = {this.state.dateRangeObject} updateDateRange = {this._onUpdateDateRange} />
-            <GroupPicker update = {this._onUpdateGroup} kvObject = {group} kvMap = {this.props.groups}/>
+            <div className = 'container'>
+              <MonthPicker dateRangeObject = {this.state.dateRangeObject} updateDateRange = {this._onUpdateDateRange} />
+              <GroupPicker update = {this._onUpdateGroup} kvObject = {group} kvMap = {this.props.groups}/>
+            </div>
           </div>
           <div className = 'groupInfo'>
-            <div className = 'container'>
-              <Capacity
-                schedule = {group.getAvailableSchedule(this.state.dateRangeObject.dateRange)}
-                capacity = {group.capacity}
-              />
-            </div>
+            <Capacity
+              schedule = {group.getAvailableSchedule(this.state.dateRangeObject.dateRange)}
+              capacity = {group.capacity}
+            />
           </div>
         </div>
       </div>
@@ -116,9 +96,9 @@ var studentDetails = module.exports = React.createClass({
     StudentAction.addMapping(mapping);
   },
 
-  _onCloseEditStudent: function () {
-    this.props.closeStudentDetails();
-  },
+  // _onCloseEditStudent: function () {
+  //   this.props.closeStudentDetails();
+  // },
 
   _onUpdateGroup: function (group) {
     this.setState(this._getState({groupId: group.id}));
@@ -128,14 +108,6 @@ var studentDetails = module.exports = React.createClass({
     this.setState(this._getState({dateRangeObject: dateRangeObject}));
   },
 
-  _onToggleAddNewMapping: function () {
-    if (this.state.newMapping) {
-      this.setState(this._getState({newMapping: null}));
-    }
-    else {
-      this.setState(this._getState({newMapping: StudentStore.getNewMapping(this.props.student)}));
-    }
-  },
 
   _getState: function (newState) {
   var defaultState = {

@@ -15,7 +15,7 @@ var student = module.exports = React.createClass({
   },
 
   render: function () {
-    this.mapping = this.props.student.getMapping({groupId: this.props.group.id});
+    this.mapping = this.props.student.getMapping({groupId: this.props.group.id, waitlist: this.props.waitlist});
     var conflictSlots = this.props.group.getConflictSlots(this.props.dateRangeObject.dateRange, this.mapping.schedule);
     var classes = {
       student : ClassNames({

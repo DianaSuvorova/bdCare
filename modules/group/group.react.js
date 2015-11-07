@@ -14,7 +14,7 @@ var group = module.exports = React.createClass({
 
   render: function () {
 
-    var waitlistStudentsIds = this.props.group.getWaitlistStudentIds(this.props.dateRange);
+    var waitlistStudentsIds = this.props.group.getWaitlistStudentIds(this.props.dateRangeObject.dateRange);
     var waitlistStudents = StudentStore.getStudents(waitlistStudentsIds);
     var i = 0;
     var waitlist =
@@ -41,7 +41,7 @@ var group = module.exports = React.createClass({
             <span className= 'value'>{this.props.group.capacity} </span>
           </div>
           <CalendarHeader/>
-          <Capacity schedule = {this.props.group.getAvailableSchedule(this.props.dateRange)} capacity = {this.props.group.capacity} waitlist = {false}/>
+          <Capacity schedule = {this.props.group.getAvailableSchedule(this.props.dateRangeObject.dateRange)} capacity = {this.props.group.capacity} waitlist = {false}/>
         </div>
         <div>
           <div className = 'subheader waitlist'>

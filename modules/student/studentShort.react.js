@@ -16,7 +16,10 @@ var student = module.exports = React.createClass({
         'waitlist': this.props.waitlist
       })
     }
-    var mapping = this.props.student.getMapping({groupId: this.props.groupId})
+    var mapping = this.props.student.getMapping({groupId: this.props.groupId, 
+        waitlist: this.props.waitlist,
+        dateRange: this.props.dateRangeObject.dateRange
+      })
 
     return (
       <div className = {classes.student} onClick = {this._onClickStudent}>

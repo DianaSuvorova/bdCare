@@ -27,7 +27,7 @@ Student.prototype.addMapping = function (mapping) {
 };
 
 Student.prototype.getMappings = function (pFilter) {
-  var defaultFilter = {groupId: null, dateRange: null}
+  var defaultFilter = {groupId: null, dateRange: null, waitlist: 'both'}
   var filter = assign(defaultFilter, pFilter);
   var mappings = [];
   if (filter.dateRange) {
@@ -35,7 +35,10 @@ Student.prototype.getMappings = function (pFilter) {
 
     listOfDates.forEach( function(date) {
       this.mappings.forEach(function (mapping) {
-        if (mapping.isActive(date) && (!mapping.groupId || mapping.groupId === filter.groupId)) {
+        if (mapping.isActive(date) &&
+            (!filter.groupId || mapping.groupId === filter.groupId) &&
+            ((filter.waitlist === 'both') || mapping.waitlist === filter.waitlist)
+          ) {
           mappings.push(mapping);
         }
       });
@@ -43,7 +46,9 @@ Student.prototype.getMappings = function (pFilter) {
   }
   else {
     this.mappings.forEach(function (mapping) {
-      if (!filter.groupId || mapping.groupId === filter.groupId) {
+      if ((!filter.groupId || mapping.groupId === filter.groupId) &&
+          ((filter.waitlist === 'both') || mapping.waitlist === filter.waitlist)
+        ) {
         mappings.push(mapping);
       }
     });
@@ -56,6 +61,7 @@ Student.prototype.getMappings = function (pFilter) {
 
   return mappings;
 };
+
 //getLatest mapping for filter
 Student.prototype.getMapping = function (pFilter) {
   var mappings = this.getMappings(pFilter);
