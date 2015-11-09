@@ -73,10 +73,12 @@ var studentDetails = module.exports = React.createClass({
             </div>
           </div>
           <div className = 'groupInfo'>
-            <Capacity
-              schedule = {group.getAvailableSchedule(this.state.dateRangeObject.dateRange)}
-              capacity = {group.capacity}
-            />
+            <div className = 'container'>
+              <Capacity
+                schedule = {group.getAvailableSchedule(this.state.dateRangeObject.dateRange)}
+                capacity = {group.capacity}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -66,7 +66,7 @@ div#studentDetails {
         @include justify-content(flex-start);
         background-color: white;
         & > div.container {
-          padding-left: $unit * 3;
+          padding-left: $unit * 3.25;
           width: $calendar-width;
         }
       }
