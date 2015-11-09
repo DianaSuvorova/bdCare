@@ -62,10 +62,6 @@ var students = module.exports = React.createClass({
       <div className = 'toolbar'>
         <MonthPicker dateRangeObject = {this.state.dateRangeObject} updateDateRange = {this._onUpdateDateRange} />
         <GroupPicker update = {this._onUpdateGroup} kvObject = {this.state.groups[this.state.groupId]} kvMap = {this.state.groups}/>
-        <span className = 'actionItemText ' onClick = {this._onAddNewStudent}>
-          <i className = 'fa fa-plus'></i>
-          <span>Add student</span>
-        </span>
       </div>
       {groupDetails}
     </div>);

@@ -102,8 +102,10 @@ var capacityCubes = module.exports = React.createClass({
     Object.keys(schedule).forEach(function (slot) {
       if (schedule[slot] > fullRows) fullRows = schedule[slot];
     });
+
     return capacity - fullRows;
   },
+
 
   _onClickSlot : function (e) {
     var slot = $(e.target).closest('[data-id]').attr('data-id');

@@ -8,11 +8,10 @@ div#students {
     width: 100%;
     position: fixed;
     top: $unit * 2; right: 0;
-    @include flex(1 0 100%);
     height: $toolbar-height;
     background-color: $color-toolbar-background;
     @include display-flex;
-    @include justify-content(space-around);
+    @include justify-content(flex-start);
     &  > span.picker {
       margin: 0 $unit;
     }

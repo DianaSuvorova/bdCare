@@ -27,3 +27,8 @@
   flex-flow: $flow;
   -webkit-flex-flow: $flow;
 }
+
+@mixin align-self($align) {
+  align-self: $align;
+  -webkit-align-self: $align;
+}

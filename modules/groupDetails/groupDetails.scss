@@ -21,6 +21,13 @@ div#groupDetails {
       & > div.header {
         width: $panel-width;
         text-align: center;
+        @include display-flex;
+        @include flex-direction(column);
+        @include align-items(center);
+        & > span.capacity {
+          font-size: $font-size-small;
+          color: $color-calendar-header;
+        }
       }
     }
   }

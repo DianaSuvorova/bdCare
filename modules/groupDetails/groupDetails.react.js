@@ -25,6 +25,7 @@ var groupDetails = module.exports = React.createClass({
           <div className = 'summary'>
             <div className = 'header'>
               <span className = 'groupName'>{this.props.group.name}</span>
+              <span className = 'capacity'>{'TOTAL CAPACITY ' + this.props.group.capacity}</span>
             </div>
             <Capacity
               id = {this.props.group.id}
