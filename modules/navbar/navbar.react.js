@@ -13,7 +13,7 @@ var navbar = module.exports = React.createClass({
   render: function () {
     var classes = {
       dashboard : ClassNames (
-        {'active': !this.props.studentsActive}
+        {'active': this.props.dashboardActive}
       ),
       students : ClassNames (
         {'active': this.props.studentsActive}
