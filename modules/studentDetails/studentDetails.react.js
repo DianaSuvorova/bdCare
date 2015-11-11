@@ -53,6 +53,7 @@ var studentDetails = module.exports = React.createClass({
                         mapping = {newMapping}
                         groups = {this.props.groups}
                         onConfirmMapping = {this._onConfirmMapping}
+                        highlightSchedule = {this._onHighlightSchedule}
                       />;
 
     var mappingEl = (
@@ -77,6 +78,7 @@ var studentDetails = module.exports = React.createClass({
               <Capacity
                 schedule = {group.getAvailableSchedule(this.state.dateRangeObject.dateRange)}
                 capacity = {group.capacity}
+                highlightSchedule = {this.state.highlightSchedule}
               />
             </div>
           </div>
@@ -110,13 +112,16 @@ var studentDetails = module.exports = React.createClass({
     this.setState(this._getState({dateRangeObject: dateRangeObject}));
   },
 
+  _onHighlightSchedule: function (schedule) {
+    this.setState(this._getState({highlightSchedule: schedule}));
+  },
+
 
   _getState: function (newState) {
   var defaultState = {
       groupId : this.state && this.state.groupId || this.props.groupId,
       dateRangeObject: this.state && this.state.dateRangeObject || this.props.dateRangeObject,
-      nameState: this.state && this.state.nameState || 'view',
-      birthdateState: this.state && this.state.birthdateState || 'view',
+      highlightSchedule: this.state && this.state.highlightSchedule || null
     }
 
     var state = assign({}, defaultState, newState);

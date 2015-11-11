@@ -61,6 +61,7 @@ var mappingEditable = module.exports = React.createClass({
   _onUpdateSchedule: function (diff) {
     var schedule = this.props.mapping.schedule;
     schedule[diff.slot] += diff.value;
+//    this.props.highlightSchedule(schedule);
     this.setState(this._getState({schedule: schedule}));
   },
 

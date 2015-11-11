@@ -5,6 +5,7 @@ div.student {
   cursor: pointer;
   font-size: $font-size-medium;
   background-color: white;
+  padding-right: $unit / 2;
   & > span {
     text-align: left;
     width: $unit * 5;
@@ -34,6 +35,7 @@ div.student {
     height: $unit * 2;
     & > span {
       height: $unit;
+      padding-left: $unit/5;
     }
   }
 }
